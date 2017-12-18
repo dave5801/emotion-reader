@@ -24,7 +24,4 @@ env AWS_SECRET_ACCESS_KEY='{{ aws_secret_access_key }}'
 
 env DEBUG=''
 
-exec /home/ubuntu/emotion-reader/ENV/bin/python manage.py migrate
-exec /home/ubuntu/emotion-reader/ENV/bin/python manage.py collectstatic
-
 exec /home/ubuntu/emotion-reader/ENV/bin/gunicorn -b :8080 emotionreader.wsgi

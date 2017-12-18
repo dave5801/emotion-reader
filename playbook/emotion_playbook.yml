@@ -41,6 +41,29 @@
         requirements: /home/ubuntu/emotion-reader/requirements.txt
         virtualenv: /home/ubuntu/emotion-reader/ENV
 
+    - name: migrate changes to the database
+      django_manage:
+        command: migrate
+        app_path: /home/ubuntu/emotion-reader/emotionreader
+        virtualenv: /home/ubuntu/emotion-reader/ENV
+      environment:
+        SECRET_KEY: '{{ secret_key }}'
+        DB_NAME: '{{ db_name }}'
+        DB_HOST: '{{ db_host }}'
+        DB_USER: '{{ db_user }}'
+        DB_PASS: '{{ db_pass }}'
+
+    - name: collect static files to the S3 buckets
+      django_manage:
+        command: collectstatic
+        app_path: /home/ubuntu/emotion-reader/emotionreader
+        virtualenv: /home/ubuntu/emotion-reader/ENV
+      environment:
+        SECRET_KEY: '{{ secret_key }}'
+        AWS_STORAGE_BUCKET_NAME: '{{ aws_storage_bucket_name }}'
+        AWS_ACCESS_KEY_ID: '{{ aws_access_key_id }}'
+        AWS_SECRET_ACCESS_KEY: '{{ aws_secret_access_key }}'
+
     - name: register the old default file
       stat: path=/etc/nginx/sites-available/default.old
       register: default_stat
