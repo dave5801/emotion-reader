@@ -28,6 +28,7 @@ class UpdateProfile(UpdateView):
     model = EmotionProfile
     template_name = 'emotion_profile/update_profile.html'
     success_url = reverse_lazy('profile')
+    login_url = reverse_lazy('login')
 
     slug_field = 'user__username'
     slug_url_kwarg = 'username'
@@ -53,4 +54,12 @@ class UpdateProfile(UpdateView):
         if self.kwargs['username'] == '':
             return redirect('home')
 
-        return super(UpdateProfile, self).get(*args, **kwargs)
+        return super(UpdateProfile, self).post(*args, **kwargs)
+
+    def form_valid(self, form):
+        """Assign user as Edit of profile."""
+        form.instance.user.email = form.data['email']
+        form.instance.user.first_name = form.data['first_name']
+        form.instance.user.last_name = form.data['last_name']
+        form.instance.user.save()
+        return super(UpdateProfile, self).form_valid(form)

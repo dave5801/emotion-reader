@@ -38,7 +38,7 @@ class EmotionProfileForm(ModelForm):
     first_name = forms.CharField(max_length=User._meta.get_field('first_name').max_length,
                                  required=False)
 
-    last_name = forms.CharField(max_length=User._meta.get_field('first_name').max_length,
+    last_name = forms.CharField(max_length=User._meta.get_field('last_name').max_length,
                                 required=False)
 
     # cover = forms.ImageField(upload_to='documents/%Y/%m/%d',
