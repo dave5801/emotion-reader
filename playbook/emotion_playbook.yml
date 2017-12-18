@@ -38,7 +38,7 @@
 
     - name: install required packages
       pip:
-        requirements: /home/ubuntu/emotion-reader/ENV/requirements.txt
+        requirements: /home/ubuntu/emotion-reader/requirements.txt
         virtualenv: /home/ubuntu/emotion-reader/ENV
 
     - name: register the old default file

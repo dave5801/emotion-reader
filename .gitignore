@@ -270,8 +270,8 @@ fabric.properties
 
 # End of https://www.gitignore.io/api/pycharm
 
-imagersite/MEDIA/*
-!imagersite/MEDIA/.gitkeep
+emotionreader/MEDIA/*
+!emotionreader/MEDIA/.gitkeep
 
 hosts
 
