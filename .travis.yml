@@ -6,11 +6,11 @@ services:
   - postgresql
 
 before_script:
-  - psql -c "create database imagersite;" -U postgres
+  - psql -c "create database emotionreader;" -U postgres
 
 #set some environment variables
 env:
-  - DB_NAME=imagersite DB_USER=postgres DB_HOST='127.0.0.1' SECRET_KEY='potato' DEBUG='True'
+  - DB_NAME=emotionreader DB_USER=postgres DB_HOST='127.0.0.1' SECRET_KEY='potato' DEBUG='True'
 
 # command to install dependencies
 install:
@@ -19,8 +19,8 @@ install:
 
 # commands to run tests
 script:
-  - python imagersite/manage.py migrate
-  - coverage run imagersite/manage.py test imagersite
+  - python emotionreader/manage.py migrate
+  - coverage run emotionreader/manage.py test emotionreader
 
 after_success:
   - coveralls
