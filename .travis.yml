@@ -1,0 +1,29 @@
+language: python
+python:
+  - "3.6"
+
+services:
+  - postgresql
+
+before_script:
+  - psql -c "create database emotionreader;" -U postgres
+
+#set some environment variables
+env:
+  - DB_NAME=emotionreader DB_USER=postgres DB_HOST='127.0.0.1' SECRET_KEY='potato' DEBUG='True'
+
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+  - pip install coveralls
+
+# commands to run tests
+script:
+  - python emotionreader/manage.py migrate
+  - coverage run emotionreader/manage.py test emotionreader
+
+after_success:
+  - coveralls
+
+notifications:
+  email: false

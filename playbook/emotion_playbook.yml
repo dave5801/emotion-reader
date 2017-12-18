@@ -1,0 +1,93 @@
+---
+- hosts: us-west-2
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: update ubuntu system
+      apt: update_cache=yes
+
+    - name: install basic unix services
+      apt: name={{ item }} state=latest
+      with_items:
+        - nginx
+        - python3
+        - python3-pip
+        - python3.4-venv
+        - git
+
+    - name: git clone emotion reader
+      git:
+        clone: yes
+        repo: https://github.com/dave5801/emotion-reader.git
+        dest: /home/ubuntu/emotion-reader
+
+    - name: create python3 virtual enviroment
+      command: python3 -m venv /home/ubuntu/emotion-reader/ENV
+
+    - name: update pip
+      pip:
+        name: pip
+        extra_args: --upgrade
+        virtualenv: /home/ubuntu/emotion-reader/ENV
+
+    - name: install gunicorn in the enviroment
+      pip:
+        name: gunicorn
+        virtualenv: /home/ubuntu/emotion-reader/ENV
+
+    - name: install required packages
+      pip:
+        requirements: /home/ubuntu/emotion-reader/requirements.txt
+        virtualenv: /home/ubuntu/emotion-reader/ENV
+
+    - name: migrate changes to the database
+      django_manage:
+        command: migrate
+        app_path: /home/ubuntu/emotion-reader/emotionreader
+        virtualenv: /home/ubuntu/emotion-reader/ENV
+      environment:
+        SECRET_KEY: '{{ secret_key }}'
+        DB_NAME: '{{ db_name }}'
+        DB_HOST: '{{ db_host }}'
+        DB_USER: '{{ db_user }}'
+        DB_PASS: '{{ db_pass }}'
+
+    - name: collect static files to the S3 buckets
+      django_manage:
+        command: collectstatic
+        app_path: /home/ubuntu/emotion-reader/emotionreader
+        virtualenv: /home/ubuntu/emotion-reader/ENV
+      environment:
+        SECRET_KEY: '{{ secret_key }}'
+        AWS_STORAGE_BUCKET_NAME: '{{ aws_storage_bucket_name }}'
+        AWS_ACCESS_KEY_ID: '{{ aws_access_key_id }}'
+        AWS_SECRET_ACCESS_KEY: '{{ aws_secret_access_key }}'
+
+    - name: register the old default file
+      stat: path=/etc/nginx/sites-available/default.old
+      register: default_stat
+
+    - name: rename the old default nginx file if doesn't exist
+      command: mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.old
+      when: not default_stat.stat.exists
+
+    - name: create new nginx default file
+      template:
+        src: templates/nginx_config
+        dest: /etc/nginx/sites-available/default
+
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+
+    - name: create new upstart script and move to  /etc/init
+      template:
+        src: templates/upstart_config
+        dest: /etc/init/emotionreader.conf
+
+    - name: restart emotionreader
+      service:
+        name: emotionreader
+        state: restarted
