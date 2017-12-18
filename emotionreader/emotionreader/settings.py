@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'emotionreader',
+    'emotion_profile',
+    'emotion_journal',
+    'emotion_emotions',
 ]
 
 MIDDLEWARE = [
