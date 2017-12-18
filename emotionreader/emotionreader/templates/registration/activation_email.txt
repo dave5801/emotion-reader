@@ -1,0 +1,5 @@
+Thank you for registering your account.
+
+Click the activation link below:
+
+http://{{ site }}{% url 'registration_activate' activation_key=activation_key %}
