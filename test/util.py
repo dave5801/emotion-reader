@@ -1,3 +1,10 @@
+'''
+base = CF.BaseUrl()
+base.set('https://westcentralus.api.cognitive.microsoft.com/face/v1.0/')
+base.get()
+'''
+
+
 #https://github.com/Microsoft/Cognitive-Face-Python/blob/master/cognitive_face/util.py
 
 #!/usr/bin/env python
@@ -13,8 +20,6 @@ import requests
 
 import cognitive_face as CF
 
-#DEFAULT_BASE_URL = 'https://westus.api.cognitive.microsoft.com/face/v1.0/'
-#DEFAULT_BASE_URL = CF.BaseUrl.set('https://westcentralus.api.cognitive.microsoft.com/face/v1.0/')
 DEFAULT_BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/'
 
 TIME_SLEEP = 1
@@ -47,7 +52,6 @@ class Key(object):
     @classmethod
     def set(cls, key):
         """Set the Subscription Key."""
-        print("SETTING KEY")
         cls.key = key
 
     @classmethod
@@ -55,10 +59,7 @@ class Key(object):
         
         """Get the Subscription Key."""
         if not hasattr(cls, 'key'):
-            print("GETTING KEY")
-            #cls.key = None
             cls.key = os.environ['FACE_API_KEY1']
-            print(cls.key)
 
         return cls.key
 
@@ -71,7 +72,6 @@ class BaseUrl(object):
     @classmethod
     def get(cls):
         if not hasattr(cls, 'base_url') or not cls.base_url:
-            print("Getting URL")
             cls.base_url = DEFAULT_BASE_URL
 
         return cls.base_url
@@ -91,12 +91,8 @@ def request(method, url, data=None, json=None, headers=None, params=None):
         headers['Content-Type'] = 'application/json'
     headers['Ocp-Apim-Subscription-Key'] = Key.get()
 
-    print("REQUEST", requests)
-
     response = requests.request(
         method, url, params=params, data=data, json=json, headers=headers)
-
-    print("RESPONSE", response)
 
     # Handle result and raise custom exception when something wrong.
     result = None
