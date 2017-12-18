@@ -1,16 +1,25 @@
 """Views for profile."""
-from django.views.generic import TemplateView, UpdateView
+from django.views.generic import DetailView, UpdateView
 from django.core.urlresolvers import reverse_lazy
-from emotion_profile.models import EmotionProfile
+from emotion_profile.models import EmotionProfile, EmotionProfileForm
+from django.shortcuts import redirect
 
 
-class ProfileView(TemplateView):
+class ProfileView(DetailView):
     """Profile view."""
 
-    def get_context_data(self, pk=None):
-        """Get context data for view."""
-        # photo = Photo.objects.get(id=pk)
-        # return {'photo': photo}
+    template_name = 'emotion_profile/profile.html'
+    model = EmotionProfile
+    slug_field = 'user__username'
+    slug_url_kwarg = 'username'
+
+    def get(self, *args, **kwargs):
+        """Redirect home if not logged in."""
+        self.kwargs['username'] = self.request.user.get_username()
+        if self.kwargs['username'] == '':
+            return redirect('home')
+
+        return super(ProfileView, self).get(*args, **kwargs)
 
 
 class UpdateProfile(UpdateView):
@@ -18,5 +27,30 @@ class UpdateProfile(UpdateView):
 
     model = EmotionProfile
     template_name = 'emotion_profile/update_profile.html'
-    fields = []
     success_url = reverse_lazy('profile')
+
+    slug_field = 'user__username'
+    slug_url_kwarg = 'username'
+    form_class = EmotionProfileForm
+
+    def get_form_kwargs(self):
+        """Update the kwargs to include the current user's username."""
+        kwargs = super(UpdateProfile, self).get_form_kwargs()
+        kwargs.update({'username': self.request.user.username})
+        return kwargs
+
+    def get(self, *args, **kwargs):
+        """Redirect home if not logged in."""
+        self.kwargs['username'] = self.request.user.get_username()
+        if self.kwargs['username'] == '':
+            return redirect('home')
+
+        return super(UpdateProfile, self).get(*args, **kwargs)
+
+    def post(self, *args, **kwargs):
+        """Redirect home if not logged in."""
+        self.kwargs['username'] = self.request.user.get_username()
+        if self.kwargs['username'] == '':
+            return redirect('home')
+
+        return super(UpdateProfile, self).get(*args, **kwargs)
