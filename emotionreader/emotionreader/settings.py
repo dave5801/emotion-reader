@@ -20,13 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$7h_k-3dt&fqp5d9k4uz8dcv97w6kht4fv(x=79ktw#+0i395s'
+SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', '')
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split()
 
 # Application definition
 
@@ -73,16 +72,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'emotionreader.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
 
 DATABASES = {
     'default': {
@@ -91,13 +82,12 @@ DATABASES = {
         'HOST': os.environ.get('DB_HOST', ''),
         'USER': os.environ.get('DB_USER', ''),
         'PASSWORD': os.environ.get('DB_PASS', ''),
-        # 'PORT': '5432',
-        # 'TEST': {
-        #     'NAME': os.environ.get('DB_TEST', '')
-        # },
+        'PORT': '5432',
+        'TEST': {
+            'NAME': os.environ.get('DB_TEST', '')
+        },
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -150,9 +140,8 @@ if DEBUG:
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_USE_TLS = True
-    EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_HOST_USER = 'zachdjangoimager@gmail.com'
-    EMAIL_HOST_PASSWORD = 'potatoes'
+    EMAIL_HOST = os.environ.get('ADMIN_EMAIL_HOST', '')
+    EMAIL_HOST_USER = os.environ.get('ADMIN_EMAIL', '')
+    EMAIL_HOST_PASSWORD = os.environ.get('ADMIN_EMAIL_PASS', '')
     EMAIL_PORT = 587
-
-    DEFAULT_FROM_EMAIL = 'zachdjangoimager@gmail.com'
+    DEFAULT_FROM_EMAIL = os.environ.get('ADMIN_EMAIL', '')
