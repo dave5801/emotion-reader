@@ -71,16 +71,17 @@ def get(face_list_id):
     return util.request('GET', url)
 
 if __name__ == '__main__':
-    #img_url = 'https://raw.githubusercontent.com/Microsoft/Cognitive-Face-Windows/master/Data/detection1.jpg'
 
-    #create(1)
+    #create(1) #Once a list id is created, it persists
 
     from select_from_face_dir import select_from_face_dir
 
-    image_contents = select_from_face_dir("nicholas_cage")
+    cage_dir = "nicholas_cage"
+
+    image_contents = select_from_face_dir(cage_dir)
 
     for i in image_contents:
-        add_face("nicholas_cage" + "/" +i,1)
+        add_face(cage_dir + "/" +i,1)
 
     x = get(1)
     print(x)

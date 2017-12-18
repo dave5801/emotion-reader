@@ -71,8 +71,23 @@ def find_similars(face_id,
     return util.request('POST', url, json=json)
 
 if __name__ == '__main__':
-    img_url = 'https://raw.githubusercontent.com/Microsoft/Cognitive-Face-Windows/master/Data/detection1.jpg'
-    response = detect(img_url)
-    face_id = response[0]['faceId']
+    #img_url = 'https://raw.githubusercontent.com/Microsoft/Cognitive-Face-Windows/master/Data/detection1.jpg'
+    #response = detect(img_url)
+    #face_id = response[0]['faceId']
     
-    print(find_similars(face_id))
+    #print(find_similars(face_id))
+    from select_from_face_dir import select_from_face_dir
+
+    cage_dir = "nicholas_cage"
+
+    image_contents = select_from_face_dir(cage_dir)
+    print(image_contents)
+
+    face_id_list = []
+
+#add_face(cage_dir + "/" +i,1)
+    for i in image_contents:
+        temp_url = cage_dir + "/" + i
+        face_id_list.append(detect(temp_url))
+
+    print(face_id_list)
