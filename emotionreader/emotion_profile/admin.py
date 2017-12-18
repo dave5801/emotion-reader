@@ -1,3 +1,5 @@
+"""Config for admin."""
 from django.contrib import admin
+from emotion_profile.models import EmotionProfile
 
-# Register your models here.
+admin.site.register(EmotionProfile)

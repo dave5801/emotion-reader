@@ -7,7 +7,7 @@
 
     <title>Emotion Reader</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="{% static 'imagersite/style.css' %}" rel="stylesheet"/>
+    <link href="{% static 'emotionreader/style.css' %}" rel="stylesheet"/>
     <link rel="stylesheet" 
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" 
           integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" 
@@ -25,21 +25,21 @@
         <ul class="navbar-nav mr-auto">
         </ul>
         <ul class="nav navbar-nav" style="float: right">
-<!--             {% if request.user.is_authenticated %}
+            {% if request.user.is_authenticated %}
             <li class="nav-item" class="user_nav">
               <a class="nav-link" href="{% url 'profile' %}"> {{ request.user.username }} </a>
-            </li> -->
+            </li>
             <li class="nav-item" class="user_nav">
               <a class="nav-link" href="{% url 'logout' %}">Logout</a>
             </li>
-            <!-- {% else %} -->
+            {% else %}
             <li class="nav-item" class="user_nav">
               <a class="nav-link" href="{% url 'login' %}">Login</a>
             </li>
             <li class="nav-item" class="user_nav">
               <a class="nav-link" href="{% url 'registration_register' %}">Register</a>
             </li>
-            <!-- {% endif %} -->
+            {% endif %}
         </ul>
       </div>
     </nav>
