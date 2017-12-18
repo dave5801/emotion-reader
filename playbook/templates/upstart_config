@@ -1,0 +1,30 @@
+description "emotion-reader deployment"
+
+start on (filesystem)
+stop on runlevel [016]
+
+respawn
+setuid nobody
+setgid nogroup
+chdir /home/ubuntu/emotion-reader/emotionreader
+
+env SECRET_KEY='{{ secret_key }}'
+env DB_NAME='{{ db_name }}'
+env DB_HOST='{{ db_host }}'
+env DB_USER='{{ db_user }}'
+env DB_PASS='{{ db_pass }}'
+env TEST_DB='{{ test_db }}'
+env ALLOWED_HOSTS='{{ allowed_hosts }}'
+env ADMIN_EMAIL='{{ admin_email }}'
+env ADMIN_EMAIL_HOST='{{ admin_email_host }}'
+env ADMIN_EMAIL_PASS='{{ admin_email_pass }}'
+env AWS_STORAGE_BUCKET_NAME='{{ aws_storage_bucket_name }}'
+env AWS_ACCESS_KEY_ID='{{ aws_access_key_id }}'
+env AWS_SECRET_ACCESS_KEY='{{ aws_secret_access_key }}'
+
+env DEBUG=''
+
+exec /home/ubuntu/emotion-reader/ENV/bin/python manage.py migrate
+exec /home/ubuntu/emotion-reader/ENV/bin/python manage.py collectstatic
+
+exec /home/ubuntu/emotion-reader/ENV/bin/gunicorn -b :8080 emotionreader.wsgi
