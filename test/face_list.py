@@ -75,17 +75,12 @@ if __name__ == '__main__':
 
     #create(1)
 
-    #added_face = add_face(img_url, 1)
+    from select_from_face_dir import select_from_face_dir
 
-    #print(added_face)
-    from os import listdir
-    from os.path import isfile, join
-    mypath = "nicholas_cage"
-    many_faces = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+    image_contents = select_from_face_dir("nicholas_cage")
 
-    for i in many_faces:
-        print(i)
-        #add_face(i, 1)
+    for i in image_contents:
+        add_face("nicholas_cage" + "/" +i,1)
 
-    #x = get(1)
-    #print(x)
+    x = get(1)
+    print(x)
