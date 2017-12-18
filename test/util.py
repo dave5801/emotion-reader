@@ -46,7 +46,7 @@ class CognitiveFaceException(Exception):
                 '\tmessage: {}\n').format(self.status_code, self.code,
                                           self.msg)
 
-
+#https://github.com/Microsoft/Cognitive-Face-Python/blob/master/cognitive_face/util.py
 class Key(object):
     """Manage Subscription Key."""
     @classmethod
