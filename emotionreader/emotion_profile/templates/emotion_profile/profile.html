@@ -1,5 +1,8 @@
 {% extends "emotionreader/base.html" %}
 
 {% block body %}
-    <h1>Profile</h1>
+    <h1>{{ request.user.username }}</h1>
+<!--     <h2>{{ request.user.first }}</h2>
+    <h2>{{ request.user.last }}</h2> -->
+    <a class="nav-link" href="{% url 'update_profile' pk=request.user.profile.pk %}" style="float: right;"> Update Profile </a>
 {% endblock %}
