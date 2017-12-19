@@ -1,15 +1,21 @@
-<!DOCTYPE html>
-{% load static %}
-<html>
-<head>
-    <title>Facial Image Capture</title>
-</head>
-<body>
+{% extends "emotionreader/base.html" %}
+
+{% block body %}
+    
 <video autoplay></video>
 <img src="">
-<canvas style="display:none;"></canvas>
+<canvas style="display:none;" height=300 width=300></canvas>
 
-</body>
-<script type="{% static 'emotionreader/imagecapture.js' %}"></script>
+<button id="start-camera">Start Camera</button>
+<button id="capture">Capture</button>
 
-</html>
+{% csrf_token %}
+
+{% endblock body %}
+
+{% block custom_scripts %}
+{% load static %}
+
+<script src="{% static 'emotionreader/imagecapture.js' %}"></script>
+<script type="text/javascript">app.setupImageCap()</script>
+{% endblock custom_scripts %}
