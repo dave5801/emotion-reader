@@ -23,15 +23,6 @@ try:
 
     parsed = json.loads(data)
 
-    # anger = parsed[0]['scores']['anger']
-    # contempt = parsed[0]['scores']['contempt']
-    # disgust = parsed[0]['scores']['disgust']
-    # fear = parsed[0]['scores']['fear']
-    # happiness = parsed[0]['scores']['happiness']
-    # neutral = parsed[0]['scores']['neutral']
-    # sadness = parsed[0]['scores']['sadness']
-    # surprise = parsed[0]['scores']['surprise']
-
     emotion = Emotion(User=self.request.user)
     emotion.anger = parsed[0]['scores']['anger']
     emotion.contempt = parsed[0]['scores']['contempt']
