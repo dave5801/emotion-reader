@@ -3,5 +3,7 @@ confusable-homoglyphs==2.0.2
 Django==1.11
 django-registration==2.3
 django-storages==1.6.5
+factory-boy==2.9.2
+Faker==0.8.7
 psycopg2==2.7.3.2
 pytz==2017.3
