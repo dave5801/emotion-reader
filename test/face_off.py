@@ -115,7 +115,6 @@ if __name__ == '__main__':
 
     print(faces_detected)
 
-    '''VERIFY IS GOOD
     for j in range(len(faces_detected)-1):
         x = faces_detected[j][0]['faceId']
         y = faces_detected[j+1][0]['faceId']
@@ -126,5 +125,5 @@ if __name__ == '__main__':
     for k in faces_detected:
         face_id_list.append(k[0]['faceId'])
 
-    print(group(face_id_list))'''
+    print(group(face_id_list))
 
