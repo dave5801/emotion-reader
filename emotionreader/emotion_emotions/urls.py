@@ -1,7 +1,6 @@
 from django.conf.urls import url
-from emotion_emotions.views import ImageCapView, save_image
+from emotion_emotions.views import RecordEmotions
 
 urlpatterns = [
-    url(r'^imagecap$', ImageCapView.as_view(), name='imagecap'),
-    url(r'^savecap$', save_image, name='savecap')
+    url(r'^record$', RecordEmotions.as_view(), name='record_emotions')
 ]

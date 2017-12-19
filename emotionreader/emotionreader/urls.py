@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^profile/', include('emotion_profile.urls')),
     url(r'^journal/', include('emotion_journal.urls')),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
-    url(r'^record/', include('emotion_emotions.urls'))
+    url(r'^emotions/', include('emotion_emotions.urls'))
 ]
 
 if settings.DEBUG:
