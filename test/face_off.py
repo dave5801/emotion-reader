@@ -1,6 +1,7 @@
 #https://github.com/Microsoft/Cognitive-Face-Python/tree/master/cognitive_face
 
 import util
+import os
 
 def detect(image, face_id=True, landmarks=False, attributes=''):
     """Detect human faces in an image and returns face locations, and
@@ -22,6 +23,10 @@ def detect(image, face_id=True, landmarks=False, attributes=''):
         order. An empty response indicates no faces detected. A face entry may
         contain the corresponding values depending on input parameters.
     """
+    if not os.path.isdir(image):
+        return "Invalid File Path"
+
+
     url = 'detect'
     headers, data, json = util.parse_image(image)
     params = {

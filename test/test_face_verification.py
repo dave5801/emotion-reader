@@ -11,6 +11,7 @@ TEST_FACE_LIST = select_from_face_dir(FILEPATH)
 
 
 def test_select_from_face_dir():
+    """Test faces are selected from valid directory."""
     from select_from_face_dir import select_from_face_dir
 
     filepath = "nicholas_cage"
@@ -19,6 +20,7 @@ def test_select_from_face_dir():
 
 
 def test_select_from_face_dir_invalid_dir():
+    """Test attempt to select from invalid directory."""
     from select_from_face_dir import select_from_face_dir
 
     filepath = "thisIsaBadDirectory"
@@ -27,8 +29,16 @@ def test_select_from_face_dir_invalid_dir():
 
 
 def test_face_detected():
+    """Test face is detected."""
     from face_off import detect
 
-    x = detect(FILEPATH + "/" +TEST_FACE_LIST[0])
+    x = detect(FILEPATH + "/" + TEST_FACE_LIST[0])
     assert x != None
 
+
+def test_no_face_detected():
+    """Test bad directory, no face detected."""
+    from face_off import detect
+
+    x = detect("badFilePath" + "/" + TEST_FACE_LIST[0])
+    assert x == "Invalid File Path"
