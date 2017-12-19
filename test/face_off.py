@@ -121,7 +121,7 @@ if __name__ == '__main__':
     for j in range(len(faces_detected)-1):
         x = faces_detected[j][0]['faceId']
         y = faces_detected[j+1][0]['faceId']
-        print(verify(x,y))
+        print(verify(x,y)['isIdentical'])
 
     face_id_list = []
    

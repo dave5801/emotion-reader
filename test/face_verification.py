@@ -68,13 +68,14 @@ class FaceVerificationObject(object):
 
         return detection[0]['faceId']
 
-        
 
-    def verified(face_id, another_face_id=None, person_group_id=None,person_id=None):
-        return None
+    def grouped(self,list_of_face_ids):
+        url = 'group'
+        json = {
+            'faceIds': list_of_face_ids,
+        }
 
-    def grouped(list_of_face_ids):
-        return None
+        return util.request('POST', url, json=json)
 
 if __name__ == '__main__':
 
@@ -90,10 +91,15 @@ if __name__ == '__main__':
     print(valid_face_file)
     valid_face_file = fvo.detected("cage1.png")
     print(valid_face_file)'''
-   
+
     detected_faces = []
 
     for i in list_of_faces:
         detected_faces.append(fvo.detected(i))
 
     print(detected_faces)
+
+    x = fvo.grouped(detected_faces)
+    print(x)
+
+    
