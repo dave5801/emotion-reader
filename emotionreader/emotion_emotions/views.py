@@ -44,9 +44,16 @@ class EmotionAnalysis(TemplateView):
         x = [1, 2, 3, 4, 5]
         y = [6, 7, 2, 4, 5]
 
-        p = figure(title="simple line example", x_axis_label='x', y_axis_label='y')
+        p = figure(title="Emotions vs. Time", x_axis_label='Time', y_axis_label='Emotions')
 
-        p.line(x, y, legend="Temp.", line_width=2)
+        p.line(x, y, legend="Anger", line_width=2, line_color='red')
+        p.line(x, y, legend="Contempt", line_width=2, line_color='blue')
+        p.line(x, y, legend="Disgust", line_width=2, line_color='blue')
+        p.line(x, y, legend="Fear", line_width=2, line_color='blue')
+        p.line(x, y, legend="Happiness", line_width=2, line_color='blue')
+        p.line(x, y, legend="Neutral", line_width=2, line_color='blue')
+        p.line(x, y, legend="Sadness", line_width=2, line_color='blue')
+        p.line(x, y, legend="Surprise", line_width=2, line_color='blue')
 
         script, div = components(p)
 
