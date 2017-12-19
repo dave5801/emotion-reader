@@ -7,7 +7,7 @@ from django.forms import ModelForm
 
 
 class EmotionProfile(models.Model):
-    """The imager profile model."""
+    """The profile model."""
 
     objects = models.Manager
     user = models.OneToOneField(User, on_delete=models.CASCADE,

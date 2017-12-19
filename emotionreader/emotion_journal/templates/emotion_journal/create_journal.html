@@ -1,0 +1,10 @@
+{% extends "emotionreader/base.html" %}
+
+{% block body %}
+    <h1>Create Journal</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="btn btn-primary"></input>
+    </form>
+{% endblock %}
