@@ -9,8 +9,9 @@ from django.core.urlresolvers import reverse_lazy
 class JournalView(ListView):
     """Journal view."""
 
-    context_object_name = 'entries'
     template_name = 'emotion_journal/journal.html'
+    context_object_name = 'entries'
+    model = Journal
 
     def get_queryset(self, user=None):
         """Get queryset for photos."""
@@ -20,9 +21,9 @@ class JournalView(ListView):
         """Get the user's photos and albums."""
         context = super(JournalView, self).get_context_data()
         user = self.request.user.get_username()
-        entries = Journal.objects.filter(user__username=user).order_by('date')
+        # import pdb; pdb.set_trace()
+        entries = self.get_queryset(user).order_by('date')
         context['entries'] = entries
-
         return context
 
 
