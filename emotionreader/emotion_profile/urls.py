@@ -5,9 +5,9 @@ from emotion_profile.views import ProfileView, UpdateProfile
 
 urlpatterns = [
     url(r'^$',
-        ProfileView.as_view(template_name='emotion_profile/profile.html'),
+        ProfileView.as_view(),
         name='profile'),
-    url(r'^edit/(?P<pk>\d+)$',
+    url(r'^edit/$',
         UpdateProfile.as_view(),
         name='update_profile')
 ]
