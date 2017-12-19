@@ -2,8 +2,16 @@
 
 import util
 import os
+from pathlib import Path
 
 def detect(image, face_id=True, landmarks=False, attributes=''):
+
+    image_file = Path(image)
+
+    if not image_file.exists():
+        return "Invalid File"
+
+
     """Detect human faces in an image and returns face locations, and
     optionally with `face_id`s, landmarks, and attributes.
     Args:
@@ -23,10 +31,6 @@ def detect(image, face_id=True, landmarks=False, attributes=''):
         order. An empty response indicates no faces detected. A face entry may
         contain the corresponding values depending on input parameters.
     """
-    print("Image", image)
-    if not os.path.isdir(image):
-        return "Invalid File Path"
-
 
     url = 'detect'
     headers, data, json = util.parse_image(image)
@@ -93,6 +97,9 @@ def group(face_ids):
 
 if __name__ == '__main__':
 
+
+    bad = "nicholas_cage/cage10.png"
+
     from select_from_face_dir import select_from_face_dir
 
     cage_dir = "nicholas_cage"
@@ -103,9 +110,12 @@ if __name__ == '__main__':
 
     for i in image_contents:
         temp_url = cage_dir + "/" + i
+        print(temp_url)
         faces_detected.append(detect(temp_url))
 
-    '''VERIFY IS GOOD'''
+    print(faces_detected)
+
+    '''VERIFY IS GOOD
     for j in range(len(faces_detected)-1):
         x = faces_detected[j][0]['faceId']
         y = faces_detected[j+1][0]['faceId']
@@ -116,5 +126,5 @@ if __name__ == '__main__':
     for k in faces_detected:
         face_id_list.append(k[0]['faceId'])
 
-    print(group(face_id_list))
+    print(group(face_id_list))'''
 
