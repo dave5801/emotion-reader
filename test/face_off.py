@@ -1,3 +1,5 @@
+#https://github.com/Microsoft/Cognitive-Face-Python/tree/master/cognitive_face
+
 import util
 
 def detect(image, face_id=True, landmarks=False, attributes=''):
@@ -70,12 +72,43 @@ def find_similars(face_id,
 
     return util.request('POST', url, json=json)
 
+
+def verify(face_id, another_face_id=None, person_group_id=None,
+           person_id=None):
+    """Verify whether two faces belong to a same person or whether one face
+    belongs to a person.
+    For face to face verification, only `face_id` and `another_face_id` is
+    necessary. For face to person verification, only `face_id`,
+    `person_group_id` and `person_id` is needed.
+    Args:
+        face_id: `face_id` of one face, comes from `face.detect`.
+        another_face_id: `face_id` of another face, comes from `face.detect`.
+        person_group_id: Using existing `person_group_id` and `person_id` for
+            fast loading a specified person. `person_group_id` is created in
+            `person_group.create`.
+        person_id: Specify a certain person in a person group. `person_id` is
+            created in `person.create`.
+    Returns:
+        The verification result.
+    """
+    url = 'verify'
+    json = {}
+    if another_face_id:
+        json.update({
+            'faceId1': face_id,
+            'faceId2': another_face_id,
+        })
+    else:
+        json.update({
+            'faceId': face_id,
+            'personGroupId': person_group_id,
+            'personId': person_id,
+        })
+
+    return util.request('POST', url, json=json)
+
 if __name__ == '__main__':
-    #img_url = 'https://raw.githubusercontent.com/Microsoft/Cognitive-Face-Windows/master/Data/detection1.jpg'
-    #response = detect(img_url)
-    #face_id = response[0]['faceId']
-    
-    #print(find_similars(face_id))
+
     from select_from_face_dir import select_from_face_dir
 
     cage_dir = "nicholas_cage"
@@ -85,9 +118,20 @@ if __name__ == '__main__':
 
     face_id_list = []
 
-#add_face(cage_dir + "/" +i,1)
     for i in image_contents:
         temp_url = cage_dir + "/" + i
         face_id_list.append(detect(temp_url))
 
     print(face_id_list)
+
+    #formatted_faces = []
+
+    for j in face_id_list:
+        print(j[0])
+        #print(verify(j[0]))
+
+x = {'faceId': 'de9ca459-f0bc-4b20-a66b-54e352d6747c', 'faceRectangle': {'top': 134, 'left': 240, 'width': 204, 'height': 204}}
+y = {'faceId': '74ac125d-059f-4fac-849f-2d65871906c0', 'faceRectangle': {'top': 152, 'left': 57, 'width': 212, 'height': 212}}
+
+z = verify(x['faceId'],y['faceId'])
+print(z)
