@@ -25,7 +25,7 @@ class FaceVerificationObject(object):
         self.faceID = None
 
     def format_face_file(self, face_file):
-        """formats file: path/to/file.png"""
+        """formats file: path/to/file.png."""
         return self.filepath_for_faces + "/" +face_file
 
     def get_faces_from_dir(self):
@@ -38,15 +38,15 @@ class FaceVerificationObject(object):
     def check_valid_face_file(self, face_file):
         """Validate an individual face image."""
 
-        face_image_file_path = self.format_face_file(face_file)
-        print(face_image_file_path)
-        face_image_file = Path(face_image_file_path)
+        #face_image_file_path = self.format_face_file(face_file)
+        print(face_file)
+        face_image_file = Path(face_file)
 
         return face_image_file.exists()
 
 
     def detected(self, image, face_id=True, landmarks=False, attributes=''):
-
+        """Returns the ID of a detected face."""
         face_to_detect = self.format_face_file(image)
 
         if self.check_valid_face_file(face_to_detect) == False:
@@ -54,23 +54,27 @@ class FaceVerificationObject(object):
             return False
 
         url = 'detect'
-        headers, data, json = util.parse_image(image)
+        headers, data, json = util.parse_image(face_to_detect)
+
         params = {
             'returnFaceId': face_id and 'true' or 'false',
             'returnFaceLandmarks': landmarks and 'true' or 'false',
             'returnFaceAttributes': attributes,
         }
 
-        return util.request(
+
+        detection = util.request(
             'POST', url, headers=headers, params=params, json=json, data=data)
 
-        '''
-    def verified(face_id, another_face_id=None, person_group_id=None,
-           person_id=None)
+        return detection[0]['faceId']
+
+        
+
+    def verified(face_id, another_face_id=None, person_group_id=None,person_id=None):
         return None
 
     def grouped(list_of_face_ids):
-        return None'''
+        return None
 
 if __name__ == '__main__':
 
@@ -81,8 +85,15 @@ if __name__ == '__main__':
     list_of_faces = fvo.get_faces_from_dir()
     print(list_of_faces)
 
+    '''
     valid_face_file = fvo.check_valid_face_file("cage1.png")
     print(valid_face_file)
-
+    valid_face_file = fvo.detected("cage1.png")
+    print(valid_face_file)'''
    
+    detected_faces = []
 
+    for i in list_of_faces:
+        detected_faces.append(fvo.detected(i))
+
+    print(detected_faces)

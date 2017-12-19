@@ -106,6 +106,9 @@ if __name__ == '__main__':
 
     image_contents = select_from_face_dir(cage_dir)
 
+
+    '''
+     '''
     faces_detected = []
 
     for i in image_contents:
@@ -121,6 +124,7 @@ if __name__ == '__main__':
         print(verify(x,y))
 
     face_id_list = []
+   
 
     '''
 
