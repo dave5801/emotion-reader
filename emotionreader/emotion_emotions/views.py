@@ -1,6 +1,6 @@
 """Process for submitting image for evaluation."""
 from django.views.generic import TemplateView
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from emotion_emotions.models import Emotion
 
 from base64 import b64decode
@@ -24,15 +24,22 @@ class RecordEmotions(TemplateView):
 
         response = requests.post(url, headers=headers, data=image)
 
-        return response.json()[0]['scores']
+        return response.json()
 
     def post(self, request, *args, **kwargs):
         """Extract emotions from posted image."""
-        # url = self.save_image(request)
-        image = request.POST['image'].split(',', maxsplit=1)[1]
-        image = b64decode(image)
+        try:
+            image = request.POST['image'].split(',', maxsplit=1)[1]
+            image = b64decode(image)
+        except KeyError:
+            return HttpResponseBadRequest('Invalid image.')
 
         data = self.get_emotion_data(image)
+
+        if 'error' in data:
+            return HttpResponseBadRequest(data['error']['message'])
+
+        data = data[0]['scores']
 
         emotion = Emotion(user=self.request.user)
         emotion.anger = data['anger']
@@ -45,4 +52,4 @@ class RecordEmotions(TemplateView):
         emotion.surprise = data['surprise']
         emotion.save()
 
-        return HttpResponse('Complete')
+        return HttpResponse('Emotions Recorded')

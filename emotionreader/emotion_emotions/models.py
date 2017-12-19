@@ -9,6 +9,9 @@ class Emotion(models.Model):
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name='emotion')
+
+    date_recorded = models.DateTimeField(auto_now=True)
+
     anger = models.FloatField()
     contempt = models.FloatField()
     disgust = models.FloatField()
