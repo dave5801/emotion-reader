@@ -21,7 +21,6 @@ class JournalView(ListView):
         """Get the user's photos and albums."""
         context = super(JournalView, self).get_context_data()
         user = self.request.user.get_username()
-        # import pdb; pdb.set_trace()
         entries = self.get_queryset(user).order_by('date')
         context['entries'] = entries
         return context
