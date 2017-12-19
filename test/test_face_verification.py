@@ -33,6 +33,7 @@ def test_face_detected():
     from face_off import detect
 
     x = detect(FILEPATH + "/" + TEST_FACE_LIST[0])
+    print("TEST", x)
     assert x != None
 
 
@@ -42,3 +43,11 @@ def test_no_face_detected():
 
     x = detect("badFilePath" + "/" + TEST_FACE_LIST[0])
     assert x == "Invalid File Path"
+'''
+def test_two_faces_verified():
+    from face_off import verify, detect
+
+    print(TEST_FACE_LIST[0], TEST_FACE_LIST[1])
+    x = detect(FILEPATH + "/" + TEST_FACE_LIST[0])
+    y = detect(FILEPATH + "/" + TEST_FACE_LIST[1])
+    print(x)'''

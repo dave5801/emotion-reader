@@ -23,6 +23,7 @@ def detect(image, face_id=True, landmarks=False, attributes=''):
         order. An empty response indicates no faces detected. A face entry may
         contain the corresponding values depending on input parameters.
     """
+    print("Image", image)
     if not os.path.isdir(image):
         return "Invalid File Path"
 
