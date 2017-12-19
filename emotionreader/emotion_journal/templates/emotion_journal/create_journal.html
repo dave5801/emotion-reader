@@ -1,7 +1,7 @@
 {% extends "emotionreader/base.html" %}
 
 {% block body %}
-    <h1>Update {{ request.user.username }}</h1>
+    <h1>Create Journal</h1>
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}

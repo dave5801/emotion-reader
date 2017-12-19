@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^logout/', auth_views.logout, name='logout'),
     url(r'^$', HomeView.as_view(), name='home'),
     url(r'^profile/', include('emotion_profile.urls')),
+    url(r'^journal/', include('emotion_journal.urls')),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
 ]
 

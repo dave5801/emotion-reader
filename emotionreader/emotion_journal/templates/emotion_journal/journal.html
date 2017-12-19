@@ -1,0 +1,12 @@
+{% extends "emotionreader/base.html" %}
+
+{% block body %}
+    <h1>Emotion Journal</h1>
+
+    {% for entry in entries %}
+        entry.entries.title
+        entry.entries.body
+        entry.entries.date
+    {% endfor %}
+
+{% endblock %}
