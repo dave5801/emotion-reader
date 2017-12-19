@@ -13,7 +13,8 @@ Below are the people and libraries we used to make this project possible.
 
 ### Libraries
 --------------
-
+#### Spotify
+We used the what Spotify callss "The Play Button". This is a widget where you can copy and paste in a playlist URI and spits out an iframe for you to use with your site.
 ## License
 Emotion Reader is offered under the MIT license and shown in the LICENSE file.`
 ## Authors
