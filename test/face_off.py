@@ -33,45 +33,6 @@ def detect(image, face_id=True, landmarks=False, attributes=''):
     return util.request(
         'POST', url, headers=headers, params=params, json=json, data=data)
 
-def find_similars(face_id,
-                  face_list_id=None,
-                  face_ids=None,
-                  max_candidates_return=20,
-                  mode='matchPerson'):
-    """Given query face's `face_id`, to search the similar-looking faces from a
-    `face_id` array or a `face_list_id`.
-    Parameter `face_list_id` and `face_ids` should not be provided at the same
-    time.
-    Args:
-        face_id: `face_id` of the query face. User needs to call `face.detect`
-            first to get a valid `face_id`. Note that this `face_id` is not
-            persisted and will expire in 24 hours after the detection call.
-        face_list_id: An existing user-specified unique candidate face list,
-            created in `face_list.create`. Face list contains a set of
-            `persisted_face_ids` which are persisted and will never expire.
-        face_ids: An array of candidate `face_id`s. All of them are created by
-            `face.detect` and the `face_id`s will expire in 24 hours after the
-            detection call. The number of `face_id`s is limited to 1000.
-        max_candidates_return: Optional parameter. The number of top similar
-            faces returned. The valid range is [1, 1000]. It defaults to 20.
-        mode: Optional parameter. Similar face searching mode. It can be
-            "matchPerson" or "matchFace". It defaults to "matchPerson".
-    Returns:
-        An array of the most similar faces represented in `face_id` if the
-        input parameter is `face_ids` or `persisted_face_id` if the input
-        parameter is `face_list_id`.
-    """
-    url = 'findsimilars'
-    json = {
-        'faceId': face_id,
-        'faceListId': face_list_id,
-        'faceIds': face_ids,
-        'maxNumOfCandidatesReturned': max_candidates_return,
-        'mode': mode,
-    }
-
-    return util.request('POST', url, json=json)
-
 
 def verify(face_id, another_face_id=None, person_group_id=None,
            person_id=None):
@@ -107,6 +68,23 @@ def verify(face_id, another_face_id=None, person_group_id=None,
 
     return util.request('POST', url, json=json)
 
+
+def group(face_ids):
+    """Divide candidate faces into groups based on face similarity.
+    Args:
+        face_ids: An array of candidate `face_id`s created by `face.detect`.
+            The maximum is 1000 faces.
+    Returns:
+        one or more groups of similar faces (ranked by group size) and a
+        messyGroup.
+    """
+    url = 'group'
+    json = {
+        'faceIds': face_ids,
+    }
+
+    return util.request('POST', url, json=json)
+
 if __name__ == '__main__':
 
     from select_from_face_dir import select_from_face_dir
@@ -114,24 +92,23 @@ if __name__ == '__main__':
     cage_dir = "nicholas_cage"
 
     image_contents = select_from_face_dir(cage_dir)
-    print(image_contents)
 
-    face_id_list = []
+    faces_detected = []
 
     for i in image_contents:
         temp_url = cage_dir + "/" + i
-        face_id_list.append(detect(temp_url))
+        faces_detected.append(detect(temp_url))
 
-    print(face_id_list)
+    '''VERIFY IS GOOD'''
+    for j in range(len(faces_detected)-1):
+        x = faces_detected[j][0]['faceId']
+        y = faces_detected[j+1][0]['faceId']
+        print(verify(x,y))
 
-    #formatted_faces = []
+    face_id_list = []
 
-    for j in face_id_list:
-        print(j[0])
-        #print(verify(j[0]))
+    for k in faces_detected:
+        face_id_list.append(k[0]['faceId'])
 
-x = {'faceId': 'de9ca459-f0bc-4b20-a66b-54e352d6747c', 'faceRectangle': {'top': 134, 'left': 240, 'width': 204, 'height': 204}}
-y = {'faceId': '74ac125d-059f-4fac-849f-2d65871906c0', 'faceRectangle': {'top': 152, 'left': 57, 'width': 212, 'height': 212}}
+    print(group(face_id_list))
 
-z = verify(x['faceId'],y['faceId'])
-print(z)
