@@ -32,6 +32,11 @@ class ProfileTests(TestCase):
         user.save()
         cls.dan = user
 
+        for _ in range(10):
+            user = UserFactory.create()
+            user.set_password(factory.Faker('password'))
+            user.save()
+
     def test_profile_route_has_302_response(self):
         """Test that profile route has a 302 response code when not logged in."""
         response = self.client.get(reverse_lazy('profile'))
@@ -41,3 +46,19 @@ class ProfileTests(TestCase):
         """Test that the __str__ method returns the profile username."""
         one_profile = EmotionProfile.objects.get(user__username='dan')
         self.assertEqual(str(one_profile), 'dan')
+
+    def test_profile_is_created_when_user_is_saved(self):
+        """Test that a profile is created automatically when a user is."""
+        self.assertEquals(EmotionProfile.objects.count(), 11)
+        user = UserFactory()
+        user.set_password(factory.Faker('password'))
+        user.save()
+        self.assertEquals(EmotionProfile.objects.count(), 12)
+
+    def test_profile_is_not_created_when_user_is_updated(self):
+        """Test that a profile is created automatically when a user is."""
+        self.assertEquals(EmotionProfile.objects.count(), 11)
+        one_user = User.objects.last()
+        one_user.username = 'Fred'
+        one_user.save()
+        self.assertEquals(EmotionProfile.objects.count(), 11)
