@@ -69,13 +69,25 @@ class FaceVerificationObject(object):
         return detection[0]['faceId']
 
 
-    def grouped(self,list_of_face_ids):
+    def group_verify(self,face_id,list_of_face_ids):
+        """Any face image found in 'messy groud' is not verified."""
         url = 'group'
         json = {
             'faceIds': list_of_face_ids,
         }
 
-        return util.request('POST', url, json=json)
+        grouping = util.request('POST', url, json=json)
+        
+        primary_group = grouping['groups'][0]
+        messy_group = grouping['messyGroup']
+
+        if face_id in primary_group:
+            return True
+        elif face_id in messy_group:
+            return False
+        else:
+            return False
+
 
 if __name__ == '__main__':
 
@@ -99,7 +111,12 @@ if __name__ == '__main__':
 
     print(detected_faces)
 
-    x = fvo.grouped(detected_faces)
+    #x = fvo.group_verify(detected_faces)
+    #print("GROUPS", x['groups'][0])
+    #print("MESSY GROUP", x['messyGroup'][0])
+
+    x = fvo.group_verify(detected_faces[0], detected_faces)
     print(x)
+
 
     
