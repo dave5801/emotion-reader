@@ -14,6 +14,7 @@ import os
 from os import listdir
 from os.path import isfile, join
 from pathlib import Path
+import util
 
 class FaceVerificationObject(object):
     """Face Verification Object."""
@@ -22,6 +23,10 @@ class FaceVerificationObject(object):
         self.face_to_verify = face_to_verify
 
         self.faceID = None
+
+    def format_face_file(self, face_file):
+        """formats file: path/to/file.png"""
+        return self.filepath_for_faces + "/" +face_file
 
     def get_faces_from_dir(self):
         """Get Directory of Faces."""
@@ -33,17 +38,33 @@ class FaceVerificationObject(object):
     def check_valid_face_file(self, face_file):
         """Validate an individual face image."""
 
-        face_image_file_path = self.filepath_for_faces + "/" +face_file
-
+        face_image_file_path = self.format_face_file(face_file)
+        print(face_image_file_path)
         face_image_file = Path(face_image_file_path)
 
         return face_image_file.exists()
 
 
-'''
-    def detected(image, face_id=True, landmarks=False, attributes=''):
-        return None
+    def detected(self, image, face_id=True, landmarks=False, attributes=''):
 
+        face_to_detect = self.format_face_file(image)
+
+        if self.check_valid_face_file(face_to_detect) == False:
+            print("Invalid Face")
+            return False
+
+        url = 'detect'
+        headers, data, json = util.parse_image(image)
+        params = {
+            'returnFaceId': face_id and 'true' or 'false',
+            'returnFaceLandmarks': landmarks and 'true' or 'false',
+            'returnFaceAttributes': attributes,
+        }
+
+        return util.request(
+            'POST', url, headers=headers, params=params, json=json, data=data)
+
+        '''
     def verified(face_id, another_face_id=None, person_group_id=None,
            person_id=None)
         return None
@@ -60,6 +81,8 @@ if __name__ == '__main__':
     list_of_faces = fvo.get_faces_from_dir()
     print(list_of_faces)
 
-    #valid_face_file = fvo.check_valid_face_file(list_of_faces[0])
-    valid_face_file = fvo.check_valid_face_file("badfile.png")
-    print(valid_face_file) 
+    valid_face_file = fvo.check_valid_face_file("cage1.png")
+    print(valid_face_file)
+
+   
+

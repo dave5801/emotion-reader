@@ -113,7 +113,7 @@ if __name__ == '__main__':
         print(temp_url)
         faces_detected.append(detect(temp_url))
 
-    print(faces_detected)
+    print("FACES DETECTED", faces_detected)
 
     for j in range(len(faces_detected)-1):
         x = faces_detected[j][0]['faceId']
