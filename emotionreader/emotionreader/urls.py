@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^$', HomeView.as_view(), name='home'),
     url(r'^profile/', include('emotion_profile.urls')),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
+    url(r'^record/', include('emotion_emotions.urls'))
 ]
 
 if settings.DEBUG:
