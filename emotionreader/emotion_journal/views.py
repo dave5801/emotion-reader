@@ -11,21 +11,31 @@ class JournalView(ListView):
 
     context_object_name = 'entries'
     template_name = 'emotion_journal/journal.html'
-    queryset = Journal.objects.all()
 
-    # def get(self, *args, **kwargs):
-    #     """Redirect home if not logged in."""
-    #     self.kwargs['username'] = self.request.user.get_username()
-    #     if self.kwargs['username'] == '':
-    #         return redirect('home')
+    def get_queryset(self, user=None):
+        """Get queryset for photos."""
+        return Journal.objects.filter(user__username=user)
 
-    #     return super(EmotionJournal, self).get(*args, **kwargs)
+    def get_context_data(self):
+        """Get the user's photos and albums."""
+        context = super(JournalView, self).get_context_data()
+        user = self.request.user.get_username()
+        entries = Journal.objects.filter(user__username=user).order_by('date')
+        context['entries'] = entries
+
+        return context
 
 
 class CreateJournal(CreateView):
     """View to create new journal entry."""
 
     model = Journal
+    login_url = reverse_lazy('login')
     template_name = 'emotion_journal/create_journal.html'
     fields = ['title', 'body']
     success_url = reverse_lazy('journal')
+
+    def form_valid(self, form):
+        """Assign user as creater of journal."""
+        form.instance.user = self.request.user
+        return super(CreateJournal, self).form_valid(form)
