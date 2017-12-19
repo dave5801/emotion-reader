@@ -122,8 +122,10 @@ if __name__ == '__main__':
 
     face_id_list = []
 
+    '''
+
     for k in faces_detected:
         face_id_list.append(k[0]['faceId'])
 
     print(group(face_id_list))
-
+'''
