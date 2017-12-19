@@ -1,11 +1,14 @@
 """Reusable File Directory contents."""
 
-
+import os
 from os import listdir
 from os.path import isfile, join
 
 
 def select_from_face_dir(filepath):
+    if not os.path.isdir(filepath):
+        return "Invalid File Path"
+
     return [f for f in listdir(filepath) if isfile(join(filepath, f))]
 
 
