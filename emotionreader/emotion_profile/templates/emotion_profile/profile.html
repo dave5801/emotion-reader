@@ -4,6 +4,6 @@
     <h1>{{ request.user.username }}</h1>
 <!--     <h2>{{ request.user.first }}</h2>
     <h2>{{ request.user.last }}</h2> -->
-    <img src="{{ data.photo_url }}" style="height: 100px; width: 100px;"/>
+    <img src="{{ request.user.profile.cover.url }}" style="height: 100px; width: 100px;"/>
     <a class="nav-link" href="{% url 'update_profile' %}" style="float: right;"> Update Profile </a>
 {% endblock %}
