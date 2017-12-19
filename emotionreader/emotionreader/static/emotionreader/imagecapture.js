@@ -9,6 +9,13 @@ var app = app || {};
     let ctx = canvas.getContext('2d');
     let localMediaStream = null;
 
+    function savePhoto(dataURL) {
+        $.post('/record/savecap', {
+            image: dataURL,
+            csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
+        }).fail(console.error)
+    }
+
     function snapshot() {
       if (localMediaStream) {
         let image = localMediaStream.getVideoTracks()[0].getSettings();
@@ -19,10 +26,13 @@ var app = app || {};
         ctx.drawImage(video, 0, 0, image.width, image.height,
                              0, 0, image.width * ratio, image.height * ratio);
 
-        document.querySelector('img').src = canvas.toDataURL('image/jpeg');
+        URL = canvas.toDataURL('image/jpeg')
+
+        document.querySelector('img').src = URL;
         video.pause();
         localMediaStream.getVideoTracks()[0].stop();
         $('#capture').hide();
+        savePhoto(URL)
       }
     }
 
