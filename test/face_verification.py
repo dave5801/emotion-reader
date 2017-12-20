@@ -1,6 +1,10 @@
 """Class which facial recognition in authenticion."""
 
 '''
+IMAGE CAPTURE - HOW MANY FRAMES PER UNIT OF TIME???
+'''
+
+'''
 TEST IDEAS:
 test if object created
 test if object created valid
