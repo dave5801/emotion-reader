@@ -1,17 +1,19 @@
 """Views for profile."""
 from django.views.generic import DetailView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from emotion_profile.models import EmotionProfile, EmotionProfileForm
 from django.shortcuts import redirect
 
 
-class ProfileView(DetailView):
+class ProfileView(DetailView, LoginRequiredMixin):
     """Profile view."""
 
     template_name = 'emotion_profile/profile.html'
     model = EmotionProfile
     slug_field = 'user__username'
     slug_url_kwarg = 'username'
+    login_url = reverse_lazy('login')
 
     def get(self, *args, **kwargs):
         """Redirect home if not logged in."""
@@ -22,7 +24,7 @@ class ProfileView(DetailView):
         return super(ProfileView, self).get(*args, **kwargs)
 
 
-class UpdateProfile(UpdateView):
+class UpdateProfile(UpdateView, LoginRequiredMixin):
     """Update profile view."""
 
     model = EmotionProfile
