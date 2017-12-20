@@ -11,7 +11,7 @@ import requests
 import time
 
 
-class EmotionAnalysis(TemplateView):
+class EmotionAnalysis(LoginRequiredMixin, TemplateView):
     """View for emotion analysis."""
 
     template_name = 'emotion_emotions/emotion_analysis.html'
@@ -65,7 +65,7 @@ class EmotionAnalysis(TemplateView):
         return context
 
 
-class RecordEmotions(TemplateView, LoginRequiredMixin):
+class RecordEmotions(LoginRequiredMixin, TemplateView):
     """Capture the current emotions and record to database."""
 
     template_name = 'emotion_emotions/imageCap.html'
