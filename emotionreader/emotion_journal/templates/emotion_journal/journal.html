@@ -4,9 +4,10 @@
     <h1>Emotion Journal</h1>
 
     {% for entry in entries %}
-        entry.entries.title
-        entry.entries.body
-        entry.entries.date
+        {{ entry.title }}
+        {{ entry.body }}
+        {{ entry.date }}
+        <br>
     {% endfor %}
 
 {% endblock %}

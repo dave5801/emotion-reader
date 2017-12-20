@@ -41,15 +41,11 @@ class EmotionProfileForm(ModelForm):
     last_name = forms.CharField(max_length=User._meta.get_field('last_name').max_length,
                                 required=False)
 
-    # cover = forms.ImageField(upload_to='documents/%Y/%m/%d',
-    #                          blank=True,
-    #                          null=True)
-
     class Meta:
         """Meta."""
 
         model = EmotionProfile
-        fields = ['first_name', 'last_name', 'email']
+        fields = ['first_name', 'last_name', 'email', 'cover']
 
     def __init__(self, *args, **kwargs):
         """Limit photos to only those by the user."""
@@ -58,4 +54,3 @@ class EmotionProfileForm(ModelForm):
         self.fields['email'].initial = User.objects.get(username=username).email
         self.fields['first_name'].initial = User.objects.get(username=username).first_name
         self.fields['last_name'].initial = User.objects.get(username=username).last_name
-        # self.fields['cover'].initial = EmotionProfile.cover
