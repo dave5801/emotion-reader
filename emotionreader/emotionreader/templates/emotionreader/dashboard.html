@@ -42,7 +42,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="./notifications.html">
+                        <a class="nav-link" href="{% url 'emotion_analysis' %}">
                             <i class="nc-icon nc-bell-55"></i>
                             <p>Emotion Analysis</p>
                         </a>
@@ -126,14 +126,6 @@
                                 <li class="nav-item" class="user_nav">
                                     <a class="nav-link" href="{% url 'profile' %}"> {{ request.user.username }} </a>
                                 </li>
-
-<!--                                 <li class="nav-item" class="user_nav">
-                                    <a class="nav-link" href="{% url 'journal' %}">Journal</a>
-                                </li>
-
-                                <li class="nav-item" class="user_nav">
-                                    <a class="nav-link" href="{% url 'create_journal' %}">Create Journal</a>
-                                </li> -->
 
                                 <li class="nav-item" class="user_nav">
                                     <a class="nav-link" href="{% url 'logout' %}">Logout</a>
