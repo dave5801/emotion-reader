@@ -54,7 +54,7 @@ class EmotionTest(TestCase):
         emotion = EmotionFactory(user=one_user, anger=.1)
         emotion.save()
 
-        self.assertEqual(one_user.emotion.first().anger, .1)
+        self.assertEqual(one_user.emotions.first().anger, .1)
 
     def test_emotion_has_date_recorded(self):
         """Test that the emotion has a date-recorded that is now by default."""
