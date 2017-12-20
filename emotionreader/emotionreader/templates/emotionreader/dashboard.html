@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'emotionreader/assets/img/apple-icon.png' %}">
     <link rel="icon" type="image/png" href="{% static 'emotionreader/assets/img/favicon.ico' %}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Emotional Journal</title>
+    <title>Motus.life</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link href="{% static 'emotionreader/assets/css/light-bootstrap-dashboard.css' %}" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link href="{% static 'emotionreader/assets/css/demo.css' %}" rel="stylesheet" />
+    <!-- <link href="{% static 'emotionreader/assets/css/demo.css' %}" rel="stylesheet" /> -->
 </head>
 
 <body>
@@ -29,7 +29,7 @@
         Tip 2: you can also add an image using data-image tag
     -->     {% if request.user.is_authenticated %}
 
-                <li class="nav-item" class="user_nav">
+            <!--     <li class="nav-item" class="user_nav">
                     <a class="nav-link" href="{% url 'profile' %}"> {{ request.user.username }} </a>
                 </li>
 
@@ -44,7 +44,7 @@
                 <li class="nav-item" class="user_nav">
                     <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                 </li>
-
+ -->
             {% else %}
 
                 <li class="nav-item" class="user_nav">
@@ -62,7 +62,7 @@
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="https://github.com/dave5801/emotion-reader" class="simple-text">
-                        Emotion Reader
+                        Motus.life
                     </a>
                 </div>
                 <ul class="nav">
@@ -73,21 +73,21 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="./user.html">
+                        <a class="nav-link" href="{% url 'profile' %}"> {{ request.user.username }}
                             <i class="nc-icon nc-circle-09"></i>
                             <p>User Profile</p>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="./table.html">
+                        <a class="nav-link" href="{% url 'journal' %}">
                             <i class="nc-icon nc-notes"></i>
                             <p>Journal</p>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="./typography.html">
+                        <a class="nav-link" href="{% url 'create_journal' %}">
                             <i class="nc-icon nc-paper-2"></i>
-                            <p>Optional 1</p>
+                            <p>Create Journal</p>
                         </a>
                     </li>
                     <li>
@@ -159,7 +159,7 @@
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
                                 <a class="nav-link" href="#pablo">
-                                    <span class="no-icon">Account</span>
+                                    <span class="no-icon">Profile</span>
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
@@ -199,9 +199,14 @@
                                 </div>
                                 <div class="card-footer ">
                                     <div class="legend">
-                                        <i class="fa fa-circle text-info"></i> Open
-                                        <i class="fa fa-circle text-danger"></i> Bounce
-                                        <i class="fa fa-circle text-warning"></i> Unsubscribe
+                                        <i class="fa fa-circle text-info" ></i> Sad
+                                        <i class="fa fa-circle text-danger $anger-color"></i> Anger
+                                        <i class="fa fa-circle text-warning"></i> Happy
+                                        <i class="fa fa-circle text-info" ></i> Sad
+                                        <i class="fa fa-circle text-danger $anger-color"></i> Anger
+                                        <i class="fa fa-circle text-warning"></i> Happy
+                                        <i class="fa fa-circle text-danger $anger-color"></i> Anger
+                                        <i class="fa fa-circle text-warning"></i> Happy
                                     </div>
                                     <hr>
                                     <div class="stats">
