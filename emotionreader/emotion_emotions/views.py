@@ -8,9 +8,64 @@ from emotion_emotions.models import Emotion
 from base64 import b64decode
 import os
 import requests
+import time
 
 
-class RecordEmotions(TemplateView, LoginRequiredMixin):
+class EmotionAnalysis(LoginRequiredMixin, TemplateView):
+    """View for emotion analysis."""
+
+    template_name = 'emotion_emotions/emotion_analysis.html'
+
+    def get_context_data(self):
+        """Load a plot to the view."""
+        user = self.request.user
+        context = super(EmotionAnalysis, self).get_context_data()
+
+        emotions = user.emotions.all()
+
+        dates = []
+        anger = []
+        contempt = []
+        disgust = []
+        fear = []
+        happiness = []
+        neutral = []
+        sadness = []
+        surprise = []
+
+        for emotion in emotions:
+            dates.append(int(time.mktime(emotion.date_recorded.timetuple())) * 1000)
+            anger.append(emotion.anger * 100)
+            contempt.append(emotion.contempt * 100)
+            disgust.append(emotion.disgust * 100)
+            fear.append(emotion.fear * 100)
+            happiness.append(emotion.happiness * 100)
+            neutral.append(emotion.neutral * 100)
+            sadness.append(emotion.sadness * 100)
+            surprise.append(emotion.surprise * 100)
+
+        context['dates'] = dates
+        context['anger'] = anger
+        context['contempt'] = contempt
+        context['disgust'] = disgust
+        context['fear'] = fear
+        context['happiness'] = happiness
+        context['neutral'] = neutral
+        context['sadness'] = sadness
+        context['surprise'] = surprise
+        context['avg_anger'] = sum(anger) / float(len(anger))
+        context['avg_contempt'] = sum(contempt) / float(len(contempt))
+        context['avg_disgust'] = sum(disgust) / float(len(disgust))
+        context['avg_fear'] = sum(fear) / float(len(fear))
+        context['avg_happiness'] = sum(happiness) / float(len(happiness))
+        context['avg_neutral'] = sum(neutral) / float(len(neutral))
+        context['avg_sadness'] = sum(sadness) / float(len(sadness))
+        context['avg_surprise'] = sum(surprise) / float(len(surprise))
+
+        return context
+
+
+class RecordEmotions(LoginRequiredMixin, TemplateView):
     """Capture the current emotions and record to database."""
 
     template_name = 'emotion_emotions/imageCap.html'

@@ -4,6 +4,10 @@
     <h1>{{ request.user.username }}</h1>
     <h2>{{ request.user.first_name }}</h2>
     <h2>{{ request.user.last_name }}</h2>
-    <img src="{{ request.user.profile.cover.url }}" style="height: 100px; width: 100px;"/>
+    <img src="{% if request.user.profile.cover %}
+        {{ request.user.profile.cover.url }}
+        {% else %}
+        https://st.depositphotos.com/1750981/1274/i/950/depositphotos_12743248-Emu-closeup.jpg
+    {% endif %}" style="height: 100px; width: 100px;"/>
     <a class="nav-link" href="{% url 'update_profile' %}" style="float: right;"> Update Profile </a>
 {% endblock %}

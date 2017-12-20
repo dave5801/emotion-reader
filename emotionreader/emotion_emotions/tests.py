@@ -54,7 +54,7 @@ class EmotionTest(TestCase):
         emotion = EmotionFactory(user=one_user, anger=.1)
         emotion.save()
 
-        self.assertEqual(one_user.emotion.first().anger, .1)
+        self.assertEqual(one_user.emotions.first().anger, .1)
 
     def test_emotion_has_date_recorded(self):
         """Test that the emotion has a date-recorded that is now by default."""
@@ -100,6 +100,8 @@ class EmotionViewUnitTests(TestCase):
         self.mock_emotion_api_call = emotion_patcher.start()
         self.addCleanup(emotion_patcher.stop)
         self.emotion_patcher = emotion_patcher
+
+    #     self.assertEqual(one_user.emotion.last().anger, 1.73134707e-09)
 
     # Do not want to ping API every test
     # def test_get_emotion_data_extracts_emotion_data(self):

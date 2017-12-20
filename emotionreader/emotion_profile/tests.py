@@ -105,3 +105,22 @@ class ProfileTests(TestCase):
         self.client.login(username='dan', password='password')
         response = self.client.get(reverse_lazy('update_profile'))
         self.assertEqual(response.status_code, 200)
+
+    def test_profile_has_cover(self):
+        """Test that a profile has a cover."""
+        active_user = User.objects.get(username='dan')
+        one_profile = EmotionProfile.objects.get(user=active_user)
+        self.assertIsNotNone(one_profile.cover)
+
+    def test_user_can_point_to_its_profile(self):
+        """Test that a user and profile are connected."""
+        one_user = User.objects.get(username='dan')
+        self.assertIsNotNone(one_user.profile)
+
+    def test_all_profiles_created(self):
+        """Test that all profiles were added to the database."""
+        self.assertEquals(EmotionProfile.objects.count(), 11)
+
+    def test_all_users_created(self):
+        """Test that all users were added to the database."""
+        self.assertEquals(User.objects.count(), 11)

@@ -20,22 +20,26 @@ class MainRoutingTests(TestCase):
         user.save()
 
     def test_journal_route_has_200_response(self):
-        """Test that journal route has a 200 response code."""
+        """Test that home route has a 200 response code."""
+        self.client.login(username='mike', password='password')
         response = self.client.get(reverse_lazy('journal'))
         self.assertEqual(response.status_code, 200)
 
     def test_create_journal_route_has_200_response(self):
-        """Test that create journal route has a 200 response code."""
+        """Test that home route has a 200 response code."""
+        self.client.login(username='mike', password='password')
         response = self.client.get(reverse_lazy('create_journal'))
         self.assertEqual(response.status_code, 200)
 
     def test_journal_route_has_heading(self):
         """Test that journal route has a heading on the page."""
+        self.client.login(username='mike', password='password')
         response = self.client.get(reverse_lazy('journal'))
         self.assertIn(b'Emotion Journal', response.content)
 
     def test_create_journal_route_has_heading(self):
         """Test that create journal route has a heading on the page."""
+        self.client.login(username='mike', password='password')
         response = self.client.get(reverse_lazy('create_journal'))
         self.assertIn(b'Create Journal', response.content)
 

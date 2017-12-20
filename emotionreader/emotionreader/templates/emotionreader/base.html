@@ -4,6 +4,7 @@
 <html lang="en">
 
 <head>
+<<<<<<< HEAD
     <meta charset="utf-8" />
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'emotionreader/assets/img/apple-icon.png' %}">
     <link rel="icon" type="image/png" href="{% static 'emotionreader/assets/img/favicon.ico' %}">
@@ -98,6 +99,11 @@
             white-space: nowrap;
         }
     </style>
+    <link href="{% static 'emotionreader/style.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" 
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" 
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" 
+          crossorigin="anonymous">
 </head>
 
 <body class="documentation">
@@ -134,6 +140,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 <script src="{% static 'emotionreader/assets/js/plugins/bootstrap-switch.js' %}"></script>
 <script src="{% static 'emotionreader/assets/js/light-bootstrap-dashboard.js' %}" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
 
 <script>
     var header_height;
@@ -147,4 +154,23 @@
     });
 </script>
 
+<!-- <<<<<<< HEAD
+=======
+    <div class="container">
+        <section class="content">
+            {% block body %}{% endblock %}
+        </section>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" 
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" 
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" 
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" 
+            crossorigin="anonymous"></script>
+            
+    {% block custom_scripts %}{% endblock %}
+</body>
+>>>>>>> master -->
 </html>
