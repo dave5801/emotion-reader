@@ -18,21 +18,76 @@ class EmotionAnalysis(TemplateView):
 
     def get_context_data(self):
         """Load a plot to the view."""
+        user = self.request.user
         context = super(EmotionAnalysis, self).get_context_data()
 
-        x = [1, 2, 3, 4, 5]
-        y = [6, 7, 2, 4, 5]
+        emotions = user.emotions.all()
 
-        p = figure(title="Emotions vs. Time", x_axis_label='Time', y_axis_label='Emotions')
+        dates = []
+        anger = []
+        contempt = []
+        disgust = []
+        fear = []
+        happiness = []
+        neutral = []
+        sadness = []
+        surprise = []
 
-        p.line(x, y, legend="Anger", line_width=2, line_color='red')
-        p.line(x, y, legend="Contempt", line_width=2, line_color='blue')
-        p.line(x, y, legend="Disgust", line_width=2, line_color='blue')
-        p.line(x, y, legend="Fear", line_width=2, line_color='blue')
-        p.line(x, y, legend="Happiness", line_width=2, line_color='blue')
-        p.line(x, y, legend="Neutral", line_width=2, line_color='blue')
-        p.line(x, y, legend="Sadness", line_width=2, line_color='blue')
-        p.line(x, y, legend="Surprise", line_width=2, line_color='blue')
+        for emotion in emotions:
+            dates.append(emotion.date_recorded)
+            anger.append(emotion.anger)
+            contempt.append(emotion.contempt)
+            disgust.append(emotion.disgust)
+            fear.append(emotion.fear)
+            happiness.append(emotion.happiness)
+            neutral.append(emotion.neutral)
+            sadness.append(emotion.sadness)
+            surprise.append(emotion.surprise)
+
+        p = figure(title="Emotions vs. Time",
+                   x_axis_label='Time',
+                   y_axis_label='Emotions',
+                   x_axis_type='datetime')
+        p.line(dates,
+               anger,
+               legend="Anger",
+               line_width=2,
+               line_color='red')
+        p.line(dates,
+               contempt,
+               legend="Contempt",
+               line_width=2,
+               line_color='green')
+        p.line(dates,
+               disgust,
+               legend="Disgust",
+               line_width=2,
+               line_color='brown')
+        p.line(dates,
+               fear,
+               legend="Fear",
+               line_width=2,
+               line_color='purple')
+        p.line(dates,
+               happiness,
+               legend="Happiness",
+               line_width=2,
+               line_color='yellow')
+        p.line(dates,
+               neutral,
+               legend="Neutral",
+               line_width=2,
+               line_color='gray')
+        p.line(dates,
+               sadness,
+               legend="Sadness",
+               line_width=2,
+               line_color='blue')
+        p.line(dates,
+               surprise,
+               legend="Surprise",
+               line_width=2,
+               line_color='orange')
 
         script, div = components(p)
 
