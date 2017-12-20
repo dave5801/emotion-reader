@@ -1,6 +1,10 @@
 """Process for submitting image for evaluation."""
-from django.shortcuts import render
+from django.conf import settings
 from django.views.generic import TemplateView
+from django.http import HttpResponse
+
+from base64 import b64decode
+import os
 
 
 class ImageCapView(TemplateView):
@@ -14,3 +18,12 @@ class ImageCapView(TemplateView):
     #     # photos = Photo.objects.all()
     #     # context['photos'] = photos
     #     # return context
+
+
+def save_image(request):
+    """Save the image to the media directory."""
+    image = request.POST['image'].split(',', maxsplit=1)[1]
+    image = b64decode(image)
+    with open(os.path.join(settings.MEDIA_ROOT, 'testfile.jpg'), 'wb') as f:
+        f.write(image)
+    return HttpResponse('Complete')
