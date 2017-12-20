@@ -101,6 +101,8 @@ class EmotionViewUnitTests(TestCase):
         self.addCleanup(emotion_patcher.stop)
         self.emotion_patcher = emotion_patcher
 
+    #     self.assertEqual(one_user.emotion.last().anger, 1.73134707e-09)
+
     # Do not want to ping API every test
     # def test_get_emotion_data_extracts_emotion_data(self):
     #     """Test that get_emotion_data extracts the data from an image."""
