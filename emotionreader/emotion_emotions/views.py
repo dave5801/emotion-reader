@@ -93,7 +93,9 @@ class EmotionAnalysis(TemplateView):
 
         context['plot_html'] = div
         context['plot_script'] = script
-
+        # context['dates'] = dates
+        context['anger'] = anger
+        context['contempt'] = contempt
         return context
 
 
