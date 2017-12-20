@@ -1,10 +1,12 @@
 {% extends "emotionreader/base.html" %}
 
 {% block body %}
-    <h1>Login</h1>
+    <h2>Login</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" class="btn btn-primary"></input>
     </form>
+    
+    <button href="">Face Login</button>
 {% endblock %}
