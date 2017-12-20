@@ -164,7 +164,12 @@ if __name__ == '__main__':
     #print(x)
 
     #img_url = 'https://raw.githubusercontent.com/Microsoft/Cognitive-Face-Windows/master/Data/detection1.jpg'
-    img_url = 'not_face.png'
-    single_face = fvo.verifiy_new_user_face(img_url)
-    print(single_face)
+    #img_url = 'not_face.png'
+    #single_face = fvo.verifiy_new_user_face(img_url)
+    #print(single_face)
+
+    #face2 = "cage1.png"
+    face1 = fvo.detected("cage_and_other_person.png")
+    x = fvo.verify_against_registration(face1)
+    print(x)
 
