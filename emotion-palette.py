@@ -15,12 +15,4 @@ mood_palette_dict = {
 
 def color_theme():
     """Set the color pallete based on the defined mood."""
-    if mood_palette_dict.key return val
- { temp } 
 
-
-"""
-Psuedo:
-if key(mood) is the input:
-    choose val(theme class)
-"""

@@ -9,7 +9,6 @@ FILEPATH = "nicholas_cage"
 TEST_FACE_LIST = select_from_face_dir(FILEPATH)
 
 
-
 def test_select_from_face_dir():
     """Test faces are selected from valid directory."""
     from select_from_face_dir import select_from_face_dir
