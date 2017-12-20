@@ -10,7 +10,7 @@ var app = app || {};
     let localMediaStream = null;
 
     function savePhoto(dataURL) {
-        $.post('/record/savecap', {
+        $.post('/emotions/record', {
             image: dataURL,
             csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
         }).fail(console.error)
@@ -26,13 +26,10 @@ var app = app || {};
         ctx.drawImage(video, 0, 0, image.width, image.height,
                              0, 0, image.width * ratio, image.height * ratio);
 
-        URL = canvas.toDataURL('image/jpeg')
-
-        document.querySelector('img').src = URL;
         video.pause();
         localMediaStream.getVideoTracks()[0].stop();
+        savePhoto(canvas.toDataURL('image/jpeg'))
         $('#capture').hide();
-        savePhoto(URL)
       }
     }
 
