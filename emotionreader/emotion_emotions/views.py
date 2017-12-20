@@ -5,9 +5,6 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.generic import TemplateView
 from emotion_emotions.models import Emotion
 
-from bokeh.plotting import figure
-from bokeh.embed import components
-
 from base64 import b64decode
 import os
 import requests
