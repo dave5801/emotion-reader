@@ -15,3 +15,8 @@ class HomeView(ListView):
     #     """."""
     #     context = super(HomeView, self).get_context_data(**kwargs)
     #     return context
+
+class FaceVerificationView():
+
+    model = User
+    template_name = 'registration/face_verification.html'

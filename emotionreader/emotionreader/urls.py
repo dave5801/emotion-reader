@@ -20,10 +20,11 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 
-
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login/', auth_views.login, name='login'),
+   # url(r'^face_verification/', face_verification, {'template_name': 'face_verification.html'} ,name='face_verification'),
+    url(r'^face_verification/', FaceVerificationView.as_view(), name="face_verification")
     url(r'^logout/', auth_views.logout, name='logout'),
     url(r'^$', HomeView.as_view(), name='home'),
     url(r'^profile/', include('emotion_profile.urls')),

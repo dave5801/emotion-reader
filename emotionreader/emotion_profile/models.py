@@ -54,3 +54,27 @@ class EmotionProfileForm(ModelForm):
         self.fields['email'].initial = User.objects.get(username=username).email
         self.fields['first_name'].initial = User.objects.get(username=username).first_name
         self.fields['last_name'].initial = User.objects.get(username=username).last_name
+
+class FaceVerificationManager(models.Model):
+    objects = models.Manager
+    faceVerificationObject = models.OneToOneField(User, on_delete=models.CASCADE,
+                                related_name='profile')
+    cover = models.ImageField(upload_to='documents/%Y/%m/%d',
+                              blank=True,
+                              null=True)
+
+    def __str__(self):
+        """Print function returns this."""
+        return self.faceVerificationObject.username
+
+@receiver(models.signals.post_save, sender=User)
+def create_face_verification_object(sender, **kwargs):
+    """Create the profile when a user is created."""
+    if kwargs['created']:
+        face_verification_object = FaceVerificationManager(user=kwargs['instance'])
+        face_verification_object.save()
+
+class FaceVerificationObject(models.Model):
+
+    verify_new_user = models.BooleanField(initial=False)
+    verify_against_registration = models.BooleanField(initial=False)
