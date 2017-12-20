@@ -88,6 +88,31 @@ class FaceVerificationObject(object):
         else:
             return False
 
+    def verify_against_registration(self, face_id=None, person_group_id=None,
+           person_id=None):
+
+        #current value is placeholder, this variable will come from a DB query from User Profile
+        #registration photo is the initial photo
+        registration_photo_id = self.detected("cage1.png")
+
+        url = 'verify'
+        json = {}
+        if registration_photo_id:
+            json.update({
+                'faceId1': face_id,
+                'faceId2': registration_photo_id,
+            })
+        else:
+            json.update({
+                'faceId': face_id,
+                'personGroupId': person_group_id,
+                'personId': person_id,
+            })
+
+        registration_verification = util.request('POST', url, json=json)     
+
+        return registration_verification['isIdentical']
+
 
 if __name__ == '__main__':
 
@@ -115,8 +140,14 @@ if __name__ == '__main__':
     #print("GROUPS", x['groups'][0])
     #print("MESSY GROUP", x['messyGroup'][0])
 
-    x = fvo.group_verify(detected_faces[0], detected_faces)
+    #x = fvo.group_verify(detected_faces[0], detected_faces)
+    #print(x)
+
+    #registration_photo_id = fvo.detected("cage1.png")
+    #print(registration_photo_id) 
+    
+    #x = fvo.verify_against_registration(detected_faces[0])
+    travolta = fvo.detected("travolta1.png")
+    x = fvo.verify_against_registration(travolta)
     print(x)
 
-
-    
