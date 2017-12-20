@@ -6,7 +6,7 @@ from emotion_profile.models import EmotionProfile, EmotionProfileForm
 from django.shortcuts import redirect
 
 
-class ProfileView(DetailView, LoginRequiredMixin):
+class ProfileView(LoginRequiredMixin, DetailView):
     """Profile view."""
 
     template_name = 'emotion_profile/profile.html'
@@ -24,7 +24,7 @@ class ProfileView(DetailView, LoginRequiredMixin):
         return super(ProfileView, self).get(*args, **kwargs)
 
 
-class UpdateProfile(UpdateView, LoginRequiredMixin):
+class UpdateProfile(LoginRequiredMixin, UpdateView):
     """Update profile view."""
 
     model = EmotionProfile

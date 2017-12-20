@@ -1,6 +1,12 @@
 server{
     listen 80;
-    listen 443;
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /var/lib/letsencrypt/snakeoil/0000_cert.pem; # managed by Certbot
+    ssl_certificate_key /var/lib/letsencrypt/snakeoil/0000_key.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
     server_name {{ server_dns }};
     access_log  /var/log/nginx/test.log;
 

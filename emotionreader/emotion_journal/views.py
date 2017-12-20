@@ -1,12 +1,11 @@
 """Views for journal."""
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView
 from emotion_journal.models import Journal
 from django.core.urlresolvers import reverse_lazy
 
 
-class JournalView(ListView):
+class JournalView(LoginRequiredMixin, ListView):
     """Journal view."""
 
     template_name = 'emotion_journal/journal.html'
@@ -26,7 +25,7 @@ class JournalView(ListView):
         return context
 
 
-class CreateJournal(CreateView):
+class CreateJournal(LoginRequiredMixin, CreateView):
     """View to create new journal entry."""
 
     model = Journal
