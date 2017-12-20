@@ -20,12 +20,12 @@ class MainRoutingTests(TestCase):
         user.save()
 
     def test_journal_route_has_200_response(self):
-        """Test that home route has a 200 response code."""
+        """Test that journal route has a 200 response code."""
         response = self.client.get(reverse_lazy('journal'))
         self.assertEqual(response.status_code, 200)
 
     def test_create_journal_route_has_200_response(self):
-        """Test that home route has a 200 response code."""
+        """Test that create journal route has a 200 response code."""
         response = self.client.get(reverse_lazy('create_journal'))
         self.assertEqual(response.status_code, 200)
 

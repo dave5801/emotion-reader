@@ -62,3 +62,46 @@ class ProfileTests(TestCase):
         one_user.username = 'Fred'
         one_user.save()
         self.assertEquals(EmotionProfile.objects.count(), 11)
+
+# Mike's Tuesday Tests
+    def test_profile_route_has_200_response(self):
+        """Test that Profile view route has a 200 response code."""
+        response = self.client.get(reverse_lazy('profile'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_profile_route_has_200_response(self):
+        """Test that update profile route has a 200 response code."""
+        response = self.client.get(reverse_lazy('update_profile'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_profile_route_has_a_tag(self):
+        """Test that profile route has an A tag on the page."""
+        response = self.client.get(reverse_lazy('profile'))
+        self.assertIn(b'Update Profile', response.content)
+
+    def test_update_profile_route_has_heading(self):
+        """Test that update profile route has a heading on the page."""
+        response = self.client.get(reverse_lazy('update_profile'))
+        self.assertIn(b'Update', response.content)
+
+    def test_profile_route_accessible_only_if_logged_in(self):
+        """Test that a user can only see their profile page if logged in."""
+        response = self.client.get(reverse_lazy('profile'))
+        self.assertEqual(response.status_code, 302)
+
+    def test_update_profile_route_accessible_only_if_logged_in(self):
+        """Test that a user can only see their update profile page if logged in."""
+        response = self.client.get(reverse_lazy('update_profile'))
+        self.assertEqual(response.status_code, 302)
+
+    def test_profile_route_accessible_when_logged_in(self):
+        """Test that a user can only see their profile page if logged in."""
+        self.client.login(username='dan', password='password')
+        response = self.client.get(reverse_lazy('profile'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_profile_route_accessible_when_logged_in(self):
+        """Test that a user can only update a profile entry if logged."""
+        self.client.login(username='dan', password='password')
+        response = self.client.get(reverse_lazy('update_profile'))
+        self.assertEqual(response.status_code, 200)
