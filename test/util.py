@@ -4,7 +4,7 @@ base.set('https://westcentralus.api.cognitive.microsoft.com/face/v1.0/')
 base.get()
 '''
 
-
+#CITATION:
 #https://github.com/Microsoft/Cognitive-Face-Python/blob/master/cognitive_face/util.py
 
 #!/usr/bin/env python
