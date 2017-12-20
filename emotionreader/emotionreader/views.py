@@ -1,3 +1,6 @@
+from django.contrib.auth.models import User
+from django.views import View
+
 """Views."""
 from django.views.generic import ListView
 from emotion_profile.models import EmotionProfile
@@ -16,7 +19,7 @@ class HomeView(ListView):
     #     context = super(HomeView, self).get_context_data(**kwargs)
     #     return context
 
-class FaceVerificationView():
+class FaceVerificationView(View):
 
     model = User
     template_name = 'registration/face_verification.html'

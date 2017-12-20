@@ -40,7 +40,6 @@ class EmotionProfileForm(ModelForm):
 
     last_name = forms.CharField(max_length=User._meta.get_field('last_name').max_length,
                                 required=False)
-
     class Meta:
         """Meta."""
 
@@ -58,7 +57,7 @@ class EmotionProfileForm(ModelForm):
 class FaceVerificationManager(models.Model):
     objects = models.Manager
     faceVerificationObject = models.OneToOneField(User, on_delete=models.CASCADE,
-                                related_name='profile')
+                                related_name='face')
     cover = models.ImageField(upload_to='documents/%Y/%m/%d',
                               blank=True,
                               null=True)
@@ -73,8 +72,3 @@ def create_face_verification_object(sender, **kwargs):
     if kwargs['created']:
         face_verification_object = FaceVerificationManager(user=kwargs['instance'])
         face_verification_object.save()
-
-class FaceVerificationObject(models.Model):
-
-    verify_new_user = models.BooleanField(initial=False)
-    verify_against_registration = models.BooleanField(initial=False)
