@@ -7,71 +7,194 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
 
-<canvas id="myChart" width="400" height="400"></canvas>
+<canvas id="canvas" width="400" height="400"></canvas>
 <script>
+
+        var dates = {{ dates }}
+
+        var anger = {{ anger }}
+
+        var js_dates = []
+        for (i = 0; i <= dates.length - 1; i++) {
+            date = new Date(dates[i]);
+            js_dates.push(date)
+        }
+
+        var timeFormat = 'MM/DD/YYYY HH:mm';
+
+        function newDate(days) {
+            return moment().add(days, 'd').toDate();
+        }
+
+        function newDateString(days) {
+            return moment().add(days, 'd').format(timeFormat);
+        }
+
+        function newTimestamp(days) {
+            return moment().add(days, 'd').unix();
+        }
+
+        var color = Chart.helpers.color;
+        var config = {
+            type: 'line',
+            data: {
+                labels: [ // Date Objects
+                    newDate(0),
+                    newDate(1),
+                    newDate(2),
+                    newDate(3),
+                    newDate(4),
+                    newDate(5),
+                    newDate(6)
+                ],
+                datasets: [{
+                    label: "My First dataset",
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255,99,132,1)',
+                    fill: false,
+                    data: [
+                        7,
+                        4,
+                        5,
+                        7,
+                        8,
+                        9,
+                        3
+                    ],
+                }, {
+                    label: "My Second dataset",
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    fill: false,
+                    data: [
+                        3,
+                        2,
+                        4,
+                        6,
+                        1,
+                        7,
+                        9
+                    ],
+                }, {
+                    label: "Dataset with point data",
+                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    fill: false,
+                    data: [{
+                        x: newDateString(0),
+                        y: 1
+                    }, {
+                        x: newDateString(5),
+                        y: 2
+                    }, {
+                        x: newDateString(7),
+                        y: 3
+                    }, {
+                        x: newDateString(15),
+                        y: 4
+                    }],
+                }]
+            },
+            options: {
+                title:{
+                    text: "Chart.js Time Scale"
+                },
+                scales: {
+                    xAxes: [{
+                        type: "time",
+                        time: {
+                            format: timeFormat,
+                            // round: 'day'
+                            tooltipFormat: 'll HH:mm'
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Date'
+                        }
+                    }, ],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'value'
+                        }
+                    }]
+                },
+            }
+        };
+
+        window.onload = function() {
+            var ctx = document.getElementById("canvas").getContext("2d");
+            window.myLine = new Chart(ctx, config);
+
+        };
+
+
+
+
+
 
 // var myLineChart = new Chart(ctx, {
 //     type: 'line',
 //     data: [12, 19, 3, 5, 2, 3],
 // });
 
-var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ["Red", "Blue", "Yellow"],
-        datasets: [{
-            label: '# of Votes',
-            data: {{ anger }},
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }, {
-            label: '# of Votes',
-            data: {{ contempt }},
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-});
+// var ctx = document.getElementById("myChart").getContext('2d');
+// var myChart = new Chart(ctx, {
+//     type: 'line',
+//     data: {
+//         labels: ["Red", "Blue", "Yellow"],
+//         datasets: [{
+//             label: '# of Votes',
+//             data: {{ anger }},
+//             backgroundColor: [
+//                 'rgba(255, 99, 132, 0.2)',
+//                 'rgba(54, 162, 235, 0.2)',
+//                 'rgba(255, 206, 86, 0.2)',
+//                 'rgba(75, 192, 192, 0.2)',
+//                 'rgba(153, 102, 255, 0.2)',
+//                 'rgba(255, 159, 64, 0.2)'
+//             ],
+//             borderColor: [
+//                 'rgba(255,99,132,1)',
+//                 'rgba(54, 162, 235, 1)',
+//                 'rgba(255, 206, 86, 1)',
+//                 'rgba(75, 192, 192, 1)',
+//                 'rgba(153, 102, 255, 1)',
+//                 'rgba(255, 159, 64, 1)'
+//             ],
+//             borderWidth: 1
+//         }, {
+//             label: '# of Votes',
+//             data: {{ contempt }},
+//             backgroundColor: [
+//                 'rgba(255, 99, 132, 0.2)',
+//                 'rgba(54, 162, 235, 0.2)',
+//                 'rgba(255, 206, 86, 0.2)',
+//                 'rgba(75, 192, 192, 0.2)',
+//                 'rgba(153, 102, 255, 0.2)',
+//                 'rgba(255, 159, 64, 0.2)'
+//             ],
+//             borderColor: [
+//                 'rgba(255,99,132,1)',
+//                 'rgba(54, 162, 235, 1)',
+//                 'rgba(255, 206, 86, 1)',
+//                 'rgba(75, 192, 192, 1)',
+//                 'rgba(153, 102, 255, 1)',
+//                 'rgba(255, 159, 64, 1)'
+//             ],
+//             borderWidth: 1
+//         }]
+//     },
+//     options: {
+//         scales: {
+//             yAxes: [{
+//                 ticks: {
+//                     beginAtZero:true
+//                 }
+//             }]
+//         }
+//     }
+// });
 </script>
 
 {% endblock body %}

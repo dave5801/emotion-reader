@@ -9,6 +9,7 @@ from bokeh.embed import components
 from base64 import b64decode
 import os
 import requests
+import time
 
 
 class EmotionAnalysis(TemplateView):
@@ -34,7 +35,7 @@ class EmotionAnalysis(TemplateView):
         surprise = []
 
         for emotion in emotions:
-            dates.append(emotion.date_recorded)
+            dates.append(int(time.mktime(emotion.date_recorded.timetuple())) * 1000)
             anger.append(emotion.anger)
             contempt.append(emotion.contempt)
             disgust.append(emotion.disgust)
@@ -93,7 +94,7 @@ class EmotionAnalysis(TemplateView):
 
         context['plot_html'] = div
         context['plot_script'] = script
-        # context['dates'] = dates
+        context['dates'] = dates
         context['anger'] = anger
         context['contempt'] = contempt
         return context
