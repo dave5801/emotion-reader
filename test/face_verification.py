@@ -15,6 +15,8 @@ from os import listdir
 from os.path import isfile, join
 from pathlib import Path
 import util
+import cognitive_face as CF
+from util import Key, BaseUrl
 
 class FaceVerificationObject(object):
     """Face Verification Object."""
@@ -90,6 +92,7 @@ class FaceVerificationObject(object):
 
     def verify_against_registration(self, face_id=None, person_group_id=None,
            person_id=None):
+        """Check new photo against photo used at registration."""
 
         #current value is placeholder, this variable will come from a DB query from User Profile
         #registration photo is the initial photo
@@ -109,9 +112,18 @@ class FaceVerificationObject(object):
                 'personId': person_id,
             })
 
-        registration_verification = util.request('POST', url, json=json)     
+        registration_verification = util.request('POST', url, json=json)
 
         return registration_verification['isIdentical']
+
+    def verifiy_new_user_face(self, face_url):
+        CF.Key.set(Key.get())
+        CF.BaseUrl.set(BaseUrl.get())
+        faces = CF.face.detect(img_url)
+        #print(faces[0]['faceRectangle'])
+        if not faces:
+            return False
+        return True
 
 
 if __name__ == '__main__':
@@ -147,7 +159,12 @@ if __name__ == '__main__':
     #print(registration_photo_id) 
     
     #x = fvo.verify_against_registration(detected_faces[0])
-    travolta = fvo.detected("travolta1.png")
-    x = fvo.verify_against_registration(travolta)
-    print(x)
+    #travolta = fvo.detected("travolta1.png")
+    #x = fvo.verify_against_registration(travolta)
+    #print(x)
+
+    #img_url = 'https://raw.githubusercontent.com/Microsoft/Cognitive-Face-Windows/master/Data/detection1.jpg'
+    img_url = 'not_face.png'
+    single_face = fvo.verifiy_new_user_face(img_url)
+    print(single_face)
 
