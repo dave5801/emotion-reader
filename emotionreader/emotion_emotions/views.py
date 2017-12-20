@@ -36,67 +36,33 @@ class EmotionAnalysis(TemplateView):
 
         for emotion in emotions:
             dates.append(int(time.mktime(emotion.date_recorded.timetuple())) * 1000)
-            anger.append(emotion.anger)
-            contempt.append(emotion.contempt)
-            disgust.append(emotion.disgust)
-            fear.append(emotion.fear)
-            happiness.append(emotion.happiness)
-            neutral.append(emotion.neutral)
-            sadness.append(emotion.sadness)
-            surprise.append(emotion.surprise)
+            anger.append(emotion.anger * 100)
+            contempt.append(emotion.contempt * 100)
+            disgust.append(emotion.disgust * 100)
+            fear.append(emotion.fear * 100)
+            happiness.append(emotion.happiness * 100)
+            neutral.append(emotion.neutral * 100)
+            sadness.append(emotion.sadness * 100)
+            surprise.append(emotion.surprise * 100)
 
-        p = figure(title="Emotions vs. Time",
-                   x_axis_label='Time',
-                   y_axis_label='Emotions',
-                   x_axis_type='datetime')
-        p.line(dates,
-               anger,
-               legend="Anger",
-               line_width=2,
-               line_color='red')
-        p.line(dates,
-               contempt,
-               legend="Contempt",
-               line_width=2,
-               line_color='green')
-        p.line(dates,
-               disgust,
-               legend="Disgust",
-               line_width=2,
-               line_color='brown')
-        p.line(dates,
-               fear,
-               legend="Fear",
-               line_width=2,
-               line_color='purple')
-        p.line(dates,
-               happiness,
-               legend="Happiness",
-               line_width=2,
-               line_color='yellow')
-        p.line(dates,
-               neutral,
-               legend="Neutral",
-               line_width=2,
-               line_color='gray')
-        p.line(dates,
-               sadness,
-               legend="Sadness",
-               line_width=2,
-               line_color='blue')
-        p.line(dates,
-               surprise,
-               legend="Surprise",
-               line_width=2,
-               line_color='orange')
-
-        script, div = components(p)
-
-        context['plot_html'] = div
-        context['plot_script'] = script
         context['dates'] = dates
         context['anger'] = anger
         context['contempt'] = contempt
+        context['disgust'] = disgust
+        context['fear'] = fear
+        context['happiness'] = happiness
+        context['neutral'] = neutral
+        context['sadness'] = sadness
+        context['surprise'] = surprise
+        context['avg_anger'] = sum(anger) / float(len(anger))
+        context['avg_contempt'] = sum(contempt) / float(len(contempt))
+        context['avg_disgust'] = sum(disgust) / float(len(disgust))
+        context['avg_fear'] = sum(fear) / float(len(fear))
+        context['avg_happiness'] = sum(happiness) / float(len(happiness))
+        context['avg_neutral'] = sum(neutral) / float(len(neutral))
+        context['avg_sadness'] = sum(sadness) / float(len(sadness))
+        context['avg_surprise'] = sum(surprise) / float(len(surprise))
+
         return context
 
 

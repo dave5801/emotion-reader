@@ -7,12 +7,12 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
 
-<canvas id="canvas" width="400" height="400"></canvas>
+<canvas id="line" width="400" height="400"></canvas>
+<canvas id="radar" width="400" height="400"></canvas>
+<canvas id="donut" width="400" height="400"></canvas>
 <script>
 
         var dates = {{ dates }}
-
-        var anger = {{ anger }}
 
         var js_dates = []
         for (i = 0; i <= dates.length - 1; i++) {
@@ -22,89 +22,71 @@
 
         var timeFormat = 'MM/DD/YYYY HH:mm';
 
-        function newDate(days) {
-            return moment().add(days, 'd').toDate();
-        }
 
-        function newDateString(days) {
-            return moment().add(days, 'd').format(timeFormat);
-        }
-
-        function newTimestamp(days) {
-            return moment().add(days, 'd').unix();
-        }
-
-        var color = Chart.helpers.color;
-        var config = {
+        var config_line = {
             type: 'line',
             data: {
-                labels: [ // Date Objects
-                    newDate(0),
-                    newDate(1),
-                    newDate(2),
-                    newDate(3),
-                    newDate(4),
-                    newDate(5),
-                    newDate(6)
-                ],
+                labels: js_dates,
                 datasets: [{
-                    label: "My First dataset",
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255,99,132,1)',
+                    label: "Anger",
+                    backgroundColor: 'rgba(204, 0, 0, 0.2)',
+                    borderColor: 'rgba(204, 0, 0, .7)',
                     fill: false,
-                    data: [
-                        7,
-                        4,
-                        5,
-                        7,
-                        8,
-                        9,
-                        3
-                    ],
+                    data: {{ anger }},
                 }, {
-                    label: "My Second dataset",
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
+                    label: "Contempt",
+                    backgroundColor: 'rgba(47, 204, 0, 0.2)',
+                    borderColor: 'rgba(47, 204, 0, .7)',
                     fill: false,
-                    data: [
-                        3,
-                        2,
-                        4,
-                        6,
-                        1,
-                        7,
-                        9
-                    ],
+                    data: {{ contempt }},
                 }, {
-                    label: "Dataset with point data",
-                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                    borderColor: 'rgba(255, 206, 86, 1)',
+                    label: "Disgust",
+                    backgroundColor: 'rgba(37, 37, 37, 0.2)',
+                    borderColor: 'rgba(37, 37, 37, .7)',
                     fill: false,
-                    data: [{
-                        x: newDateString(0),
-                        y: 1
-                    }, {
-                        x: newDateString(5),
-                        y: 2
-                    }, {
-                        x: newDateString(7),
-                        y: 3
-                    }, {
-                        x: newDateString(15),
-                        y: 4
-                    }],
+                    data: {{ disgust }},
+                }, {
+                    label: "Fear",
+                    backgroundColor: 'rgba(127, 0, 112, 0.2)',
+                    borderColor: 'rgba(127, 0, 112, .7)',
+                    fill: false,
+                    data: {{ fear }},
+                }, {
+                    label: "Happiness",
+                    backgroundColor: 'rgba(255, 255, 0, 0.2)',
+                    borderColor: 'rgba(255, 255, 0, .7)',
+                    fill: false,
+                    data: {{ happiness }},
+                }, {
+                    label: "Neutral",
+                    backgroundColor: 'rgba(134, 144, 171, 0.2)',
+                    borderColor: 'rgba(134, 144, 171, .7)',
+                    fill: false,
+                    data: {{ neutral }},
+                }, {
+                    label: "Sadness",
+                    backgroundColor: 'rgba(54, 111, 199, 0.2)',
+                    borderColor: 'rgba(54, 111, 199, .7)',
+                    fill: false,
+                    data: {{ sadness }},
+                }, {
+                    label: "Surprise",
+                    backgroundColor: 'rgba(252, 125, 22, 0.2)',
+                    borderColor: 'rgba(252, 125, 22, .7)',
+                    fill: false,
+                    data: {{ surprise }},
                 }]
             },
             options: {
                 title:{
-                    text: "Chart.js Time Scale"
+                    display: true,
+                    text: "Emotion Percentage vs. Time"
                 },
                 scales: {
                     xAxes: [{
                         type: "time",
                         time: {
                             format: timeFormat,
-                            // round: 'day'
                             tooltipFormat: 'll HH:mm'
                         },
                         scaleLabel: {
@@ -115,86 +97,158 @@
                     yAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: 'value'
+                            labelString: 'Emotion Percentage'
                         }
                     }]
                 },
             }
         };
 
-        window.onload = function() {
-            var ctx = document.getElementById("canvas").getContext("2d");
-            window.myLine = new Chart(ctx, config);
+        radar_datasets = []
 
+        function getRandomColor(numOfSteps, step) {
+            var r, g, b;
+            var h = step / numOfSteps;
+            var i = ~~(h * 6);
+            var f = h * 6 - i;
+            var q = 1 - f;
+            switch(i % 6){
+                case 0: r = 1; g = f; b = 0; break;
+                case 1: r = q; g = 1; b = 0; break;
+                case 2: r = 0; g = 1; b = f; break;
+                case 3: r = 0; g = q; b = 1; break;
+                case 4: r = f; g = 0; b = 1; break;
+                case 5: r = 1; g = 0; b = q; break;
+            }
+            var c = "#" + ("00" + (~ ~(r * 255)).toString(16)).slice(-2) + ("00" + (~ ~(g * 255)).toString(16)).slice(-2) + ("00" + (~ ~(b * 255)).toString(16)).slice(-2) + "99";
+            return (c);
+        }
+
+        for (i = 0; i <= dates.length - 1; i++) {
+            color = getRandomColor(dates.length - 1, i)
+            radar_datasets.push(
+                    {
+                        label: "My First dataset",
+                        backgroundColor: color,
+                        borderColor: color,
+                        pointBackgroundColor: color,
+                        data: [
+                            {{ anger }}[i],
+                            {{ contempt }}[i],
+                            {{ disgust }}[i],
+                            {{ fear }}[i],
+                            {{ happiness }}[i],
+                            {{ neutral }}[i],
+                            {{ sadness }}[i],
+                            {{ surprise }}[i]
+                        ]
+                    }
+
+                )
+        }
+
+
+
+
+
+
+        var config_radar = {
+            type: 'radar',
+            data: {
+                labels: [
+                    "Anger",
+                    "Contempt",
+                    "Disgust",
+                    "Fear",
+                    "Happiness", 
+                    "Neutral",
+                    "Sadness",
+                    "Surprise"
+                ],
+                datasets: radar_datasets
+            },
+            options: {
+                legend: {
+                    display: false,
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Emotions Radar'
+                },
+                scale: {
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }
+            }
         };
 
 
+        var config_donut = {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [
+                        {{ avg_anger }},
+                        {{ avg_contempt }},
+                        {{ avg_disgust }},
+                        {{ avg_fear }},
+                        {{ avg_happiness }},
+                        {{ avg_neutral }},
+                        {{ avg_sadness }},
+                        {{ avg_surprise }},
+                    ],
+                    backgroundColor: [
+                        "rgba(204, 0, 0, .5)",
+                        "rgba(47, 204, 0, .5)",
+                        "rgba(37, 37, 37, .5)",
+                        "rgba(127, 0, 112, .5)",
+                        "rgba(255, 255, 0, .5)",
+                        "rgba(134, 144, 171, .5)",
+                        "rgba(54, 111, 199, .5)",
+                        "rgba(252, 125, 22, .5)",
+                    ],
+                    label: 'Dataset 1'
+                }],
+                labels: [
+                    "Anger",
+                    "Contempt",
+                    "Disgust",
+                    "Fear",
+                    "Happiness", 
+                    "Neutral",
+                    "Sadness",
+                    "Surprise"
+                ]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Average Emotion Percentage'
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            }
+        };
+
+        window.onload = function() {
+            var ctx = document.getElementById("line").getContext("2d");
+            window.myLine = new Chart(ctx, config_line);
 
 
+            var ctx = document.getElementById("donut").getContext("2d");
+            window.myDoughnut = new Chart(ctx, config_donut);
 
+            window.myRadar = new Chart(document.getElementById("radar"), config_radar);
+        };
 
-// var myLineChart = new Chart(ctx, {
-//     type: 'line',
-//     data: [12, 19, 3, 5, 2, 3],
-// });
-
-// var ctx = document.getElementById("myChart").getContext('2d');
-// var myChart = new Chart(ctx, {
-//     type: 'line',
-//     data: {
-//         labels: ["Red", "Blue", "Yellow"],
-//         datasets: [{
-//             label: '# of Votes',
-//             data: {{ anger }},
-//             backgroundColor: [
-//                 'rgba(255, 99, 132, 0.2)',
-//                 'rgba(54, 162, 235, 0.2)',
-//                 'rgba(255, 206, 86, 0.2)',
-//                 'rgba(75, 192, 192, 0.2)',
-//                 'rgba(153, 102, 255, 0.2)',
-//                 'rgba(255, 159, 64, 0.2)'
-//             ],
-//             borderColor: [
-//                 'rgba(255,99,132,1)',
-//                 'rgba(54, 162, 235, 1)',
-//                 'rgba(255, 206, 86, 1)',
-//                 'rgba(75, 192, 192, 1)',
-//                 'rgba(153, 102, 255, 1)',
-//                 'rgba(255, 159, 64, 1)'
-//             ],
-//             borderWidth: 1
-//         }, {
-//             label: '# of Votes',
-//             data: {{ contempt }},
-//             backgroundColor: [
-//                 'rgba(255, 99, 132, 0.2)',
-//                 'rgba(54, 162, 235, 0.2)',
-//                 'rgba(255, 206, 86, 0.2)',
-//                 'rgba(75, 192, 192, 0.2)',
-//                 'rgba(153, 102, 255, 0.2)',
-//                 'rgba(255, 159, 64, 0.2)'
-//             ],
-//             borderColor: [
-//                 'rgba(255,99,132,1)',
-//                 'rgba(54, 162, 235, 1)',
-//                 'rgba(255, 206, 86, 1)',
-//                 'rgba(75, 192, 192, 1)',
-//                 'rgba(153, 102, 255, 1)',
-//                 'rgba(255, 159, 64, 1)'
-//             ],
-//             borderWidth: 1
-//         }]
-//     },
-//     options: {
-//         scales: {
-//             yAxes: [{
-//                 ticks: {
-//                     beginAtZero:true
-//                 }
-//             }]
-//         }
-//     }
-// });
 </script>
 
 {% endblock body %}
