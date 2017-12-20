@@ -42,10 +42,6 @@ class EmotionTest(TestCase):
             user.set_password(factory.Faker('password'))
             user.save()
 
-    # def test_emotion_route(self):
-    #     """Test the emotion route."""
-        
-
     def test_emotion_is_created_and_attached_to_user(self):
         """Test that an emotion is created and attached to a user."""
         one_user = User.objects.last()
