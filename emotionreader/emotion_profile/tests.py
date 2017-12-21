@@ -124,3 +124,68 @@ class ProfileTests(TestCase):
     def test_all_users_created(self):
         """Test that all users were added to the database."""
         self.assertEquals(User.objects.count(), 11)
+
+# Mike's Wednesday tests
+    def test_actvation_link_redirects_to_activate_completed_page(self):
+        """Test if acitvation link works."""
+        import re
+        self.client.post(reverse_lazy('registration_register'), {
+            'username': 'Dan',
+            'password1': 'password',
+            'password2': 'password',
+            'email': 'dan@dan.net'
+        })
+        activation = re.findall('/accounts/activate/.+/', mail.outbox[0].body)
+        response = self.client.get(activation[0], follow=True)
+        self.assertIn(b'Activation is Completed', response.content)
+
+    def test_register_allows_login_to_new_users(self):
+        """Test if users created can log in."""
+        import re
+        self.client.login(username='Dan', password='password')
+        response = self.client.get(reverse_lazy('home'))
+        self.assertNotIn(b'Welcome,', response.content)
+        self.client.post(reverse_lazy('registration_register'), {
+            'username': 'Dan',
+            'password1': 'password',
+            'password2': 'password',
+            'email': 'dan@dan.net'
+        })
+        activation = re.findall('/accounts/activate/.+/', mail.outbox[0].body)
+        self.client.get(activation[0])
+        self.client.login(username='Dan', password='password')
+        response = self.client.get(reverse_lazy('home'))
+        self.assertIn(b'Welcome,', response.content)
+
+    def test_register_with_activation_valid_user_password_activates_user(self):
+        """Test if valid user with password is activated, activates user."""
+        import re
+        self.client.post(reverse_lazy('registration_register'), {
+            'username': 'Dan',
+            'password1': 'password',
+            'password2': 'password',
+            'email': 'dan@dan.net'
+        })
+        activation = re.findall('/accounts/activate/.+/', mail.outbox[0].body)
+        self.client.get(activation[0])
+        self.assertTrue(User.objects.get(username='Dan').is_active)
+
+    def test_register_taken_username_responds_with_200(self):
+        """Test register taken responds with 200."""
+        response = self.client.post(reverse_lazy('registration_register'), {
+            'username': 'Dan',
+            'password1': 'password',
+            'password2': 'password',
+            'email': 'dan@dan.net'
+        })
+        self.assertEqual(200, response.status_code)
+
+    def test_register_taken_user_name_displays_name_taken(self):
+        """Test register taken responds with username taken."""
+        response = self.client.post(reverse_lazy('registration_register'), {
+            'username': 'Dan',
+            'password1': 'password',
+            'password2': 'password',
+            'email': 'dan@dan.net'
+        })
+        self.assertIn(b'username already exists', response.content)
