@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth import  login
 from django.core.urlresolvers import reverse_lazy
-
+from django.shortcuts import redirect
 from django.utils import timezone
 
 # Create your views here.
@@ -55,8 +55,9 @@ class FaceVerificationView(TemplateView):
 
         if verifier.user.is_active:
             login(request, verifier.user)
-
-            return HttpResponseRedirect(reverse_lazy('home'))
+            return redirect('profile')
+        else:
+            return HttpResponseBadRequest('Login Failed')
 
 
 
