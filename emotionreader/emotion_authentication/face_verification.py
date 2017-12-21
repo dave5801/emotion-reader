@@ -129,7 +129,7 @@ class FaceVerification(object):
 
         print(registration_verification)
 
-        return registration_verification['isIdentical']
+        return registration_verification
 
     def verifiy_new_user_face(self, face_url):
         CF.Key.set(Key.get())
