@@ -44,6 +44,7 @@ class EmotionAnalysis(LoginRequiredMixin, TemplateView):
             sadness.append(emotion.sadness * 100)
             surprise.append(emotion.surprise * 100)
 
+        context['days_ago'] = "%.1f" % (dates[0] * 1.15741e-12)
         context['dates'] = dates
         context['anger'] = anger
         context['contempt'] = contempt
