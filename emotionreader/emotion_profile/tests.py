@@ -28,7 +28,7 @@ class ProfileTests(TestCase):
         """Add one minimal user to the database."""
         super(ProfileTests, cls).setUpClass()
         user = UserFactory(username='dan', email='dan@dan.net')
-        user.set_password('password')
+        user.set_password('qwerty12345')
         user.first_name = 'Dan'
         user.last_name = 'Theman'
         user.save()
@@ -36,7 +36,7 @@ class ProfileTests(TestCase):
 
         for _ in range(10):
             user = UserFactory.create()
-            user.set_password(factory.Faker('password'))
+            user.set_password(factory.Faker('qwerty12345'))
             user.save()
 
     def test_profile_route_has_302_response(self):
@@ -46,7 +46,7 @@ class ProfileTests(TestCase):
 
     def test_profile_route_login_200_response(self):
         """Test that profile route with login works."""
-        self.client.login(username='dan', password='password')
+        self.client.login(username='dan', password='qwerty12345')
         response = self.client.get(reverse_lazy('profile'))
         self.assertEqual(response.status_code, 200)
 
@@ -59,7 +59,7 @@ class ProfileTests(TestCase):
         """Test that a profile is created automatically when a user is."""
         self.assertEquals(EmotionProfile.objects.count(), 11)
         user = UserFactory()
-        user.set_password(factory.Faker('password'))
+        user.set_password(factory.Faker('qwerty12345'))
         user.save()
         self.assertEquals(EmotionProfile.objects.count(), 12)
 
@@ -84,11 +84,14 @@ class ProfileTests(TestCase):
 
     def test_profile_route_has_a_tag(self):
         """Test that profile route has an A tag on the page."""
+        self.client.login(username='dan', password='qwerty12345')
         response = self.client.get(reverse_lazy('profile'))
+        # import pdb; pdb.set_trace()
         self.assertIn(b'Update Profile', response.content)
 
     def test_update_profile_route_has_heading(self):
         """Test that update profile route has a heading on the page."""
+        self.client.login(username='dan', password='qwerty12345')
         response = self.client.get(reverse_lazy('update_profile'))
         self.assertIn(b'Update', response.content)
 
@@ -104,13 +107,13 @@ class ProfileTests(TestCase):
 
     def test_profile_route_accessible_when_logged_in(self):
         """Test that a user can only see their profile page if logged in."""
-        self.client.login(username='dan', password='password')
+        self.client.login(username='dan', password='qwerty12345')
         response = self.client.get(reverse_lazy('profile'))
         self.assertEqual(response.status_code, 200)
 
     def test_update_profile_route_accessible_when_logged_in(self):
         """Test that a user can only update a profile entry if logged."""
-        self.client.login(username='dan', password='password')
+        self.client.login(username='dan', password='qwerty12345')
         response = self.client.get(reverse_lazy('update_profile'))
         self.assertEqual(response.status_code, 200)
 
