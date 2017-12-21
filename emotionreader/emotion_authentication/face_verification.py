@@ -1,30 +1,20 @@
-"""Class which facial recognition in authenticion."""
-
-'''
-IMAGE CAPTURE - HOW MANY FRAMES PER UNIT OF TIME???
-'''
-
-'''
-TEST IDEAS:
-test if object created
-test if object created valid
-test if object created invalid
-test if dir is valid
-test if dir contains invalid file
-
-'''
-
+"""Access the Face API."""
 import os
 from os import listdir
 from os.path import isfile, join
 from pathlib import Path
-import emotion_authentication.util as util
 import cognitive_face as CF
-from emotion_authentication.util import Key, BaseUrl
+from cognitive_face.util import Key, BaseUrl
+from django.utils import timezone
+
 
 class FaceVerification(object):
     """Face Verification Object."""
+
     def __init__(self, filepath_for_faces=None, face_to_verify=None):
+        Key.set(os.environ.get('FACE_API_KEY1', ''))
+        BaseUrl.set(os.environ.get('FACE_URL', ''))
+
         self.filepath_for_faces = filepath_for_faces
         self.face_to_verify = face_to_verify
 
@@ -59,10 +49,17 @@ class FaceVerification(object):
 
             face_to_detect = self.format_face_file(image)
 
+            print("FACED DETECTED", face_to_detect)
+
             if self.check_valid_face_file(face_to_detect) == False:
                 print("Invalid Face")
                 return False
-            headers, data, json = util.parse_image(face_to_detect)
+            headers, data, json = CF.util.parse_image(face_to_detect)
+
+            print("HEADERS:",headers)
+            print("DATA:", data)
+            print("JSON", json)
+
         else:
             headers = {'Content-Type': 'application/octet-stream'}
             data = image
@@ -75,7 +72,7 @@ class FaceVerification(object):
         }
 
 
-        detection = util.request(
+        detection = CF.util.request(
             'POST', url, headers=headers, params=params, json=json, data=data)
         print("DETECTION:",detection)
 
@@ -91,7 +88,7 @@ class FaceVerification(object):
             'faceIds': list_of_face_ids,
         }
 
-        grouping = util.request('POST', url, json=json)
+        grouping = CF.util.request('POST', url, json=json)
         
         primary_group = grouping['groups'][0]
         messy_group = grouping['messyGroup']
@@ -109,7 +106,28 @@ class FaceVerification(object):
 
         #current value is placeholder, this variable will come from a DB query from User Profile
         #registration photo is the initial photo
-        registration_photo_id = self.detected("cage1.png")[0]['faceId']
+
+        face_now = timezone.now()
+
+        if hasattr(self, 'auth_face') and self.auth_face:
+
+            if self.auth_last_recorded:
+                time_delta = face_now - self.auth_last_recorded
+                old_id = time_delta.days >= 1
+
+            else:
+                old_id = True
+
+            if old_id:
+
+                reg_image = self.auth_face.file.file.read()
+                registration_photo_id = self.detected(reg_image, img_stream=True)[0]['faceId']
+                self.auth_face_id = registration_photo_id
+                self.auth_last_recorded = timezone.now()
+            else:
+                registration_photo_id = self.auth_face_id
+        else:
+            raise ValueError('No registration photo detected')
 
         url = 'verify'
         json = {}
@@ -125,20 +143,12 @@ class FaceVerification(object):
                 'personId': person_id,
             })
 
-        registration_verification = util.request('POST', url, json=json)
+        registration_verification = CF.util.request('POST', url, json=json)
 
         print(registration_verification)
 
         return registration_verification['isIdentical']
 
-    def verifiy_new_user_face(self, face_url):
-        CF.Key.set(Key.get())
-        CF.BaseUrl.set(BaseUrl.get())
-        faces = CF.face.detect(img_url)
-        #print(faces[0]['faceRectangle'])
-        if not faces:
-            return False
-        return True
 
 
 if __name__ == '__main__':
