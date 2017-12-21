@@ -11,8 +11,7 @@
                 <br />
                 <form method="post">
                     {% csrf_token %}
-<!--                     {{ form.as_p }}
- -->                    <div class="row">
+                    <div class="row">
                         <div class="col-md-3" style="margin: auto;">
                             <div class="form-group">
                                 <label style="float: left;">{{ form.username.label_tag }}</label>
@@ -40,7 +39,6 @@
                     </div>
                     <input type="submit" class="btn btn-round btn-neutral btn-fill"></input>
                 </form>
-
             </div>
         </div>
     </div>
