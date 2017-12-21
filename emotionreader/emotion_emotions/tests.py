@@ -160,3 +160,40 @@ class EmotionViewTests(TestCase):
         """Test that record emotions redirects when not logged in."""
         response = self.client.get(reverse_lazy('record_emotions'))
         self.assertEqual(response.status_code, 302)
+
+    def test_record_emotions_route_get_redirects_to_login_not_logged_in(self):
+        """Test that record emotions redirects when not logged in."""
+        response = self.client.get(reverse_lazy('record_emotions'), follow=True)
+        self.assertIn(str(reverse_lazy('login')), response.redirect_chain[0][0])
+
+    def test_record_emotions_route_post_has_302_not_logged_in(self):
+        """Test that record emotions redirects when not logged in."""
+        response = self.client.post(reverse_lazy('record_emotions'))
+        self.assertEqual(response.status_code, 302)
+
+    def test_record_emotions_route_post_redirects_to_login_not_logged_in(self):
+        """Test that record emotions redirects when not logged in."""
+        response = self.client.post(reverse_lazy('record_emotions'), follow=True)
+        self.assertIn(str(reverse_lazy('login')), response.redirect_chain[0][0])
+
+    def test_record_emotions_route_get_has_200_logged_in(self):
+        """Test that record emotions works when logged in."""
+        self.client.login(username='dan', password='password')
+        response = self.client.get(reverse_lazy('record_emotions'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_emotion_analysis_route_get_has_302_not_logged_in(self):
+        """Test that emotion_analysis redirects when not logged in."""
+        response = self.client.get(reverse_lazy('emotion_analysis'))
+        self.assertEqual(response.status_code, 302)
+
+    def test_emotion_analysis_route_get_redirects_to_login_not_logged_in(self):
+        """Test that emotion_analysis redirects when not logged in."""
+        response = self.client.get(reverse_lazy('emotion_analysis'), follow=True)
+        self.assertIn(str(reverse_lazy('login')), response.redirect_chain[0][0])
+
+    def test_emotion_analysis_route_get_has_200_logged_in(self):
+        """Test that emotion analysis works when logged in."""
+        self.client.login(username='dan', password='password')
+        response = self.client.get(reverse_lazy('emotion_analysis'))
+        self.assertEqual(response.status_code, 200)
