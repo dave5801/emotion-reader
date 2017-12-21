@@ -58,30 +58,33 @@ JSON:
 
 Check out Emotion API and [Emotion API Documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/emotion/home).
 
-### Service(Amazon)
+### Services(Amazon)
 --------------------
 
-#### [Amazon(AWS)](https://aws.amazon.com/documentation/)
-##### [S3](https://aws.amazon.com/documentation/s3/).
+### [Amazon(AWS)](https://aws.amazon.com/documentation/)
+#### [Amazon RDS](https://aws.amazon.com/documentation/rds/)
+Relational Database Service
+##### What is a Relational Database?
+A relational database is a collection of items that hold data. These items have pre-defined relationships before they are put into a table with columns and rows to sort. The data holds information that relates to objects that are being represented. Each row and column has a unique identifier. We use this identifier to talk between pieces.
+
+* Amazon's version of a relational database in the cloud. 
+* Simplicity and scalablity is always in mind when it comes to building out these apps. RDS gives us that.
+* We are able to have a built out front-end so we can manage and handle out databases when we need to but don't have to worry about maintaining them. They are automated.
+#### [Amazon S3](https://aws.amazon.com/documentation/s3/)
 Simple Storage Service
 * S3 is a simple way to store data in the cloud and have the ability to access it any place and any time in the world.
-* We created a bucket(storage) and recieved a key that routes to that bucket. When ever we push data, it uses this key and pushes it to the bucket. 
+* We created a bucket(storage) and received a key that routes to that bucket. When ever we push data, it uses this key and pushes it to the bucket.
 * Using S3 allows our app to be smaller, compact, and more efficient.
-##### [RDS](https://aws.amazon.com/documentation/rds/).
-Relational Database Service
-*
-*
-*
-##### [EC2](https://aws.amazon.com/documentation/ec2/).
+#### [Amazon EC2](https://aws.amazon.com/documentation/ec2/)
 Elastic Compute Cloud
-*
-*
-*
-##### [Route 53](https://aws.amazon.com/documentation/route53/).
+* EC2 is a simple way to compute data in the cloud.
+* EC2 is secure and resizeable. 
+* Similar to S3 which setting up. Create an instance, set parameters, and get a key. Use that key to route information there, process it, and then your parameters push it somewhere else.
+#### [Amazon Route 53](https://aws.amazon.com/documentation/route53/)
 Route 53
-*
-*
-*
+* 
+* 
+* 
 ### Design
 -----------
 #### Chart.js
