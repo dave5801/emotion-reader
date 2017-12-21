@@ -1,24 +1,53 @@
-{% extends "emotionreader/base.html" %}
+{% extends "emotionreader/dashboard.html" %}
 
 {% block body %}
-    
-<video autoplay></video>
-<canvas style="display:none;" height=300 width=300></canvas>
-
-<button type="button" class="btn btn-primary cap-button" id="start-camera">Start Camera</button>
-<button type="button" class="btn btn-primary cap-button" id="capture">Capture one image</button>
-<button type="button" class="btn btn-primary cap-button" id="cont-capture-start">Start capturing images</button>
-<button type="button" class="btn btn-primary cap-button" id="cont-capture-stop">Stop capturing images</button>
-
-<p id="capture-info">Last image captured: <span id="last-shot"></span> <span id="saved"></span></p>
 
 {% csrf_token %}
+
+    <div class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-7" style="margin: auto;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Capture Emotions</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <br>
+                                    <div style="display: block; height: 300;">
+                                        <video autoplay class="mw-100"></video>
+                                        <canvas style="display: none;" height=300 width=300></canvas>
+                                    </div>
+                                    <br>
+                                    <button id="start-camera" class="btn btn-info btn-fill cap-button">Start Camera</button>
+                                    <button id="capture" class="btn btn-info btn-fill cap-button"><i class="fa fa-camera-retro"></i> Capture</button>
+                                    <button id="cont-capture-start" class="btn btn-info btn-fill cap-button"><i class="fa fa-video-camera"></i> Record</button>
+                                    <button id="cont-capture-stop" class="btn btn-info btn-fill cap-button"><i class="fa fa-pause"></i> Stop Recording</button>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="card-footer ">
+                            <hr>
+                            <div class="stats">
+                                <i class="fa fa-camera-retro"></i> Capture a photo of yourself and have your expressions analyzed
+                                <p id="capture-info">Last image captured: <span id="last-shot"></span> <span id="saved"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 {% endblock body %}
 
 {% block custom_scripts %}
 {% load static %}
-
 <script src="{% static 'emotionreader/imagecapture.js' %}"></script>
 <script type="text/javascript">app.setupImageCap()</script>
 {% endblock custom_scripts %}

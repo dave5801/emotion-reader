@@ -12,6 +12,9 @@ class FaceVerificationManager(models.Model, FaceVerification):
     auth_face = models.ImageField(upload_to='auth_faces',
                                   blank=True,
                                   null=True)
+    auth_face_id = models.CharField(blank=True,null=True,max_length=36)
+
+    auth_last_recorded = models.DateTimeField(blank=True,null=True)
 
     def __str__(self):
         """Print function returns this."""

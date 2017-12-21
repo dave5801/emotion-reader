@@ -1,13 +1,24 @@
 {% extends "emotionreader/base.html" %}
 
 {% block body %}
-    <h2>Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" class="btn btn-primary"></input>
-    </form>
-    <!--
-    <button href="{% url 'face_verification' %}">Face Login</button>-->
-    <a href="{% url 'face_verification' %}" class="button">Face Login</a>
+
+    <div class="page-header clear-filter" filter-color="purple">
+        <div class="page-header-image" data-parallax="true">
+            <div class="filter"></div>
+            <div class="title-container text-center">
+                <h1>Login</h1>
+                <h4 class="description text-center">Login with username and password.</h4>
+                <br />
+
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" class="btn btn-round btn-neutral btn-fill"></input>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

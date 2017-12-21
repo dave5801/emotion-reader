@@ -5,6 +5,7 @@ from os.path import isfile, join
 from pathlib import Path
 import cognitive_face as CF
 from cognitive_face.util import Key, BaseUrl
+from django.utils import timezone
 
 
 class FaceVerification(object):
@@ -46,9 +47,15 @@ class FaceVerification(object):
             face_to_detect = self.format_face_file(image)
 
             if self.check_valid_face_file(face_to_detect) is False:
+
                 print("Invalid Face")
                 return False
             headers, data, json = CF.util.parse_image(face_to_detect)
+
+            print("HEADERS:",headers)
+            print("DATA:", data)
+            print("JSON", json)
+
         else:
             headers = {'Content-Type': 'application/octet-stream'}
             data = image
@@ -89,11 +96,25 @@ class FaceVerification(object):
 
     def verify_against_registration(self, face_id=None, person_group_id=None, person_id=None):
         """Check new photo against photo used at registration."""
-        # current value is placeholder, this variable will come from a DB query from User Profile
-        # registration photo is the initial photo
+        face_now = timezone.now()
+
         if hasattr(self, 'auth_face') and self.auth_face:
-            reg_image = self.auth_face.file.file.read()
-            registration_photo_id = self.detected(reg_image, img_stream=True)[0]['faceId']
+
+            if self.auth_last_recorded:
+                time_delta = face_now - self.auth_last_recorded
+                old_id = time_delta.days >= 1
+
+            else:
+                old_id = True
+
+            if old_id:
+
+                reg_image = self.auth_face.file.file.read()
+                registration_photo_id = self.detected(reg_image, img_stream=True)[0]['faceId']
+                self.auth_face_id = registration_photo_id
+                self.auth_last_recorded = timezone.now()
+            else:
+                registration_photo_id = self.auth_face_id
         else:
             raise ValueError('No registration photo detected')
 

@@ -21,7 +21,7 @@ class JournalView(LoginRequiredMixin, ListView):
         context = super(JournalView, self).get_context_data()
         user = self.request.user.get_username()
         entries = self.get_queryset(user).order_by('date')
-        context['entries'] = entries
+        context['entries'] = entries[::-1]
         return context
 
 

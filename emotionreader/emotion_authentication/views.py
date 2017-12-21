@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from emotion_authentication.models import FaceVerificationManager
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.utils import timezone
 # Create your views here.
 
 
@@ -20,7 +21,21 @@ class FaceVerificationView(TemplateView):
         except (KeyError, IndexError):
             return HttpResponseBadRequest('Invalid data.')
 
-        return HttpResponse('Image Captured')
+        reg_face_verifier = FaceVerificationManager.objects.first()
+
+        new_face = reg_face_verifier.detected(image, img_stream=True)[0]['faceId']
+
+        for verifier in FaceVerificationManager.objects.all():
+
+            reg_face_verification = verifier.verify_against_registration(new_face)
+
+            if reg_face_verification is True:
+                break
+        else:
+            return HttpResponseBadRequest('Face Verification Error.')
+
+        print(verifier)
+        return HttpResponse('Login')
 
 
 class FaceCaptureAndSaveView(LoginRequiredMixin, TemplateView):
@@ -33,7 +48,7 @@ class FaceCaptureAndSaveView(LoginRequiredMixin, TemplateView):
             image = request.POST['image'].split(',', maxsplit=1)[1]
             image = b64decode(image)
         except (KeyError, IndexError):
-            return HttpResponseBadRequest('Invalid data.')
+            return HttpResponseBadRequest('Face Verification Error.')
 
         face_verifier = FaceVerificationManager.objects.get(user=request.user)
 
@@ -46,7 +61,9 @@ class FaceCaptureAndSaveView(LoginRequiredMixin, TemplateView):
                                                      content=image,
                                                      content_type="image/jpeg"
                                                      )
+        face_verifier.auth_face_id = faces[0]['faceId']
+        face_verifier.auth_last_recorded = timezone.now()
 
         face_verifier.save()
 
-        return HttpResponse('Image Captured')
+        return HttpResponse('Face Verified')

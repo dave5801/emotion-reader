@@ -11,11 +11,8 @@
     <button type="button" class="btn btn-primary cap-button" id="capture">Capture</button>
 
     <h2>{{ face_verification_msg }}</h2>
-    <form method="post">
+    <p id="saved"></p>
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Face Login</button>
-    </form>
 
 {% endblock %}
 
