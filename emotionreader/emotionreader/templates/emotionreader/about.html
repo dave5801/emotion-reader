@@ -1,48 +1,36 @@
 {% extends "emotionreader/base.html" %}
 
 {% block body %}
-    <div class="wrapper">
-        <div class="page-header clear-filter" filter-color="purple">
-            <div class="page-header-image" data-parallax="true"">
-                <div class="filter"></div>
-                <div class="title-container text-center">
-                    <h1>About</h1>
-                    <h3>Motus.life Emotion Tracker</h3>
-                    <h4 class="description text-center">About text.</h4>
+
+    <div class="page-header clear-filter" filter-color="purple">
+        <div class="page-header-image" data-parallax="true">
+            <div class="filter"></div>
+            <div class="title-container text-center">
+                <h1>About</h1>
+                <div style="max-width: 900px; margin: auto; text-indent: 3em; text-align: left; display: block;">
+                    <h4 class="description">
+                        Welcome, we hope you FEEL at home here. Motus.life was created to help you assess and evaluate your emotions. Analyze your face and track your emotions with cutting-edge technology.  Utilizing Microsoft's Emotion API, your facial expression is analyzed amongst 8 different emotions; anger, contempt, fear, disgust, happiness, neutrality, sadness and surprise. It returns a confidence across that set of emotions.  Motus.life charts those feelings to provide you with a visual representation for your daily reflection.
+                    </h4>
+                    <h4 class="description">
+                        ALL THE FEELS! 
+                        Average out your emotion over the day by choosing to take random candid photos throughout your session to get a better idea of your true feelings of the day. The day's total is then charted, in calendar form for long-term tracking and analysis.
+                    </h4>
+                    <h4 class="description">
+                        PUT YOUR FEELINGS INTO WORDS. 
+                        With our integrated journaling system, you can now blog about your daily thoughts and keep them organized.  You can chart your emotional health over time visualy with our suite of responsive graphs. 
+                    </h4>
+                    <h4 class="description">
+                        GROOVE TO YOUR OWN MOOD. 
+                        Motus.life offers mood music, thanks to Spotify. Playlists specialy currated to fit your mood of the day. It knows how you feel, and its playlist will be filled with songs that'll feel just right. Feeling blue and looking to brighten your day? manually select one of our different playlist offerings to liven things up.
+                    </h4>
+                    <h4 class="description">
+                        Motus.life feels just right!
+                    </h4>
                     <br />
-                    <a class="btn btn-round btn-neutral btn-fill" href="{% url 'home' %}">Home</a>
                 </div>
+                <a class="btn btn-round btn-neutral btn-fill" href="{% url 'home' %}">Home</a>
             </div>
         </div>
-        <footer class="footer">
-            <div class="container">
-                <nav>
-                    <ul class="footer-menu">
-                        <li>
-                            <a href="https://github.com/dave5801/emotion-reader">
-                                Github
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                About
-                            </a>
-                        </li>
-                    </ul>
-                    <p class="copyright text-center">
-                        ©
-                        <script>
-                            document.write(new Date().getFullYear())
-                        </script>
-                        <a href="https://github.com/ztaylor2">Zach Taylor</a> |
-                        <a href="https://github.com/musflood">Megan Flood</a> |
-                        <a href="https://github.com/mshinners">Michael Shinners</a> |
-                        <a href="https://github.com/dave5801">David Franklin</a> |
-                        <a href="https://github.com/Loaye">Jacob Carstens</a>
-                    </p>
-                </nav>
-            </div>
-        </footer>
     </div>
-</body>
+
 {% endblock %}
