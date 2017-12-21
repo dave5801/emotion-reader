@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from emotion_profile.models import EmotionProfile, EmotionProfileForm
 from django.shortcuts import redirect
+import time
 
 
 class ProfileView(LoginRequiredMixin, DetailView):
@@ -14,6 +15,45 @@ class ProfileView(LoginRequiredMixin, DetailView):
     slug_field = 'user__username'
     slug_url_kwarg = 'username'
     login_url = reverse_lazy('login')
+
+    def get_context_data(self, *args, **kwargs):
+        """Send data to profile."""
+        user = self.request.user
+        context = super(ProfileView, self).get_context_data()
+
+        emotions = user.emotions.all()
+
+        dates = []
+        anger = []
+        contempt = []
+        disgust = []
+        fear = []
+        happiness = []
+        neutral = []
+        sadness = []
+        surprise = []
+
+        for emotion in emotions:
+            dates.append(int(time.mktime(emotion.date_recorded.timetuple())) * 1000)
+            anger.append(emotion.anger * 100)
+            contempt.append(emotion.contempt * 100)
+            disgust.append(emotion.disgust * 100)
+            fear.append(emotion.fear * 100)
+            happiness.append(emotion.happiness * 100)
+            neutral.append(emotion.neutral * 100)
+            sadness.append(emotion.sadness * 100)
+            surprise.append(emotion.surprise * 100)
+
+        context['avg_anger'] = float("{0:.2f}".format(sum(anger) / float(len(anger))))
+        context['avg_contempt'] = float("{0:.2f}".format(sum(contempt) / float(len(contempt))))
+        context['avg_disgust'] = float("{0:.2f}".format(sum(disgust) / float(len(disgust))))
+        context['avg_fear'] = float("{0:.2f}".format(sum(fear) / float(len(fear))))
+        context['avg_happiness'] = float("{0:.2f}".format(sum(happiness) / float(len(happiness))))
+        context['avg_neutral'] = float("{0:.2f}".format(sum(neutral) / float(len(neutral))))
+        context['avg_sadness'] = float("{0:.2f}".format(sum(sadness) / float(len(sadness))))
+        context['avg_surprise'] = float("{0:.2f}".format(sum(surprise) / float(len(surprise))))
+
+        return context
 
     def get(self, *args, **kwargs):
         """Redirect home if not logged in."""
