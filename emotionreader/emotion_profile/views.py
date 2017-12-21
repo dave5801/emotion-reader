@@ -44,14 +44,14 @@ class ProfileView(LoginRequiredMixin, DetailView):
             sadness.append(emotion.sadness * 100)
             surprise.append(emotion.surprise * 100)
 
-        context['avg_anger'] = float("{0:.2f}".format(sum(anger) / float(len(anger))))
-        context['avg_contempt'] = float("{0:.2f}".format(sum(contempt) / float(len(contempt))))
-        context['avg_disgust'] = float("{0:.2f}".format(sum(disgust) / float(len(disgust))))
-        context['avg_fear'] = float("{0:.2f}".format(sum(fear) / float(len(fear))))
-        context['avg_happiness'] = float("{0:.2f}".format(sum(happiness) / float(len(happiness))))
-        context['avg_neutral'] = float("{0:.2f}".format(sum(neutral) / float(len(neutral))))
-        context['avg_sadness'] = float("{0:.2f}".format(sum(sadness) / float(len(sadness))))
-        context['avg_surprise'] = float("{0:.2f}".format(sum(surprise) / float(len(surprise))))
+        context['avg_anger'] = float("{0:.2f}".format(sum(anger) / float(len(anger) or 1)))
+        context['avg_contempt'] = float("{0:.2f}".format(sum(contempt) / float(len(contempt) or 1)))
+        context['avg_disgust'] = float("{0:.2f}".format(sum(disgust) / float(len(disgust) or 1)))
+        context['avg_fear'] = float("{0:.2f}".format(sum(fear) / float(len(fear) or 1)))
+        context['avg_happiness'] = float("{0:.2f}".format(sum(happiness) / float(len(happiness) or 1)))
+        context['avg_neutral'] = float("{0:.2f}".format(sum(neutral) / float(len(neutral) or 1)))
+        context['avg_sadness'] = float("{0:.2f}".format(sum(sadness) / float(len(sadness) or 1)))
+        context['avg_surprise'] = float("{0:.2f}".format(sum(surprise) / float(len(surprise) or 1)))
 
         return context
 
