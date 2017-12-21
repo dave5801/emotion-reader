@@ -1,10 +1,13 @@
 {% extends "emotionreader/base.html" %}
 
 {% block body %}
-    <h1>Login</h1>
+    <h2>Login</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" class="btn btn-primary"></input>
     </form>
+    <!--
+    <button href="{% url 'face_verification' %}">Face Login</button>-->
+    <a href="{% url 'face_verification' %}" class="button">Face Login</a>
 {% endblock %}
