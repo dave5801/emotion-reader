@@ -2,14 +2,69 @@
 
 {% block body %}
     
-    {{ plot_html |safe }}
-    {{ plot_script |safe }}
+             <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card ">
+                                <div class="card-header">
+                                    <h4 class="card-title">Emotions</h4>
+                                    <p class="card-category">Full History</p>
+                                </div>
+                                <div class="card-body" >
+                                    <canvas id="line" width="400" height="200"></canvas>
+                                </div>
+                                <div class="card-footer ">
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="fa fa-history"></i> Beginning x days ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card ">
+                                <div class="card-header ">
+                                    <h4 class="card-title">Max Emotion Percent</h4>
+                                    <p class="card-category">Max percentage captured for each emotion</p>
+                                </div>
+                                <div class="card-body ">
+                                    <canvas id="radar" width="400" height="400"></canvas>
+                                </div>
+                                <div class="card-footer ">
+
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="fa fa-history"></i> Beginning x days ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card  card-tasks">
+                                <div class="card-header ">
+                                    <h4 class="card-title">Average Emotion Percent</h4>
+                                    <p class="card-category">Average percentage captured for each emotion</p>
+                                </div>
+                                <div class="card-body ">
+                                    <canvas id="donut" width="400" height="400"></canvas>
+                                </div>
+                                <div class="card-footer ">
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="fa fa-history"></i> Since x days ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
 
-<canvas id="line" width="400" height="400"></canvas>
-<canvas id="radar" width="400" height="400"></canvas>
-<canvas id="donut" width="400" height="400"></canvas>
 <script>
 
         var dates = {{ dates }}
