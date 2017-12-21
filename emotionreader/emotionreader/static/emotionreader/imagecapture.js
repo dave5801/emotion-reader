@@ -12,12 +12,17 @@ var app = app || {};
     let post_success_text = 'Save successful!'
     let post_fail_text = 'Save failed.'
 
+    let post_success_callback = null
+
     function savePhoto(dataURL) {
         $.post(location.href, {
             image: dataURL,
             csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
         })
         .done(() => {
+            if (post_success_callback) {
+                post_success_callback()
+            }
             $('#saved').text(post_success_text)
         })
         .fail((err) => {
@@ -96,7 +101,10 @@ var app = app || {};
         $('#start-camera').show();
     }
 
-    app.setupImageCap = function(success_text, fail_text) {
+    app.setupImageCap = function(success_callback, success_text, fail_text) {
+        if (success_callback) {
+            post_success_callback = success_callback;
+        }
         if (success_text) {
             post_success_text = success_text;
         }

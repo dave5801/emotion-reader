@@ -1,13 +1,31 @@
-from django.shortcuts import render
-from django.views.generic import TemplateView, UpdateView
+from django.views.generic import TemplateView
 from base64 import b64decode
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from emotion_authentication.models import FaceVerificationManager
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.contrib.auth import  login
+from django.core.urlresolvers import reverse_lazy
+from django.shortcuts import redirect
 from django.utils import timezone
+
 # Create your views here.
 
+
+'''
+from django.contrib.auth import authenticate, login
+
+def my_view(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        # Redirect to a success page.
+        ...
+    else:
+        # Return an 'invalid login' error message.
+'''
 
 class FaceVerificationView(TemplateView):
 
@@ -34,8 +52,13 @@ class FaceVerificationView(TemplateView):
         else:
             return HttpResponseBadRequest('Face Verification Error.')
 
-        print(verifier)
-        return HttpResponse('Login')
+
+        if verifier.user.is_active:
+            login(request, verifier.user)
+            return redirect('profile')
+        else:
+            return HttpResponseBadRequest('Login Failed')
+
 
 
 class FaceCaptureAndSaveView(LoginRequiredMixin, TemplateView):
