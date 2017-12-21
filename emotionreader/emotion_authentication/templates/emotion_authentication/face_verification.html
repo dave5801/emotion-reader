@@ -21,5 +21,11 @@
 {% load static %}
 
 <script src="{% static 'emotionreader/imagecapture.js' %}"></script>
-<script type="text/javascript">app.setupImageCap()</script>
+<script type="text/javascript">
+    app.setupImageCap(
+        () => {location.pathname = '/profile/'},
+        '',
+        'Login Failed.'
+    )
+</script>
 {% endblock custom_scripts %}
