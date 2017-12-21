@@ -111,9 +111,14 @@ class FaceVerification(object):
 
         if hasattr(self, 'auth_face') and self.auth_face:
 
-            time_delta = face_now - reg_face_verifier.auth_last_recorded
+            if self.auth_last_recorded:
+                time_delta = face_now - self.auth_last_recorded
+                old_id = time_delta.days >= 1
 
-            if time_delta.days >= 1:
+            else:
+                old_id = True
+
+            if old_id:
 
                 reg_image = self.auth_face.file.file.read()
                 registration_photo_id = self.detected(reg_image, img_stream=True)[0]['faceId']
