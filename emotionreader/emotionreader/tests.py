@@ -26,7 +26,7 @@ class MainRoutingTests(TestCase):
     def test_login_get_login_form(self):
         """Test that login get route has a login form."""
         response = self.client.get(reverse_lazy('login'))
-        self.assertIn(b'<h1>Login</h1>', response.content)
+        self.assertIn(b'<h2>Login</h2>', response.content)
 
     def test_login_post_invalid_user_has_200_response(self):
         """Test that login with invalid username has a 200 response code."""

@@ -5,14 +5,14 @@ omit =
     */permissions.py
     */apps.py
     */__init__.py
-    */tests.py
+    */tests*
     */manage.py
     */wsgi.py
     */settings.py
     */custom_storages.py
 
 source =
-    imagersite
+    emotionreader
 
 [report]
 show_missing = True
