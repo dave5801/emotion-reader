@@ -6,7 +6,7 @@ from emotion_authentication.models import FaceVerificationManager
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.uploadedfile import SimpleUploadedFile
 # Create your views here.
-from django.utils.timezone import now
+
 
 class FaceVerificationView(TemplateView):
 
@@ -22,9 +22,7 @@ class FaceVerificationView(TemplateView):
 
         reg_face_verifier = FaceVerificationManager.objects.first()
 
-        new_face = reg_face_verifier.detected(image, img_stream=True)
-
-        
+        new_face = reg_face_verifier.detected(image, img_stream=True)[0]['faceId']
 
         for verifier in FaceVerificationManager.objects.all():
 
@@ -34,6 +32,9 @@ class FaceVerificationView(TemplateView):
                 break
         else:
             return HttpResponseBadRequest('Face Verification Error.')
+
+        print(verifier)
+        return HttpResponse('Login')
 
 
 class FaceCaptureAndSaveView(LoginRequiredMixin, TemplateView):
