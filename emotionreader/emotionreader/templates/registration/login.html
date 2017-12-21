@@ -1,55 +1,25 @@
 {% extends "emotionreader/base.html" %}
 
 {% block body %}
-    <div class="wrapper">
-        <div class="page-header clear-filter" filter-color="purple">
-            <div class="page-header-image" data-parallax="true">
-                <div class="filter"></div>
-                <div class="title-container text-center">
-                    <h1>Login</h1>
-                    <!-- <h3>Emotion Tracker</h3> -->
-                    <h4 class="description text-center">Login with username and password.</h4>
-                    <br />
+
+    <div class="page-header clear-filter" filter-color="purple">
+        <div class="page-header-image" data-parallax="true">
+            <div class="filter"></div>
+            <div class="title-container text-center">
+                <h1>Login</h1>
+                <!-- <h3>Emotion Tracker</h3> -->
+                <h4 class="description text-center">Login with username and password.</h4>
+                <br />
 
 
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <input type="submit" class="btn btn-round btn-neutral btn-fill"></input>
-                    </form>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" class="btn btn-round btn-neutral btn-fill"></input>
+                </form>
 
-                </div>
             </div>
         </div>
-        <footer class="footer">
-            <div class="container">
-                <nav>
-                    <ul class="footer-menu">
-                        <li>
-                            <a href="#">
-                                Github
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                About
-                            </a>
-                        </li>
-                    </ul>
-                    <p class="copyright text-center">
-                        ©
-                        <script>
-                            document.write(new Date().getFullYear())
-                        </script>
-                        <a href="https://github.com/ztaylor2">Zach Taylor</a> |
-                        <a href="https://github.com/musflood">Megan Flood</a> |
-                        <a href="https://github.com/mshinners">Michael Shinners</a> |
-                        <a href="https://github.com/dave5801">David Franklin</a> |
-                        <a href="https://github.com/Loaye">Jacob Carstens</a>
-                    </p>
-                </nav>
-            </div>
-        </footer>
     </div>
-</body>
+
 {% endblock %}
