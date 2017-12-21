@@ -64,3 +64,13 @@ class MainRoutingTests(TestCase):
         self.client.login(username='mike', password='password')
         response = self.client.get(reverse_lazy('create_journal'))
         self.assertEqual(response.status_code, 200)
+
+    def test_form_valid(self):
+        """Test if form is correctly assigned to user."""
+        self.client.login(username='mike', password='password')
+        form = {'title': 'Merry Christmas!',
+                'body': 'Happy New Year!'}
+        response = self.client.post(reverse_lazy('create_journal'),
+                                    form)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse_lazy('journal'))
