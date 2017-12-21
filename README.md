@@ -13,6 +13,14 @@ Below are the people and libraries we used to make this project possible.
 
 ### Libraries
 --------------
+
+### Template
+-------------
+
+#### Django(1.11)
+
+### API
+--------
 #### Microsoft API's
 Microsoft has some pretty amazing API's in general that a user can hit, we were lucky enough to find two from Microsoft to use for our project.
 ##### Face API
@@ -49,6 +57,25 @@ JSON:
  ```
 
 Check out Emotion API and [Emotion API Documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/emotion/home).
+
+### Service(Amazon)
+--------------------
+
+#### Amazon(AWS)
+
+##### S3
+##### RDS
+##### EC2
+##### Route 53
+
+### Design
+-----------
+#### Chart.js
+
+#### Bootstrap
+
+### Widgets
+------------
 #### Spotify
 We used what Spotify calls ["The Play Button"](https://developer.spotify.com/technologies/widgets/spotify-play-button/). This is a widget where you can copy and paste in a playlist URI and spits out an iframe for you to use with your site.
 
@@ -58,6 +85,11 @@ Example of iframe:
 ```
 
 With the use of the iframe you can adjust the height, width, and border for the overall look.
+
+### Automation
+---------------
+#### Ansible
+
 ## License
 Emotion Reader is offered under the MIT license and shown in the LICENSE file.`
 ## Authors
