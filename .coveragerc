@@ -12,7 +12,7 @@ omit =
     */custom_storages.py
 
 source =
-    imagersite
+    emotionreader
 
 [report]
 show_missing = True

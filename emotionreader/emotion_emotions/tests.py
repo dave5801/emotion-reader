@@ -156,6 +156,17 @@ class EmotionViewTests(TestCase):
             response = view.post(request)
         self.assertEqual(response.content, b'Bad API Call')
 
+    def test_record_emotions_post_bad_image_due_to_no_face_detected(self):
+        """Test that badRequest message is given if no face is detected."""
+        from emotion_emotions.views import RecordEmotions
+        request = self.request.post('', data={'image': 'data:base64,FAKE'})
+        request.user = self.dan
+        with patch.object(RecordEmotions, 'get_emotion_data',
+                          return_value={'No face detected.'}):
+            view = RecordEmotions(request=request)
+            response = view.post(request)
+        self.assertEqual(response.content, b'No face detected.')
+
     def test_record_emotions_route_get_has_302_not_logged_in(self):
         """Test that record emotions redirects when not logged in."""
         response = self.client.get(reverse_lazy('record_emotions'))
@@ -197,3 +208,5 @@ class EmotionViewTests(TestCase):
         self.client.login(username='dan', password='password')
         response = self.client.get(reverse_lazy('emotion_analysis'))
         self.assertEqual(response.status_code, 200)
+
+    def test_

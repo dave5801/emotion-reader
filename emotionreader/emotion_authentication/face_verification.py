@@ -1,4 +1,11 @@
 """Class which facial recognition in authenticion."""
+import os
+from os import listdir
+from os.path import isfile, join
+from pathlib import Path
+import emotion_authentication.util as util
+import cognitive_face as CF
+from emotion_authentication.util import Key, BaseUrl
 
 '''
 IMAGE CAPTURE - HOW MANY FRAMES PER UNIT OF TIME???
@@ -11,28 +18,22 @@ test if object created valid
 test if object created invalid
 test if dir is valid
 test if dir contains invalid file
-
 '''
 
-import os
-from os import listdir
-from os.path import isfile, join
-from pathlib import Path
-import emotion_authentication.util as util
-import cognitive_face as CF
-from emotion_authentication.util import Key, BaseUrl
 
 class FaceVerification(object):
     """Face Verification Object."""
+
     def __init__(self, filepath_for_faces=None, face_to_verify=None):
+        """Init the function."""
         self.filepath_for_faces = filepath_for_faces
         self.face_to_verify = face_to_verify
 
         self.faceID = None
 
     def format_face_file(self, face_file):
-        """formats file: path/to/file.png."""
-        return self.filepath_for_faces + "/" +face_file
+        """Format file: path/to/file.png."""
+        return self.filepath_for_faces + "/" + face_file
 
     def get_faces_from_dir(self):
         """Get Directory of Faces."""
@@ -43,23 +44,19 @@ class FaceVerification(object):
 
     def check_valid_face_file(self, face_file):
         """Validate an individual face image."""
-
-        #face_image_file_path = self.format_face_file(face_file)
         print(face_file)
         face_image_file = Path(face_file)
 
         return face_image_file.exists()
 
-
     def detected(self, image, face_id=True, landmarks=False, attributes='', img_stream=False):
-        """Returns the ID of a detected face."""
-
+        """Return the ID of a detected face."""
         url = 'detect'
         if not img_stream:
 
             face_to_detect = self.format_face_file(image)
 
-            if self.check_valid_face_file(face_to_detect) == False:
+            if self.check_valid_face_file(face_to_detect) is False:
                 print("Invalid Face")
                 return False
             headers, data, json = util.parse_image(face_to_detect)
@@ -74,17 +71,16 @@ class FaceVerification(object):
             'returnFaceAttributes': attributes,
         }
 
-
         detection = util.request(
             'POST', url, headers=headers, params=params, json=json, data=data)
-        print("DETECTION:",detection)
+        print("DETECTION:", detection)
 
-        #NOTE - this is how you get valid faceIDs --> detection[0]['faceId']
+        # NOTE - this is how you get valid faceIDs --> detection[0]['faceId']
 
         return detection
 
-    '''Note: Not used currently, will be at later time.'''    
-    def group_verify(self,face_id,list_of_face_ids):
+    '''Note: Not used currently, will be at later time.'''
+    def group_verify(self, face_id, list_of_face_ids):
         """Any face image found in 'messy groud' is not verified."""
         url = 'group'
         json = {
@@ -92,7 +88,7 @@ class FaceVerification(object):
         }
 
         grouping = util.request('POST', url, json=json)
-        
+
         primary_group = grouping['groups'][0]
         messy_group = grouping['messyGroup']
 
@@ -103,12 +99,10 @@ class FaceVerification(object):
         else:
             return False
 
-    def verify_against_registration(self, face_id=None, person_group_id=None,
-           person_id=None):
+    def verify_against_registration(self, face_id=None, person_group_id=None, person_id=None):
         """Check new photo against photo used at registration."""
-
-        #current value is placeholder, this variable will come from a DB query from User Profile
-        #registration photo is the initial photo
+        # current value is placeholder, this variable will come from a DB query from User Profile
+        # registration photo is the initial photo
         registration_photo_id = self.detected("cage1.png")[0]['faceId']
 
         url = 'verify'
@@ -132,6 +126,7 @@ class FaceVerification(object):
         return registration_verification['isIdentical']
 
     def verifiy_new_user_face(self, face_url):
+        """Check to see if user face is authentic."""
         CF.Key.set(Key.get())
         CF.BaseUrl.set(BaseUrl.get())
         faces = CF.face.detect(img_url)
@@ -141,7 +136,7 @@ class FaceVerification(object):
         return True
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: nocover
 
     file_dir = "nicholas_cage"
 
