@@ -4,6 +4,8 @@ from django.views.generic import TemplateView
 """Views."""
 from django.views.generic import ListView
 from emotion_profile.models import EmotionProfile
+from base64 import b64decode
+from django.http import HttpResponse, HttpResponseBadRequest
 # from django.conf import settings
 
 
@@ -23,3 +25,11 @@ class FaceVerificationView(TemplateView):
 
     model = User
     template_name = 'registration/face_verification.html'
+
+    def post(self, request, *args, **kwargs):
+        """Extract emotions from posted image."""
+        try:
+            image = request.POST['image'].split(',', maxsplit=1)[1]
+            image = b64decode(image)
+        except (KeyError, IndexError):
+            return HttpResponseBadRequest('Invalid data.')

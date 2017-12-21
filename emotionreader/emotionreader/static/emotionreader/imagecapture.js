@@ -10,7 +10,7 @@ var app = app || {};
     let localMediaStream = null;
 
     function savePhoto(dataURL) {
-        $.post('/emotions/record', {
+        $.post(location.href, {
             image: dataURL,
             csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
         }).fail(console.error)
