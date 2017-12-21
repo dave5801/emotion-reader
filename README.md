@@ -17,7 +17,9 @@ Below are the people and libraries we used to make this project possible.
 ### Template
 -------------
 
-#### Django(1.11)
+#### [Django(1.11)](https://docs.djangoproject.com/en/1.11/)
+
+
 
 ### API
 --------
@@ -82,15 +84,18 @@ Elastic Compute Cloud
 * Similar to S3 which setting up. Create an instance, set parameters, and get a key. Use that key to route information there, process it, and then your parameters push it somewhere else.
 #### [Amazon Route 53](https://aws.amazon.com/documentation/route53/)
 Route 53
-* 
-* 
-* 
+* Cloud Domain Name System(DNS).
+* We are routing our EC2 instance to our domain.
+
 ### Design
 -----------
-#### Chart.js
-
-#### Bootstrap
-
+#### [Chart.js](http://www.chartjs.org/docs/latest/)
+* Chart.js passes in data and organizes and displays the information int a chart. 
+* These charts can vary in design and interaction.
+#### [Bootstrap](https://getbootstrap.com/docs/4.0/getting-started/introduction/)
+* Bootstrap is a design templating service. 
+* Through the use of a design library with [jQuery](https://jquery.com/) and [SCSS](http://sass-lang.com/) as major players, we have an amazing design tool where we can plug and play chunks of code to have a polished front end.
+* Our specific bootstrap that we used was [Light Bootsrap](https://www.creative-tim.com/product/light-bootstrap-dashboard).
 ### Widgets
 ------------
 #### Spotify
@@ -105,8 +110,16 @@ With the use of the iframe you can adjust the height, width, and border for the 
 
 ### Automation
 ---------------
-#### Ansible
+#### [Ansible](https://www.ansible.com/)
+* Running Ansible Playbook
+    ```
+    ansible -playbook -i hosts playbooks/emotion_playbook.yml
+    ```
 
+* Ansible automates tasks. Some of these tasks are:
+    * Installs all the applications
+    * Clones repo to EC2 instance
+    * Creates all necessary files needed for the app
 ## License
 Emotion Reader is offered under the MIT license and shown in the LICENSE file.`
 ## Authors
