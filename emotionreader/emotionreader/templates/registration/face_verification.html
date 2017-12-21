@@ -1,18 +1,13 @@
-{% extends 'imager_profile/base.html' %}
-
-{% load bootstrap3 %}
-
-{% bootstrap_css %}
-{% bootstrap_javascript %}
+{% extends 'emotionreader/base.html' %}
 
 {% block content %}
 
     <h1>Your Face must be Verified</h1>
-    <h2>{{% face_verification_msg %}}</h2>
+    <h2>{{ face_verification_msg }}</h2>
     <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    {% buttons submit='FaceVerify'%}{% endbuttons %}
+    <button type="submit">Face Login</button>
     </form>
 
 {% endblock %}
