@@ -4,34 +4,54 @@
 Emotion Reader is an application that takes photos and analyzes your face and outputs an emotion.
 ## Get Started
 ---------------
-* Clone project into local file system.
-    ```
-     git clone https://github.com/dave5801/emotion-reader
-     ```
-* Change directory into your newly created project.
-    ```
-     cd emotion_reader
-    ```
-* Create a Python virtual environment.
-    ```
-    python3 -m venv ENV
-    ```
-* Install the project in editable mode with its testing requirements.
-    ```
-    pip install -e .[testing]
-    ```
-* Configure the database.
-    ```
-    initdb development.ini
-    ```
-* Run your project's tests.
-    ```
-    pytest
-    ```
-* Run your project.
-    ```
-    pserve development.ini
-    ```
+Clone this repository to your local machine.
+```
+$ git clone https://github.com/dave5801/emotion-reader.git
+```
+Once downloaded, change directory into the emotionreader directory.
+```
+$ cd emotion-reader
+```
+Begin a new virtual environment with Python 3 and activate it.
+```
+emotion-reader $ python3 -m venv ENV
+emotion-reader $ source ENV/bin/activate
+```
+Install the application requirements with [`pip`](https://pip.pypa.io/en/stable/installing/).
+```
+(ENV) emotion-reader $ pip install -r requirements.txt
+```
+Create a [Postgres](https://wiki.postgresql.org/wiki/Detailed_installation_guides) database for use with this application.
+```
+(ENV) emotion-reader $ createdb imagersite
+```
+
+Export environmental variables pointing to the location of database, your username, hashed password, and secret
+
+```
+(ENV) emotion-reader $ export SECRET_KEY='secret'
+
+(ENV) emotion-reader $ export DB_NAME='imagersite'
+
+(ENV) emotion-reader $ export DB_USER='(your postgresql username)'
+
+(ENV) emotion-reader $ export DB_PASS='(your postgresql password)'
+
+(ENV) emotion-reader $ export DB_HOST='localhost'
+
+(ENV) emotion-reader $ export DEBUG='True'
+```
+
+Then initialize the database with the `migrate` command from `manage.py`
+
+```
+(ENV) django-imager $ python imagersite/manage.py migrate
+```
+Once the package is installed and the database is created, start the server with the `runserver` command from `manage.py`
+```
+(ENV) django-imager $ python imagersite/manage.py runserver
+```
+Application is served on http://localhost:8000
 ## Influences and Attributions
 
 Below are the libraries and technologies we used to make this project possible.
@@ -43,11 +63,57 @@ Below are the libraries and technologies we used to make this project possible.
 
 #### [Django(1.11)](https://docs.djangoproject.com/en/1.11/)
 
+Get started with Django
+
+```
+pip install django==1.11
+```
+
 Django has three layers.
 * Model Layer
-* View Layer
-* Template Layer
+    * An abstraction layer where you can create your models
 
+    ```
+    from django.db import models
+
+    class Person(models.Model):
+        first_name = models.CharField(max_length=30)
+        last_name = models.CharField(max_length=30)
+    ```
+
+* View Layer
+    * Where request and responses get handled.
+
+    ```
+    from django.conf.urls import url
+
+    from . import views
+
+    urlpatterns = [
+        url(r'^articles/2003/$', views.special_case_2003),
+        url(r'^articles/([0-9]{4})/$', views.year_archive),
+        url(r'^articles/([0-9]{4})/([0-9]{2})/$', views.month_archive),
+        url(r'^articles/([0-9]{4})/([0-9]{2})/([0-9]+)/$', views.article_detail),
+    ]
+    ```
+
+* Template Layer
+    * How the information being passed gets served to the front end.
+
+    ```
+        TEMPLATES = [
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [],
+            'APP_DIRS': True,
+            'OPTIONS': {
+                # ... some options here ...
+            },
+        },
+    ]
+    ```
+
+To dive deeper into the documentations for a more in depth idea of how we set everything up. [Click Here](https://docs.djangoproject.com/en/1.11/)
 ### API
 --------
 #### Microsoft API's
