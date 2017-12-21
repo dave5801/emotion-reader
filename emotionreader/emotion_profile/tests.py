@@ -42,6 +42,12 @@ class ProfileTests(TestCase):
         response = self.client.get(reverse_lazy('profile'))
         self.assertEqual(response.status_code, 302)
 
+    def test_profile_route_login_200_response(self):
+        """Test that profile route with login works."""
+        self.client.login(username='dan', password='password')
+        response = self.client.get(reverse_lazy('profile'))
+        self.assertEqual(response.status_code, 200)
+
     def test_profile_to_string_is_correct(self):
         """Test that the __str__ method returns the profile username."""
         one_profile = EmotionProfile.objects.get(user__username='dan')

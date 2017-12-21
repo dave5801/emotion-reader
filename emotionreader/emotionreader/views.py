@@ -1,13 +1,10 @@
 """Views."""
-from django.views.generic import ListView, TemplateView
-from emotion_profile.models import EmotionProfile
-# from django.conf import settings
+from django.views.generic import TemplateView
 
 
-class HomeView(ListView):
+class HomeView(TemplateView):
     """Home page view."""
 
-    model = EmotionProfile
     template_name = 'emotionreader/home.html'
 
 

@@ -1,0 +1,28 @@
+{% extends 'emotionreader/base.html' %}
+
+{% block body %}
+
+    <h1>Your Face must be Verified</h1>
+
+    <video autoplay></video>
+    <canvas style="display:none;" height=300 width=300></canvas>
+
+    <button type="button" class="btn btn-primary cap-button" id="start-camera">Start Camera</button>
+    <button type="button" class="btn btn-primary cap-button" id="capture">Capture</button>
+
+    <h2>{{ face_verification_msg }}</h2>
+    <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Face Login</button>
+    </form>
+
+{% endblock %}
+
+
+{% block custom_scripts %}
+{% load static %}
+
+<script src="{% static 'emotionreader/imagecapture.js' %}"></script>
+<script type="text/javascript">app.setupImageCap()</script>
+{% endblock custom_scripts %}

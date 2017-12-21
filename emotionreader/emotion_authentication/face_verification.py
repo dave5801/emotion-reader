@@ -18,11 +18,11 @@ import os
 from os import listdir
 from os.path import isfile, join
 from pathlib import Path
-import util
+import emotion_authentication.util as util
 import cognitive_face as CF
-from util import Key, BaseUrl
+from emotion_authentication.util import Key, BaseUrl
 
-class FaceVerificationObject(object):
+class FaceVerification(object):
     """Face Verification Object."""
     def __init__(self, filepath_for_faces=None, face_to_verify=None):
         self.filepath_for_faces = filepath_for_faces
@@ -51,16 +51,22 @@ class FaceVerificationObject(object):
         return face_image_file.exists()
 
 
-    def detected(self, image, face_id=True, landmarks=False, attributes=''):
+    def detected(self, image, face_id=True, landmarks=False, attributes='', img_stream=False):
         """Returns the ID of a detected face."""
-        face_to_detect = self.format_face_file(image)
-
-        if self.check_valid_face_file(face_to_detect) == False:
-            print("Invalid Face")
-            return False
 
         url = 'detect'
-        headers, data, json = util.parse_image(face_to_detect)
+        if not img_stream:
+
+            face_to_detect = self.format_face_file(image)
+
+            if self.check_valid_face_file(face_to_detect) == False:
+                print("Invalid Face")
+                return False
+            headers, data, json = util.parse_image(face_to_detect)
+        else:
+            headers = {'Content-Type': 'application/octet-stream'}
+            data = image
+            json = None
 
         params = {
             'returnFaceId': face_id and 'true' or 'false',
@@ -71,10 +77,13 @@ class FaceVerificationObject(object):
 
         detection = util.request(
             'POST', url, headers=headers, params=params, json=json, data=data)
+        print("DETECTION:",detection)
 
-        return detection[0]['faceId']
+        #NOTE - this is how you get valid faceIDs --> detection[0]['faceId']
 
+        return detection
 
+    '''Note: Not used currently, will be at later time.'''    
     def group_verify(self,face_id,list_of_face_ids):
         """Any face image found in 'messy groud' is not verified."""
         url = 'group'
@@ -100,7 +109,7 @@ class FaceVerificationObject(object):
 
         #current value is placeholder, this variable will come from a DB query from User Profile
         #registration photo is the initial photo
-        registration_photo_id = self.detected("cage1.png")
+        registration_photo_id = self.detected("cage1.png")[0]['faceId']
 
         url = 'verify'
         json = {}
@@ -118,6 +127,8 @@ class FaceVerificationObject(object):
 
         registration_verification = util.request('POST', url, json=json)
 
+        print(registration_verification)
+
         return registration_verification['isIdentical']
 
     def verifiy_new_user_face(self, face_url):
@@ -134,23 +145,24 @@ if __name__ == '__main__':
 
     file_dir = "nicholas_cage"
 
-    fvo = FaceVerificationObject(file_dir)
+    fvo = FaceVerification(file_dir)
 
     list_of_faces = fvo.get_faces_from_dir()
-    print(list_of_faces)
+    #print(list_of_faces)
 
-    '''
-    valid_face_file = fvo.check_valid_face_file("cage1.png")
+    ''''''
+    #valid_face_file = fvo.check_valid_face_file("cage1.png")
+    #print(valid_face_file)
+    valid_face_file = fvo.detected("cage1.png")[0]['faceId']
     print(valid_face_file)
-    valid_face_file = fvo.detected("cage1.png")
-    print(valid_face_file)'''
 
-    detected_faces = []
+    
+    '''detected_faces = []
 
     for i in list_of_faces:
         detected_faces.append(fvo.detected(i))
 
-    print(detected_faces)
+    print(detected_faces)'''
 
     #x = fvo.group_verify(detected_faces)
     #print("GROUPS", x['groups'][0])
@@ -173,7 +185,7 @@ if __name__ == '__main__':
     #print(single_face)
 
     #face2 = "cage1.png"
-    face1 = fvo.detected("cage_and_other_person.png")
-    x = fvo.verify_against_registration(face1)
-    print(x)
+    #face1 = fvo.detected("cage_and_other_person.png")
+    #x = fvo.verify_against_registration(face1)
+    #print(x)
 

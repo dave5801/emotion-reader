@@ -5,7 +5,6 @@ from django.dispatch import receiver
 from django import forms
 from django.forms import ModelForm
 
-
 class EmotionProfile(models.Model):
     """The profile model."""
 
@@ -40,7 +39,6 @@ class EmotionProfileForm(ModelForm):
 
     last_name = forms.CharField(max_length=User._meta.get_field('last_name').max_length,
                                 required=False)
-
     class Meta:
         """Meta."""
 
