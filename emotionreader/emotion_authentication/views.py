@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from emotion_authentication.models import FaceVerificationManager
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.utils import timezone
 # Create your views here.
 
 
@@ -60,6 +61,8 @@ class FaceCaptureAndSaveView(LoginRequiredMixin, TemplateView):
                                                      content=image,
                                                      content_type="image/jpeg"
                                                      )
+        face_verifier.auth_face_id = faces[0]['faceId']
+        face_verifier.auth_last_recorded = timezone.now()
 
         face_verifier.save()
 
