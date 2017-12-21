@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'emotion_profile',
     'emotion_journal',
     'emotion_emotions',
+    'emotion_authentication'
 ]
 
 MIDDLEWARE = [
