@@ -10,10 +10,16 @@ var app = app || {};
     let localMediaStream = null;
 
     function savePhoto(dataURL) {
-        $.post('/emotions/record', {
+        $.post(location.href, {
             image: dataURL,
             csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
-        }).fail(console.error)
+        })
+        .done(() => {
+            $('#saved').text('Save successful!')
+        })
+        .fail((err) => {
+            $('#saved').text('Save failed.')
+        })
     }
 
     function snapshot() {
@@ -26,11 +32,45 @@ var app = app || {};
         ctx.drawImage(video, 0, 0, image.width, image.height,
                              0, 0, image.width * ratio, image.height * ratio);
 
-        video.pause();
-        localMediaStream.getVideoTracks()[0].stop();
-        savePhoto(canvas.toDataURL('image/jpeg'))
-        $('#capture').hide();
+        let now = new Date(Date.now())
+        $('#last-shot').text(now.toLocaleString())
+        $('#saved').text('')
+        savePhoto(canvas.toDataURL('image/jpeg'));
       }
+    }
+
+    function singleShot() {
+        snapshot();
+        stopCamera();
+    }
+
+    function continuousShots() {
+        $('.cap-button').hide();
+        $('#cont-capture-stop').show();
+
+        let current_min = 0;
+
+        let min_time = 1
+        let max_time = 10
+
+        let capture_min = (Math.random() * (max_time - min_time)) + min_time
+        capture_min = Math.round(capture_min)
+
+        let capturing = setInterval(() => {
+            current_min++;
+            if (current_min === capture_min) {
+                snapshot();
+                capture_min = (Math.random() * (max_time - min_time)) + min_time
+                capture_min = Math.round(capture_min)
+                current_min = 0
+            }
+        }, 60000);
+
+        $('#cont-capture-stop').off('click').one('click', () => {
+            clearInterval(capturing);
+            stopCamera();
+        });
+
     }
 
     function startCamera() {
@@ -38,16 +78,28 @@ var app = app || {};
         .then(stream => {
           video.src = window.URL.createObjectURL(stream);
           localMediaStream = stream;
+          $('.cap-button').show();
           $('#start-camera').hide();
-          $('#capture').show();
+          $('#cont-capture-stop').hide();
+          $('#capture-info').show();
         })
         .catch(console.error);
     }
 
+    function stopCamera() {
+        video.pause();
+        localMediaStream.getVideoTracks()[0].stop();
+        $('.cap-button').hide();
+        $('#start-camera').show();
+    }
+
     app.setupImageCap = function() {
-        $('#capture').hide();
-        $('#start-camera').on('click', startCamera)
-        $('#capture').on('click', snapshot) 
+        $('#capture-info').hide();
+        $('.cap-button').hide();
+        $('#start-camera').show();
+        $('#start-camera').on('click', startCamera);
+        $('#capture').on('click', singleShot);
+        $('#cont-capture-start').on('click', continuousShots);
     }
 
 })(app);

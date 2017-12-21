@@ -5,8 +5,12 @@
 <video autoplay></video>
 <canvas style="display:none;" height=300 width=300></canvas>
 
-<button id="start-camera">Start Camera</button>
-<button id="capture">Capture</button>
+<button type="button" class="btn btn-primary cap-button" id="start-camera">Start Camera</button>
+<button type="button" class="btn btn-primary cap-button" id="capture">Capture one image</button>
+<button type="button" class="btn btn-primary cap-button" id="cont-capture-start">Start capturing images</button>
+<button type="button" class="btn btn-primary cap-button" id="cont-capture-stop">Stop capturing images</button>
+
+<p id="capture-info">Last image captured: <span id="last-shot"></span> <span id="saved"></span></p>
 
 {% csrf_token %}
 
