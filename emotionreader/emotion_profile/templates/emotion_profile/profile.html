@@ -1,13 +1,62 @@
 {% extends "emotionreader/dashboard.html" %}
 
 {% block body %}
-    <h1>{{ request.user.username }}</h1>
-    <h2>{{ request.user.first_name }}</h2>
-    <h2>{{ request.user.last_name }}</h2>
-    <img src="{% if request.user.profile.cover %}
-        {{ request.user.profile.cover.url }}
-        {% else %}
-        https://st.depositphotos.com/1750981/1274/i/950/depositphotos_12743248-Emu-closeup.jpg
-    {% endif %}" style="height: 100px; width: 100px;"/>
-    <a class="nav-link" href="{% url 'update_profile' %}" style="float: right;"> Update Profile </a>
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-8" style="margin: auto;">
+                            <div class="card card-user">
+                                <div class="card-image">
+                                    <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" alt="...">
+                                </div>
+                                <div class="card-body">
+                                    <div class="author">
+                                        <a href="#">
+                                            <img src="{% if request.user.profile.cover %}
+                                                {{ request.user.profile.cover.url }}
+                                                {% else %}
+                                                https://st.depositphotos.com/1750981/1274/i/950/depositphotos_12743248-Emu-closeup.jpg
+                                                {% endif %}" class="avatar border-gray"/>
+                                            <h5 class="title" style="font-size: 3em;">{{ request.user.first_name }} {{ request.user.last_name }}</h5>
+                                        </a>
+                                        <p class="description" style="font-size: 2em;">
+                                            {{ request.user.username }}
+                                        </p>
+                                    </div>
+                                    <p class="description text-center">
+                                        Most Common Emotion: {{ most_common }}
+                                        <br>
+                                        <br>
+                                        Avg Percent of each Emotion:
+                                        <br>
+                                        Dates: {{ dates }}
+                                        <br>
+                                        Anger: {{ anger }}
+                                        <br>
+                                        Contempt: {{ contempt }}
+                                        <br>
+                                        Disgust: {{ disgust }}
+                                        <br>
+                                        Fear: {{ fear }}
+                                        <br>
+                                        Happiness: {{ happiness }}
+                                        <br>
+                                        Neutral: {{ neutral }}
+                                        <br>
+                                        Sadness: {{ sadness }}
+                                        <br>
+                                        Surprise: {{ surprise }}
+                                        <br>
+                                    </p>
+                                </div>
+                                <hr>
+                                <div class="button-container mr-auto ml-auto">
+                                    <a class="nav-link" href="{% url 'update_profile' %}""> Update Profile </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 {% endblock %}
