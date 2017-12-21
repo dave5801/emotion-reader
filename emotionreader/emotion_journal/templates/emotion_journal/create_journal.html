@@ -1,10 +1,59 @@
-{% extends "emotionreader/base.html" %}
+{% extends "emotionreader/dashboard.html" %}
 
 {% block body %}
-    <h1>Create Journal</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" class="btn btn-primary"></input>
-    </form>
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8" style="margin: auto;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Create Journal</h4>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" novalidate>
+                                {% csrf_token %}
+
+                                {{ form.non_field_errors }}
+
+                                {{ form.source.errors }}
+                                {{ form.source }}
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>{{ form.title.label_tag }}</label>
+                                            <input class="form-control" type="text"
+                                               name="{{ form.title.name }}"
+                                               id="{{ form.title.id_for_label }}"
+                                               {% if form.title.value != None %}value="{{ form.title.value|stringformat:'s' }}"{% endif %}
+                                               maxlength="{{ form.title.field.max_length }}"
+                                               {% if form.title.field.required %}required{% endif %}>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>{{ form.body.label_tag }}</label>
+                                            <textarea class="form-control" type="text" style="height: 10em;"
+                                               name="{{ form.body.name }}"
+                                               id="{{ form.body.id_for_label }}"
+                                               {% if form.body.value != None %}value="{{ form.body.value|stringformat:'s' }}"{% endif %}
+                                               maxlength="{{ form.body.field.max_length }}"
+                                               {% if form.body.field.required %}required{% endif %}>
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-info btn-fill pull-right">Create Journal</button>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
