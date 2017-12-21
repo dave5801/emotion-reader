@@ -23,28 +23,6 @@
                                             {{ request.user.username }}
                                         </p>
                                     </div>
-                                    <p class="description text-center">
-                                        <br>
-                                        Avg Percent of each Emotion:
-                                        <br>
-                                        <br>
-                                        Anger: {{ avg_anger }} %
-                                        <br>
-                                        Contempt: {{ avg_contempt }} %
-                                        <br>
-                                        Disgust: {{ avg_disgust }} %
-                                        <br>
-                                        Fear: {{ avg_fear }} %
-                                        <br>
-                                        Happiness: {{ avg_happiness }} %
-                                        <br>
-                                        Neutral: {{ avg_neutral }} %
-                                        <br>
-                                        Sadness: {{ avg_sadness }} %
-                                        <br>
-                                        Surprise: {{ avg_surprise }} %
-                                        <br>
-                                    </p>
                                 </div>
                                 <hr>
                                 <div class="button-container mr-auto ml-auto">
@@ -53,42 +31,54 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="card strpied-tabled-with-hover">
-                                <div class="card-header ">
-                                    <h4 class="card-title">Striped Table with Hover</h4>
-                                    <p class="card-category">Here is a subtitle for this table</p>
+                                <div class="card strpied-tabled-with-hover">
+                                    <div class="card-header ">
+                                        <h4 class="card-title">Emotion Percent</h4>
+                                        <p class="card-category">Average Percent of Each Emotion</p>
+                                    </div>
+                                    <div class="card-body table-full-width table-responsive" style="margin-left: 0px;">
+                                        <table class="table table-hover table-striped">
+                                            <thead>
+                                                <th>Emotion</th>
+                                                <th>Percent</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Anger</td>
+                                                    <td>{{ avg_anger }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Contempt</td>
+                                                    <td>{{ avg_contempt }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Disgust</td>
+                                                    <td>{{ avg_disgust }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Fear</td>
+                                                    <td>{{ avg_fear }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Happiness</td>
+                                                    <td>{{ avg_happiness }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Neutral</td>
+                                                    <td>{{ avg_neutral }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Sadness</td>
+                                                    <td>{{ avg_sadness }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Surprise</td>
+                                                    <td>{{ avg_surprise }}</td>
+                                                </tr>                                                                                                                                    
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <div class="card-body table-full-width table-responsive">
-                                    <table class="table table-hover table-striped">
-                                        <thead>
-                                            <th>Emotion</th>
-                                            <th>Percent</th>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Dakota Rice</td>
-                                            </tr>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Dakota Rice</td>
-                                            </tr>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Dakota Rice</td>
-                                            </tr>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Dakota Rice</td>
-                                            </tr>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Dakota Rice</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
