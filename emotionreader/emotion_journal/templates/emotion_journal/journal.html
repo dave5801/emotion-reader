@@ -1,13 +1,47 @@
 {% extends "emotionreader/dashboard.html" %}
 
 {% block body %}
-    <h1>Emotion Journal</h1>
 
-    {% for entry in entries %}
-        {{ entry.title }}
-        {{ entry.body }}
-        {{ entry.date }}
-        <br>
-    {% endfor %}
+
+    <div class="content">
+        <div class="container-fluid">
+
+            {% for entry in entries %}
+
+            <div class="row">
+                <div class="col-md-8" style="margin: auto;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">{{ entry.title }}</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p style="text-indent: 3em;">
+                                        {{ entry.body }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="card-footer ">
+                            <hr>
+                            <div class="stats">
+                                <i class="fa fa-calendar-check-o"></i> {{ entry.date }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+
+
+
 
 {% endblock %}
