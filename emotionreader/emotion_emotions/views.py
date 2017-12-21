@@ -114,3 +114,9 @@ class RecordEmotions(LoginRequiredMixin, TemplateView):
         emotion.save()
 
         return HttpResponse('Emotions Recorded')
+
+
+
+
+
+37-45, 76-85, 101
