@@ -26,7 +26,7 @@ Microsoft has some pretty amazing API's in general that a user can hit, we were 
 ##### Face API
 * Face API can detect up to 64 human faces then can be handle with the use of bytes or url.
 * Face API can compare 2 different faces and determine if they are the same person or not. This is what we used for Authentication and Authorization for our Face Login feature.
-* Face API has many more features. Check them out here [Face API Documenation](https://docs.microsoft.com/en-us/azure/cognitive-services/face/overview).
+* Face API has many more features. Check out the Face API and [Face API Documenation](https://docs.microsoft.com/en-us/azure/cognitive-services/face/overview).
 ##### Emotion API
 * Emotion API takes in an expression as an input, returns a bounded box using Face API, and returns a JSON object with 8 emotions.
 
@@ -61,13 +61,27 @@ Check out Emotion API and [Emotion API Documentation](https://docs.microsoft.com
 ### Service(Amazon)
 --------------------
 
-#### Amazon(AWS)
-
-##### S3
-##### RDS
-##### EC2
-##### Route 53
-
+#### [Amazon(AWS)](https://aws.amazon.com/documentation/)
+##### [S3](https://aws.amazon.com/documentation/s3/).
+Simple Storage Service
+* S3 is a simple way to store data in the cloud and have the ability to access it any place and any time in the world.
+* We created a bucket(storage) and recieved a key that routes to that bucket. When ever we push data, it uses this key and pushes it to the bucket. 
+* Using S3 allows our app to be smaller, compact, and more efficient.
+##### [RDS](https://aws.amazon.com/documentation/rds/).
+Relational Database Service
+*
+*
+*
+##### [EC2](https://aws.amazon.com/documentation/ec2/).
+Elastic Compute Cloud
+*
+*
+*
+##### [Route 53](https://aws.amazon.com/documentation/route53/).
+Route 53
+*
+*
+*
 ### Design
 -----------
 #### Chart.js
