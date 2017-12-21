@@ -1,46 +1,20 @@
-<<<<<<< HEAD
-"""Class which facial recognition in authenticion."""
-=======
 """Access the Face API."""
->>>>>>> face_auth
 import os
 from os import listdir
 from os.path import isfile, join
 from pathlib import Path
-<<<<<<< HEAD
-import emotion_authentication.util as util
-import cognitive_face as CF
-from emotion_authentication.util import Key, BaseUrl
-
-'''
-IMAGE CAPTURE - HOW MANY FRAMES PER UNIT OF TIME???
-'''
-
-'''
-TEST IDEAS:
-test if object created
-test if object created valid
-test if object created invalid
-test if dir is valid
-test if dir contains invalid file
-'''
-=======
 import cognitive_face as CF
 from cognitive_face.util import Key, BaseUrl
->>>>>>> face_auth
 
 
 class FaceVerification(object):
     """Face Verification Object."""
 
     def __init__(self, filepath_for_faces=None, face_to_verify=None):
-<<<<<<< HEAD
-        """Init the function."""
-=======
+        """Init the class."""
         Key.set(os.environ.get('FACE_API_KEY1', ''))
         BaseUrl.set(os.environ.get('FACE_URL', ''))
 
->>>>>>> face_auth
         self.filepath_for_faces = filepath_for_faces
         self.face_to_verify = face_to_verify
 
@@ -86,12 +60,7 @@ class FaceVerification(object):
             'returnFaceAttributes': attributes,
         }
 
-<<<<<<< HEAD
-        detection = util.request(
-=======
-
         detection = CF.util.request(
->>>>>>> face_auth
             'POST', url, headers=headers, params=params, json=json, data=data)
         print("DETECTION:", detection)
 
@@ -107,13 +76,7 @@ class FaceVerification(object):
             'faceIds': list_of_face_ids,
         }
 
-<<<<<<< HEAD
-        grouping = util.request('POST', url, json=json)
-
-=======
         grouping = CF.util.request('POST', url, json=json)
-        
->>>>>>> face_auth
         primary_group = grouping['groups'][0]
         messy_group = grouping['messyGroup']
 
@@ -126,20 +89,13 @@ class FaceVerification(object):
 
     def verify_against_registration(self, face_id=None, person_group_id=None, person_id=None):
         """Check new photo against photo used at registration."""
-<<<<<<< HEAD
         # current value is placeholder, this variable will come from a DB query from User Profile
         # registration photo is the initial photo
-        registration_photo_id = self.detected("cage1.png")[0]['faceId']
-=======
-
-        #current value is placeholder, this variable will come from a DB query from User Profile
-        #registration photo is the initial photo
         if hasattr(self, 'auth_face') and self.auth_face:
             reg_image = self.auth_face.file.file.read()
             registration_photo_id = self.detected(reg_image, img_stream=True)[0]['faceId']
         else:
             raise ValueError('No registration photo detected')
->>>>>>> face_auth
 
         url = 'verify'
         json = {}
@@ -159,7 +115,6 @@ class FaceVerification(object):
 
         print(registration_verification)
 
-
         return registration_verification['isIdentical']
 
 
@@ -178,7 +133,6 @@ if __name__ == '__main__':  # pragma: nocover
     valid_face_file = fvo.detected("cage1.png")[0]['faceId']
     print(valid_face_file)
 
-    
     '''detected_faces = []
 
     for i in list_of_faces:
@@ -194,8 +148,8 @@ if __name__ == '__main__':  # pragma: nocover
     #print(x)
 
     #registration_photo_id = fvo.detected("cage1.png")
-    #print(registration_photo_id) 
-    
+    #print(registration_photo_id)
+
     #x = fvo.verify_against_registration(detected_faces[0])
     #travolta = fvo.detected("travolta1.png")
     #x = fvo.verify_against_registration(travolta)
@@ -210,4 +164,3 @@ if __name__ == '__main__':  # pragma: nocover
     #face1 = fvo.detected("cage_and_other_person.png")
     #x = fvo.verify_against_registration(face1)
     #print(x)
-
