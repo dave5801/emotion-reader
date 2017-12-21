@@ -1,6 +1,7 @@
 """Test emotion app."""
 from django.test import RequestFactory, TestCase
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse_lazy
 from emotion_emotions.models import Emotion
 from emotion_profile.tests import UserFactory
 from base64 import b64decode
@@ -66,7 +67,7 @@ class EmotionTest(TestCase):
         self.assertEqual(one_emotion.date_recorded.strftime('%x %X')[:2], now)
 
 
-class EmotionViewUnitTests(TestCase):
+class EmotionViewTests(TestCase):
     """Test the Emotion View class methods."""
 
     def setUp(self):
@@ -154,3 +155,8 @@ class EmotionViewUnitTests(TestCase):
             view = RecordEmotions(request=request)
             response = view.post(request)
         self.assertEqual(response.content, b'Bad API Call')
+
+    def test_record_emotions_route_get_has_302_not_logged_in(self):
+        """Test that record emotions redirects when not logged in."""
+        response = self.client.get(reverse_lazy('record_emotions'))
+        self.assertEqual(response.status_code, 302)

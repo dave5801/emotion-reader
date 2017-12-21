@@ -9,16 +9,19 @@ var app = app || {};
     let ctx = canvas.getContext('2d');
     let localMediaStream = null;
 
+    let post_success_text = 'Save successful!'
+    let post_fail_text = 'Save failed.'
+
     function savePhoto(dataURL) {
         $.post(location.href, {
             image: dataURL,
             csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
         })
         .done(() => {
-            $('#saved').text('Save successful!')
+            $('#saved').text(post_success_text)
         })
         .fail((err) => {
-            $('#saved').text('Save failed.')
+            $('#saved').text(post_fail_text)
         })
     }
 
@@ -93,7 +96,14 @@ var app = app || {};
         $('#start-camera').show();
     }
 
-    app.setupImageCap = function() {
+    app.setupImageCap = function(success_text, fail_text) {
+        if (success_text) {
+            post_success_text = success_text;
+        }
+        if (fail_text) {
+            post_fail_text = fail_text
+        }
+
         $('#capture-info').hide();
         $('.cap-button').hide();
         $('#start-camera').show();
