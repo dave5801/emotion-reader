@@ -1,10 +1,21 @@
 {% extends "emotionreader/base.html" %}
 
 {% block body %}
-    <h1>Register</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" class="btn btn-primary"></input>
-    </form>
+    <div class="page-header clear-filter" filter-color="purple">
+        <div class="page-header-image" data-parallax="true">
+            <div class="filter"></div>
+            <div class="title-container text-center">
+                <h1>Register</h1>
+                <h4 class="description text-center">Create a username, email, and password.</h4>
+                <br />
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" class="btn btn-round btn-neutral btn-fill"></input>
+                </form>
+
+            </div>
+        </div>
+    </div>
 {% endblock %}

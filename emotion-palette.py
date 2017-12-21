@@ -15,3 +15,4 @@ mood_palette_dict = {
 
 def color_theme():
     """Set the color pallete based on the defined mood."""
+
