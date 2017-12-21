@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.generic import TemplateView
 from emotion_emotions.models import Emotion
+import numpy as np
 
 from base64 import b64decode
 import os
@@ -44,7 +45,27 @@ class EmotionAnalysis(LoginRequiredMixin, TemplateView):
             sadness.append(emotion.sadness * 100)
             surprise.append(emotion.surprise * 100)
 
+        min_max_anger = [((x - min(anger)) / (max(anger) - min(anger))) for x in anger]
+        min_max_contempt = [((x - min(contempt)) / (max(contempt) - min(contempt))) for x in contempt]
+        min_max_disgust = [((x - min(disgust)) / (max(disgust) - min(disgust))) for x in disgust]
+        min_max_fear = [((x - min(fear)) / (max(fear) - min(fear))) for x in fear]
+        min_max_happiness = [((x - min(happiness)) / (max(happiness) - min(happiness))) for x in happiness]
+        min_max_neutral = [((x - min(neutral)) / (max(neutral) - min(neutral))) for x in neutral]
+        min_max_sadness = [((x - min(sadness)) / (max(sadness) - min(sadness))) for x in sadness]
+        min_max_surprise = [((x - min(surprise)) / (max(surprise) - min(surprise))) for x in surprise]
+
+        context['days_ago'] = "%.1f" % (dates[0] * 1.15741e-12)
         context['dates'] = dates
+
+        context['min_max_anger'] = min_max_anger
+        context['min_max_contempt'] = min_max_contempt
+        context['min_max_disgust'] = min_max_disgust
+        context['min_max_fear'] = min_max_fear
+        context['min_max_happiness'] = min_max_happiness
+        context['min_max_neutral'] = min_max_neutral
+        context['min_max_sadness'] = min_max_sadness
+        context['min_max_surprise'] = min_max_surprise
+
         context['anger'] = anger
         context['contempt'] = contempt
         context['disgust'] = disgust

@@ -1,0 +1,36 @@
+{% extends "emotionreader/base.html" %}
+
+{% block body %}
+
+    <div class="page-header clear-filter" filter-color="purple">
+        <div class="page-header-image" data-parallax="true">
+            <div class="filter"></div>
+            <div class="title-container text-center" style="top: 50px;">
+                <h1>About</h1>
+                <div style="max-width: 900px; margin: auto; text-indent: 3em; text-align: left; display: block;">
+                    <h4 class="description">
+                        Welcome, we hope you FEEL at home here. Motus.life was created to help you assess and evaluate your emotions. Analyze your face and track your emotions with cutting-edge technology.  Utilizing Microsoft's Emotion API, your facial expression is analyzed amongst 8 different emotions; anger, contempt, fear, disgust, happiness, neutrality, sadness and surprise. It returns a confidence across that set of emotions.  Motus.life charts those feelings to provide you with a visual representation for your daily reflection.
+                    </h4>
+                    <h4 class="description">
+                        ALL THE FEELS! 
+                        Average out your emotion over the day by choosing to take random candid photos throughout your session to get a better idea of your true feelings of the day. The day's total is then charted, in calendar form for long-term tracking and analysis.
+                    </h4>
+                    <h4 class="description">
+                        PUT YOUR FEELINGS INTO WORDS. 
+                        With our integrated journaling system, you can now blog about your daily thoughts and keep them organized.  You can chart your emotional health over time visualy with our suite of responsive graphs. 
+                    </h4>
+                    <h4 class="description">
+                        GROOVE TO YOUR OWN MOOD. 
+                        Motus.life offers mood music, thanks to Spotify. Playlists specialy currated to fit your mood of the day. It knows how you feel, and its playlist will be filled with songs that'll feel just right. Feeling blue and looking to brighten your day? manually select one of our different playlist offerings to liven things up.
+                    </h4>
+                    <h4 class="description">
+                        Motus.life feels just right!
+                    </h4>
+                    <br />
+                </div>
+                <a class="btn btn-round btn-neutral btn-fill" href="{% url 'home' %}">Home</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
