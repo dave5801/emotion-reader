@@ -1,16 +1,40 @@
 # Emotion Reader
 
 ## What is Emotion Reader?
-
+Emotion Reader is an application that takes photos and analyzes your face and outputs an emotion.
 ## Get Started
-
+---------------
+* Clone project into local file system.
+    ```
+     git clone https://github.com/dave5801/emotion-reader
+     ```
+* Change directory into your newly created project.
+    ```
+     cd emotion_reader
+    ```
+* Create a Python virtual environment.
+    ```
+    python3 -m venv ENV
+    ```
+* Install the project in editable mode with its testing requirements.
+    ```
+    pip install -e .[testing]
+    ```
+* Configure the database.
+    ```
+    initdb development.ini
+    ```
+* Run your project's tests.
+    ```
+    pytest
+    ```
+* Run your project.
+    ```
+    pserve development.ini
+    ```
 ## Influences and Attributions
 
-Below are the people and libraries we used to make this project possible.
-
-### People
------------
-
+Below are the libraries and technologies we used to make this project possible.
 ### Libraries
 --------------
 
@@ -19,7 +43,10 @@ Below are the people and libraries we used to make this project possible.
 
 #### [Django(1.11)](https://docs.djangoproject.com/en/1.11/)
 
-
+Django has three layers.
+* Model Layer
+* View Layer
+* Template Layer
 
 ### API
 --------
