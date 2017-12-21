@@ -3,14 +3,16 @@ from django.dispatch import receiver
 from emotion_profile.models import User
 from emotion_authentication.face_verification import FaceVerification
 
+
 # Create your models here.
 class FaceVerificationManager(models.Model, FaceVerification):
     objects = models.Manager
     user = models.OneToOneField(User, on_delete=models.CASCADE,
                                 related_name='faces')
-    auth_face = models.ImageField(upload_to='documents/%Y/%m/%d',
-                              blank=True,
-                              null=True)
+    auth_face = models.ImageField(upload_to='auth_faces',
+                                  blank=True,
+                                  null=True)
+
     def __str__(self):
         """Print function returns this."""
         return self.user.username

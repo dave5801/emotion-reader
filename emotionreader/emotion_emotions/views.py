@@ -53,14 +53,14 @@ class EmotionAnalysis(LoginRequiredMixin, TemplateView):
         context['neutral'] = neutral
         context['sadness'] = sadness
         context['surprise'] = surprise
-        context['avg_anger'] = sum(anger) / float(len(anger))
-        context['avg_contempt'] = sum(contempt) / float(len(contempt))
-        context['avg_disgust'] = sum(disgust) / float(len(disgust))
-        context['avg_fear'] = sum(fear) / float(len(fear))
-        context['avg_happiness'] = sum(happiness) / float(len(happiness))
-        context['avg_neutral'] = sum(neutral) / float(len(neutral))
-        context['avg_sadness'] = sum(sadness) / float(len(sadness))
-        context['avg_surprise'] = sum(surprise) / float(len(surprise))
+        context['avg_anger'] = sum(anger) / (float(len(anger)) or 1)
+        context['avg_contempt'] = sum(contempt) / (float(len(contempt)) or 1)
+        context['avg_disgust'] = sum(disgust) / (float(len(disgust)) or 1)
+        context['avg_fear'] = sum(fear) / (float(len(fear)) or 1)
+        context['avg_happiness'] = sum(happiness) / (float(len(happiness)) or 1)
+        context['avg_neutral'] = sum(neutral) / (float(len(neutral)) or 1)
+        context['avg_sadness'] = sum(sadness) / (float(len(sadness)) or 1)
+        context['avg_surprise'] = sum(surprise) / (float(len(surprise)) or 1)
 
         return context
 
