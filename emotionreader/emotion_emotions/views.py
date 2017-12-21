@@ -54,7 +54,7 @@ class EmotionAnalysis(LoginRequiredMixin, TemplateView):
         min_max_sadness = [((x - min(sadness)) / (max(sadness) - min(sadness))) for x in sadness]
         min_max_surprise = [((x - min(surprise)) / (max(surprise) - min(surprise))) for x in surprise]
 
-        context['days_ago'] = "%.1f" % (dates[0] * 1.15741e-12)
+        context['days_ago'] = "%.1f" % (dates[0] * 1.15741e-12) if dates else 0.0
         context['dates'] = dates
 
         context['min_max_anger'] = min_max_anger
