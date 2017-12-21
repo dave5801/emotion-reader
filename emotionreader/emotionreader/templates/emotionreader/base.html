@@ -126,38 +126,43 @@
     </nav>
     <!-- End Navbar -->
     <div class="wrapper">
-        {% block body %}{% endblock %}
-    
-        <footer class="footer">
-            <div class="container">
-                <nav>
-                    <ul class="footer-menu">
-                        <li>
-                            <a href="https://github.com/dave5801/emotion-reader">
-                                Github
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'about' %}">
-                                About
-                            </a>
-                        </li>
-                    </ul>
-                    <p class="copyright text-center">
-                        ©
-                        <script>
-                            document.write(new Date().getFullYear())
-                        </script>
-                        <a href="https://github.com/ztaylor2">Zach Taylor</a> |
-                        <a href="https://github.com/musflood">Megan Flood</a> |
-                        <a href="https://github.com/mshinners">Michael Shinners</a> |
-                        <a href="https://github.com/dave5801">David Franklin</a> |
-                        <a href="https://github.com/Loaye">Jacob Carstens</a>
-                    </p>
-                </nav>
+        <div class="page-header clear-filter" filter-color="purple">
+            <div class="page-header-image" data-parallax="true" style="background-image: url({% static 'emotionreader/assets/img/mountain-background.jpg' %})">
+                <div class="filter"></div>
+                {% block body %}{% endblock %}
             </div>
-        </footer>
+        </div>
     </div>
+    
+    <footer class="footer">
+        <div class="container">
+            <nav>
+                <ul class="footer-menu">
+                    <li>
+                        <a href="https://github.com/dave5801/emotion-reader">
+                            Github
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'about' %}">
+                            About
+                        </a>
+                    </li>
+                </ul>
+                <p class="copyright text-center">
+                    ©
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script>
+                    <a href="https://github.com/ztaylor2">Zach Taylor</a> |
+                    <a href="https://github.com/musflood">Megan Flood</a> |
+                    <a href="https://github.com/mshinners">Michael Shinners</a> |
+                    <a href="https://github.com/dave5801">David Franklin</a> |
+                    <a href="https://github.com/Loaye">Jacob Carstens</a>
+                </p>
+            </nav>
+        </div>
+    </footer>
 </body>
 
 

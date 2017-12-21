@@ -1,70 +1,71 @@
 {% extends "emotionreader/base.html" %}
 
 {% block body %}
-    <div class="page-header clear-filter" filter-color="purple">
-        <div class="page-header-image" data-parallax="true">
-            <div class="filter"></div>
-            <div class="title-container text-center">
-                <h1>Register</h1>
-                <h4 class="description text-center">Create a username, email, and password.</h4>
-                <br />
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-3" style="margin: auto;">
-                            <div class="form-group">
-                                <label style="float: left;">{{ form.username.label_tag }}</label>
-                                <input class="form-control" type="text"
-                                   name="{{ form.username.name }}"
-                                   id="{{ form.username.id_for_label }}"
-                                   {% if form.username.value != None %}value="{{ form.username.value|stringformat:'s' }}"{% endif %}
-                                   maxlength="{{ form.username.field.max_length }}"
-                                   {% if form.username.field.required %}required{% endif %}>
-                            </div>
-                        </div>
+
+    <div class="title-container text-center" style="top: 100px;">
+        <h1>Register</h1>
+        <h4 class="description text-center">Create a username, email, and password.</h4>
+        <br />
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            {{ form.source.errors }}
+            {{ form.source }}
+            <div class="row">
+                <div class="col-md-3" style="margin: auto;">
+                    <div class="form-group">
+                        <label style="float: left;">{{ form.username.label_tag }}</label>
+                        <input class="form-control" type="text"
+                           name="{{ form.username.name }}"
+                           id="{{ form.username.id_for_label }}"
+                           {% if form.username.value != None %}value="{{ form.username.value|stringformat:'s' }}"{% endif %}
+                           maxlength="{{ form.username.field.max_length }}"
+                           {% if form.username.field.required %}required{% endif %}>
                     </div>
-                    <div class="row">
-                        <div class="col-md-3" style="margin: auto;">
-                            <div class="form-group">
-                                <label style="float: left;">{{ form.email.label_tag }}</label>
-                                <input class="form-control" type="text"
-                                   name="{{ form.email.name }}"
-                                   id="{{ form.email.id_for_label }}"
-                                   {% if form.email.value != None %}value="{{ form.email.value|stringformat:'s' }}"{% endif %}
-                                   maxlength="{{ form.email.field.max_length }}"
-                                   {% if form.email.field.required %}required{% endif %}>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3" style="margin: auto;">
-                            <div class="form-group">
-                                <label style="float: left;">{{ form.password1.label_tag }}</label>
-                                <input class="form-control" type="text"
-                                   name="{{ form.password1.name }}"
-                                   id="{{ form.password1.id_for_label }}"
-                                   {% if form.password1.value != None %}value="{{ form.password1.value|stringformat:'s' }}"{% endif %}
-                                   maxlength="{{ form.password1.field.max_length }}"
-                                   {% if form.password1.field.required %}required{% endif %}>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3" style="margin: auto;">
-                            <div class="form-group">
-                                <label style="float: left;">{{ form.password2.label_tag }}</label>
-                                <input class="form-control" type="text"
-                                   name="{{ form.password2.name }}"
-                                   id="{{ form.password2.id_for_label }}"
-                                   {% if form.password2.value != None %}value="{{ form.password2.value|stringformat:'s' }}"{% endif %}
-                                   maxlength="{{ form.password2.field.max_length }}"
-                                   {% if form.password2.field.required %}required{% endif %}>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="submit" class="btn btn-round btn-neutral btn-fill"></input>
-                </form>
+                </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="col-md-3" style="margin: auto;">
+                    <div class="form-group">
+                        <label style="float: left;">{{ form.email.label_tag }}</label>
+                        <input class="form-control" type="text"
+                           name="{{ form.email.name }}"
+                           id="{{ form.email.id_for_label }}"
+                           {% if form.email.value != None %}value="{{ form.email.value|stringformat:'s' }}"{% endif %}
+                           maxlength="{{ form.email.field.max_length }}"
+                           {% if form.email.field.required %}required{% endif %}>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3" style="margin: auto;">
+                    <div class="form-group">
+                        <label style="float: left;">{{ form.password1.label_tag }}</label>
+                        <input class="form-control" type="password"
+                           name="{{ form.password1.name }}"
+                           id="{{ form.password1.id_for_label }}"
+                           {% if form.password1.value != None %}value="{{ form.password1.value|stringformat:'s' }}"{% endif %}
+                           maxlength="{{ form.password1.field.max_length }}"
+                           {% if form.password1.field.required %}required{% endif %}>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3" style="margin: auto;">
+                    <div class="form-group">
+                        <label style="float: left;">{{ form.password2.label_tag }}</label>
+                        <input class="form-control" type="password"
+                           name="{{ form.password2.name }}"
+                           id="{{ form.password2.id_for_label }}"
+                           {% if form.password2.value != None %}value="{{ form.password2.value|stringformat:'s' }}"{% endif %}
+                           maxlength="{{ form.password2.field.max_length }}"
+                           {% if form.password2.field.required %}required{% endif %}>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-round btn-neutral btn-fill"></input>
+        </form>
     </div>
+
 {% endblock %}
