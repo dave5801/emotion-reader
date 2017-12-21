@@ -33,3 +33,5 @@ class FaceVerificationView(TemplateView):
             image = b64decode(image)
         except (KeyError, IndexError):
             return HttpResponseBadRequest('Invalid data.')
+
+        return HttpResponse('Image Captured')
