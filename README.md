@@ -15,6 +15,7 @@ $ cd emotion-reader
 Begin a new virtual environment with Python 3 and activate it.
 ```
 emotion-reader $ python3 -m venv ENV
+
 emotion-reader $ source ENV/bin/activate
 ```
 Install the application requirements with [`pip`](https://pip.pypa.io/en/stable/installing/).
@@ -26,7 +27,7 @@ Create a [Postgres](https://wiki.postgresql.org/wiki/Detailed_installation_guide
 (ENV) emotion-reader $ createdb imagersite
 ```
 
-Export environmental variables pointing to the location of database, your username, hashed password, and secret
+Export environmental variables pointing to the location of database, your username, hashed password, and secret.
 
 ```
 (ENV) emotion-reader $ export SECRET_KEY='secret'
@@ -45,14 +46,30 @@ Export environmental variables pointing to the location of database, your userna
 Then initialize the database with the `migrate` command from `manage.py`
 
 ```
-(ENV) django-imager $ python imagersite/manage.py migrate
+(ENV) emotion-reader $ python imagersite/manage.py migrate
 ```
 Once the package is installed and the database is created, start the server with the `runserver` command from `manage.py`
 ```
-(ENV) django-imager $ python imagersite/manage.py runserver
+(ENV) emotion-reader $ python imagersite/manage.py runserver
 ```
 Application is served on http://localhost:8000
+
+### Testing
+You can test this application by first exporting an environmental variable pointing to the location of a testing database, then running the `test` command from `manage.py`.
+
+```
+(ENV) emotion-reader $ export
+
+TEST_DB='test_imagersite'
+
+(ENV) emotion-reader $ python
+
+imagersite/manage.py test imagersite
+```
+
+
 ## Influences and Attributions
+--------------------------------
 
 Below are the libraries and technologies we used to make this project possible.
 ### Libraries
