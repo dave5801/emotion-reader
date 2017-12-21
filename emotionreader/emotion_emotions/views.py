@@ -2,7 +2,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from emotion_emotions.models import Emotion
 import numpy as np
 
@@ -10,6 +10,25 @@ from base64 import b64decode
 import os
 import requests
 import time
+
+
+class EmotionDateHistory(LoginRequiredMixin, ListView):
+    """View for a single day."""
+
+    model = Emotion
+    template_name = 'emotion_emotions/history.html'
+
+    def get_queryset(self):
+        """Limit to logged in user's records."""
+        all_emotions = Emotion.objects.filter(user=self.request.user)
+        return all_emotions.filter(date_recorded__year=self.kwargs['year'],
+                                   date_recorded__month=self.kwargs['month'],
+                                   date_recorded__day=self.kwargs['day'],)
+
+    def get_context_data(self, **kwargs):
+        """Get context data and add default cover."""
+        context = super(EmotionDateHistory, self).get_context_data(**kwargs)
+        return context
 
 
 class EmotionAnalysis(LoginRequiredMixin, TemplateView):
@@ -112,6 +131,14 @@ class RecordEmotions(LoginRequiredMixin, TemplateView):
             image = b64decode(image)
         except (KeyError, IndexError):
             return HttpResponseBadRequest('Invalid data.')
+
+        if request.user.faces.auth_face:
+            verifier = request.user.faces
+            new_face = verifier.detected(image, img_stream=True)[0]['faceId']
+            correct_face = verifier.verify_against_registration(new_face)
+
+            if not correct_face:
+                return HttpResponseBadRequest('Face does not belong to user.')
 
         data = self.get_emotion_data(image)
 

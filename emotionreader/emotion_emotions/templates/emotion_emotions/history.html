@@ -1,0 +1,309 @@
+{% extends "emotionreader/dashboard.html" %}
+
+{% block body %}
+    
+             <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card ">
+                                <div class="card-header">
+                                    <h4 class="card-title">Emotions</h4>
+                                    <p class="card-category">Full History</p>
+                                </div>
+                                <div class="card-body" >
+                                    <canvas id="line" width="400" height="200"></canvas>
+                                </div>
+                                <div class="card-footer ">
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="fa fa-history"></i> Beginning {{ days_ago }} days ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card ">
+                                <div class="card-header ">
+                                    <h4 class="card-title">Emotion Percent Each Capture</h4>
+                                    <p class="card-category">Emotion percent scaled with min max scale</p>
+                                </div>
+                                <div class="card-body ">
+                                    <canvas id="radar" width="400" height="400"></canvas>
+                                </div>
+                                <div class="card-footer ">
+
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="fa fa-history"></i> Beginning {{ days_ago }} days ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card  card-tasks">
+                                <div class="card-header ">
+                                    <h4 class="card-title">Average Emotion Percent</h4>
+                                    <p class="card-category">Average percentage captured for each emotion</p>
+                                </div>
+                                <div class="card-body ">
+                                    <canvas id="donut" width="400" height="400"></canvas>
+                                </div>
+                                <div class="card-footer ">
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="fa fa-history"></i> Since {{ days_ago }} days ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+
+<script>
+
+        var dates = {{ dates }}
+
+        var js_dates = []
+        for (i = 0; i <= dates.length - 1; i++) {
+            date = new Date(dates[i]);
+            js_dates.push(date)
+        }
+
+        var timeFormat = 'MM/DD/YYYY HH:mm';
+
+
+        var config_line = {
+            type: 'line',
+            data: {
+                labels: js_dates,
+                datasets: [{
+                    label: "Anger",
+                    backgroundColor: 'rgba(204, 0, 0, 0.2)',
+                    borderColor: 'rgba(204, 0, 0, .7)',
+                    fill: false,
+                    data: {{ anger }},
+                }, {
+                    label: "Contempt",
+                    backgroundColor: 'rgba(47, 204, 0, 0.2)',
+                    borderColor: 'rgba(47, 204, 0, .7)',
+                    fill: false,
+                    data: {{ contempt }},
+                }, {
+                    label: "Disgust",
+                    backgroundColor: 'rgba(37, 37, 37, 0.2)',
+                    borderColor: 'rgba(37, 37, 37, .7)',
+                    fill: false,
+                    data: {{ disgust }},
+                }, {
+                    label: "Fear",
+                    backgroundColor: 'rgba(127, 0, 112, 0.2)',
+                    borderColor: 'rgba(127, 0, 112, .7)',
+                    fill: false,
+                    data: {{ fear }},
+                }, {
+                    label: "Happiness",
+                    backgroundColor: 'rgba(255, 255, 0, 0.2)',
+                    borderColor: 'rgba(255, 255, 0, .7)',
+                    fill: false,
+                    data: {{ happiness }},
+                }, {
+                    label: "Neutral",
+                    backgroundColor: 'rgba(134, 144, 171, 0.2)',
+                    borderColor: 'rgba(134, 144, 171, .7)',
+                    fill: false,
+                    data: {{ neutral }},
+                }, {
+                    label: "Sadness",
+                    backgroundColor: 'rgba(54, 111, 199, 0.2)',
+                    borderColor: 'rgba(54, 111, 199, .7)',
+                    fill: false,
+                    data: {{ sadness }},
+                }, {
+                    label: "Surprise",
+                    backgroundColor: 'rgba(252, 125, 22, 0.2)',
+                    borderColor: 'rgba(252, 125, 22, .7)',
+                    fill: false,
+                    data: {{ surprise }},
+                }]
+            },
+            options: {
+                title:{
+                    display: true,
+                    text: "Emotion Percentage vs. Time"
+                },
+                scales: {
+                    xAxes: [{
+                        type: "time",
+                        time: {
+                            format: timeFormat,
+                            tooltipFormat: 'll HH:mm'
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Date'
+                        }
+                    }, ],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Emotion Percentage'
+                        }
+                    }]
+                },
+            }
+        };
+
+        function getRandomColor(numOfSteps, step) {
+            var r, g, b;
+            var h = step / numOfSteps;
+            var i = ~~(h * 6);
+            var f = h * 6 - i;
+            var q = 1 - f;
+            switch(i % 6){
+                case 0: r = 1; g = f; b = 0; break;
+                case 1: r = q; g = 1; b = 0; break;
+                case 2: r = 0; g = 1; b = f; break;
+                case 3: r = 0; g = q; b = 1; break;
+                case 4: r = f; g = 0; b = 1; break;
+                case 5: r = 1; g = 0; b = q; break;
+            }
+            var c = "#" + ("00" + (~ ~(r * 255)).toString(16)).slice(-2) + ("00" + (~ ~(g * 255)).toString(16)).slice(-2) + ("00" + (~ ~(b * 255)).toString(16)).slice(-2) + "99";
+            return (c);
+        }
+
+        radar_datasets = []
+
+        for (i = 0; i <= dates.length - 1; i++) {
+            color = getRandomColor(dates.length - 1, i)
+            radar_datasets.push(
+                    {
+                        label: "My First dataset",
+                        backgroundColor: color,
+                        borderColor: color,
+                        pointBackgroundColor: color,
+                        data: [
+                            {{ min_max_anger }}[i],
+                            {{ min_max_contempt }}[i],
+                            {{ min_max_disgust }}[i],
+                            {{ min_max_fear }}[i],
+                            {{ min_max_happiness }}[i],
+                            {{ min_max_neutral }}[i],
+                            {{ min_max_sadness }}[i],
+                            {{ min_max_surprise }}[i]
+                        ]
+                    }
+
+                )
+        }
+
+
+
+
+
+
+        var config_radar = {
+            type: 'radar',
+            data: {
+                labels: [
+                    "Anger",
+                    "Contempt",
+                    "Disgust",
+                    "Fear",
+                    "Happiness", 
+                    "Neutral",
+                    "Sadness",
+                    "Surprise"
+                ],
+                datasets: radar_datasets
+            },
+            options: {
+                legend: {
+                    display: false,
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Emotions Radar'
+                },
+                scale: {
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }
+            }
+        };
+
+
+        var config_donut = {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [
+                        {{ avg_anger }},
+                        {{ avg_contempt }},
+                        {{ avg_disgust }},
+                        {{ avg_fear }},
+                        {{ avg_happiness }},
+                        {{ avg_neutral }},
+                        {{ avg_sadness }},
+                        {{ avg_surprise }},
+                    ],
+                    backgroundColor: [
+                        "rgba(204, 0, 0, .5)",
+                        "rgba(47, 204, 0, .5)",
+                        "rgba(37, 37, 37, .5)",
+                        "rgba(127, 0, 112, .5)",
+                        "rgba(255, 255, 0, .5)",
+                        "rgba(134, 144, 171, .5)",
+                        "rgba(54, 111, 199, .5)",
+                        "rgba(252, 125, 22, .5)",
+                    ],
+                    label: 'Dataset 1'
+                }],
+                labels: [
+                    "Anger",
+                    "Contempt",
+                    "Disgust",
+                    "Fear",
+                    "Happiness", 
+                    "Neutral",
+                    "Sadness",
+                    "Surprise"
+                ]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Average Emotion Percentage'
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            }
+        };
+
+        window.onload = function() {
+            var ctx = document.getElementById("line").getContext("2d");
+            window.myLine = new Chart(ctx, config_line);
+
+
+            var ctx = document.getElementById("donut").getContext("2d");
+            window.myDoughnut = new Chart(ctx, config_donut);
+
+            window.myRadar = new Chart(document.getElementById("radar"), config_radar);
+        };
+
+</script>
+
+{% endblock body %}
