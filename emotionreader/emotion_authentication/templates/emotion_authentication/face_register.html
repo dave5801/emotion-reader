@@ -1,0 +1,55 @@
+{% extends "emotionreader/dashboard.html" %}
+
+{% block body %}
+
+{% csrf_token %}
+
+    <div class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-7" style="margin: auto;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Setup Face Verification Login</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <br>
+                                    <div style="display: block; height: 300;">
+                                        <video autoplay class="mw-100"></video>
+                                        <canvas style="display: none;" height=300 width=300></canvas>
+                                    </div>
+                                    <br>
+                                    <button id="start-camera" class="btn btn-info btn-fill cap-button">Start Camera</button>
+                                    <button id="capture" class="btn btn-info btn-fill cap-button"><i class="fa fa-camera-retro"></i> Capture</button>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="card-footer ">
+                            <hr>
+                            <div class="stats">
+                                <i class="fa fa-camera-retro"></i> Capture a photo of yourself to use for Face Verification Login
+                                <p id="saved"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock body %}
+
+{% block custom_scripts %}
+{% load static %}
+<script src="{% static 'emotionreader/imagecapture.js' %}"></script>
+<script type="text/javascript">
+    app.setupImageCap(
+        () => {location.pathname = '/profile/'}
+    )
+</script>
+{% endblock custom_scripts %}

@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse_lazy
 from emotion_profile.models import EmotionProfile, EmotionProfileForm
 from django.shortcuts import redirect
 import time
+import operator
 
 
 class ProfileView(LoginRequiredMixin, DetailView):
@@ -33,7 +34,7 @@ class ProfileView(LoginRequiredMixin, DetailView):
         sadness = []
         surprise = []
 
-        for emotion in emotions:
+        for emotion in emotions:  # pragma: nocover
             dates.append(int(time.mktime(emotion.date_recorded.timetuple())) * 1000)
             anger.append(emotion.anger * 100)
             contempt.append(emotion.contempt * 100)
@@ -53,13 +54,23 @@ class ProfileView(LoginRequiredMixin, DetailView):
         context['avg_sadness'] = float("{0:.2f}".format(sum(sadness) / float(len(sadness) or 1)))
         context['avg_surprise'] = float("{0:.2f}".format(sum(surprise) / float(len(surprise) or 1)))
 
+        last_moods = {'anger': anger[-1] if anger[-1:] else 0,
+                      'contempt': contempt[-1] if contempt[-1:] else 0,
+                      'disgust': disgust[-1] if disgust[-1:] else 0,
+                      'fear': fear[-1] if fear[-1:] else 0,
+                      'happiness': happiness[-1] if happiness[-1:] else 0,
+                      'neutral': neutral[-1] if neutral[-1:] else 0,
+                      'sadness': sadness[-1] if sadness[-1:] else 0,
+                      'surprise': surprise[-1] if surprise[-1:] else 0
+                      }
+
+        context['mood'] = max(last_moods, key=last_moods.get)
+
         return context
 
     def get(self, *args, **kwargs):
         """Redirect home if not logged in."""
         self.kwargs['username'] = self.request.user.get_username()
-        if self.kwargs['username'] == '':
-            return redirect('home')
 
         return super(ProfileView, self).get(*args, **kwargs)
 
@@ -85,16 +96,12 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
     def get(self, *args, **kwargs):
         """Redirect home if not logged in."""
         self.kwargs['username'] = self.request.user.get_username()
-        if self.kwargs['username'] == '':
-            return redirect('home')
 
         return super(UpdateProfile, self).get(*args, **kwargs)
 
     def post(self, *args, **kwargs):
         """Redirect home if not logged in."""
         self.kwargs['username'] = self.request.user.get_username()
-        if self.kwargs['username'] == '':
-            return redirect('home')
 
         return super(UpdateProfile, self).post(*args, **kwargs)
 

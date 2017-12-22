@@ -27,6 +27,7 @@ def my_view(request):
         # Return an 'invalid login' error message.
 '''
 
+
 class FaceVerificationView(TemplateView):
 
     template_name = 'emotion_authentication/face_verification.html'
@@ -52,7 +53,6 @@ class FaceVerificationView(TemplateView):
         else:
             return HttpResponseBadRequest('Face Verification Error.')
 
-
         if verifier.user.is_active:
             login(request, verifier.user)
             return redirect('profile')
@@ -60,10 +60,9 @@ class FaceVerificationView(TemplateView):
             return HttpResponseBadRequest('Login Failed')
 
 
-
 class FaceCaptureAndSaveView(LoginRequiredMixin, TemplateView):
 
-    template_name = 'emotion_authentication/face_verification.html'
+    template_name = 'emotion_authentication/face_register.html'
 
     def post(self, request, *args, **kwargs):
         """Extract emotions from posted image."""

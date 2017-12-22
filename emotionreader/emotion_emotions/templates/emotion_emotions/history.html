@@ -4,62 +4,62 @@
     
              <div class="content">
                 <div class="container-fluid">
+                    <h2 class="mt-0">Records for {{ date }}</h2>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-8">
                             <div class="card ">
                                 <div class="card-header">
                                     <h4 class="card-title">Emotions</h4>
-                                    <p class="card-category">Full History</p>
+                                    <p class="card-category">Day History</p>
                                 </div>
                                 <div class="card-body" >
-                                    <canvas id="line" width="400" height="200"></canvas>
-                                </div>
-                                <div class="card-footer ">
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-history"></i> Beginning {{ days_ago }} days ago
-                                    </div>
+                                    <canvas id="line" width="400" height="250"></canvas>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card ">
-                                <div class="card-header ">
-                                    <h4 class="card-title">Emotion Percent Each Capture</h4>
-                                    <p class="card-category">Emotion percent scaled with log scale</p>
-                                </div>
-                                <div class="card-body ">
-                                    <canvas id="radar" width="400" height="400"></canvas>
-                                </div>
-                                <div class="card-footer ">
-
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-history"></i> Beginning {{ days_ago }} days ago
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card  card-tasks">
+                        <div class="col-md-4">
+                            <div class="card">
                                 <div class="card-header ">
                                     <h4 class="card-title">Average Emotion Percent</h4>
                                     <p class="card-category">Average percentage captured for each emotion</p>
                                 </div>
                                 <div class="card-body ">
-                                    <canvas id="donut" width="400" height="400"></canvas>
+                                    <canvas id="donut" width="200" height="262"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% for entry in entries %}
+
+                    <div class="row">
+                        <div class="col-md-8" style="margin: auto;">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">{{ entry.title }}</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p style="text-indent: 3em;">
+                                                {{ entry.body }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
                                 </div>
                                 <div class="card-footer ">
                                     <hr>
                                     <div class="stats">
-                                        <i class="fa fa-history"></i> Since {{ days_ago }} days ago
+                                        <i class="fa fa-calendar-check-o"></i> {{ entry.date }}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    {% endfor %}
+                    
                 </div>
             </div>
 
@@ -177,68 +177,6 @@
             return (c);
         }
 
-        radar_datasets = []
-
-        for (i = 0; i <= dates.length - 1; i++) {
-            color = getRandomColor(dates.length - 1, i)
-            radar_datasets.push(
-                    {
-                        label: "My First dataset",
-                        backgroundColor: color,
-                        borderColor: color,
-                        pointBackgroundColor: color,
-                        data: [
-                            {{ log_anger }}[i],
-                            {{ log_contempt }}[i],
-                            {{ log_disgust }}[i],
-                            {{ log_fear }}[i],
-                            {{ log_happiness }}[i],
-                            {{ log_neutral }}[i],
-                            {{ log_sadness }}[i],
-                            {{ log_surprise }}[i]
-                        ]
-                    }
-
-                )
-        }
-
-
-
-
-
-
-        var config_radar = {
-            type: 'radar',
-            data: {
-                labels: [
-                    "Anger",
-                    "Contempt",
-                    "Disgust",
-                    "Fear",
-                    "Happiness", 
-                    "Neutral",
-                    "Sadness",
-                    "Surprise"
-                ],
-                datasets: radar_datasets
-            },
-            options: {
-                legend: {
-                    display: false,
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Emotions Radar'
-                },
-                scale: {
-                  ticks: {
-                    beginAtZero: true
-                  }
-                }
-            }
-        };
-
 
         var config_donut = {
             type: 'doughnut',
@@ -301,7 +239,6 @@
             var ctx = document.getElementById("donut").getContext("2d");
             window.myDoughnut = new Chart(ctx, config_donut);
 
-            window.myRadar = new Chart(document.getElementById("radar"), config_radar);
         };
 
 </script>

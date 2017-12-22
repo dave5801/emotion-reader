@@ -12,6 +12,7 @@ class FaceVerification(object):
     """Face Verification Object."""
 
     def __init__(self, filepath_for_faces=None, face_to_verify=None):
+        """Init the class."""
         Key.set(os.environ.get('FACE_API_KEY1', ''))
         BaseUrl.set(os.environ.get('FACE_URL', ''))
 
@@ -21,8 +22,8 @@ class FaceVerification(object):
         self.faceID = None
 
     def format_face_file(self, face_file):
-        """formats file: path/to/file.png."""
-        return self.filepath_for_faces + "/" +face_file
+        """Format file: path/to/file.png."""
+        return self.filepath_for_faces + "/" + face_file
 
     def get_faces_from_dir(self):
         """Get Directory of Faces."""
@@ -33,8 +34,6 @@ class FaceVerification(object):
 
     def check_valid_face_file(self, face_file):
         """Validate an individual face image."""
-
-        #face_image_file_path = self.format_face_file(face_file)
         print(face_file)
         face_image_file = Path(face_file)
 
@@ -52,7 +51,8 @@ class FaceVerification(object):
 
             face_to_detect = self.format_face_file(image)
 
-            if self.check_valid_face_file(face_to_detect) == False:
+            if self.check_valid_face_file(face_to_detect) is False:
+
                 print("Invalid Face")
                 return False
             headers, data, json = CF.util.parse_image(face_to_detect)
@@ -68,16 +68,15 @@ class FaceVerification(object):
             'returnFaceAttributes': attributes,
         }
 
-
         detection = CF.util.request(
             'POST', url, headers=headers, params=params, json=json, data=data)
 
-        #NOTE - this is how you get valid faceIDs --> detection[0]['faceId']
-        print("DETECTION" ,len(detection))
+        # NOTE - this is how you get valid faceIDs --> detection[0]['faceId']
+
         return detection
 
-    '''Note: Not used currently, will be at later time.'''    
-    def group_verify(self,face_id,list_of_face_ids):
+    '''Note: Not used currently, will be at later time.'''
+    def group_verify(self, face_id, list_of_face_ids):
         """Any face image found in 'messy groud' is not verified."""
         url = 'group'
         json = {
@@ -85,7 +84,6 @@ class FaceVerification(object):
         }
 
         grouping = CF.util.request('POST', url, json=json)
-        
         primary_group = grouping['groups'][0]
         messy_group = grouping['messyGroup']
 
@@ -96,13 +94,8 @@ class FaceVerification(object):
         else:
             return False
 
-    def verify_against_registration(self, face_id=None, person_group_id=None,
-           person_id=None):
+    def verify_against_registration(self, face_id=None, person_group_id=None, person_id=None):
         """Check new photo against photo used at registration."""
-
-        #current value is placeholder, this variable will come from a DB query from User Profile
-        #registration photo is the initial photo
-
         face_now = timezone.now()
 
         if hasattr(self, 'auth_face') and self.auth_face:
@@ -123,7 +116,7 @@ class FaceVerification(object):
             else:
                 registration_photo_id = self.auth_face_id
         else:
-            raise ValueError('No registration photo detected')
+            return False
 
         url = 'verify'
         json = {}
@@ -146,8 +139,7 @@ class FaceVerification(object):
         return registration_verification['isIdentical']
 
 
-
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: nocover
 
     file_dir = "nicholas_cage"
 
@@ -162,7 +154,6 @@ if __name__ == '__main__':
     valid_face_file = fvo.detected("cage1.png")[0]['faceId']
     print(valid_face_file)
 
-    
     '''detected_faces = []
 
     for i in list_of_faces:
@@ -178,8 +169,8 @@ if __name__ == '__main__':
     #print(x)
 
     #registration_photo_id = fvo.detected("cage1.png")
-    #print(registration_photo_id) 
-    
+    #print(registration_photo_id)
+
     #x = fvo.verify_against_registration(detected_faces[0])
     #travolta = fvo.detected("travolta1.png")
     #x = fvo.verify_against_registration(travolta)
@@ -194,4 +185,3 @@ if __name__ == '__main__':
     #face1 = fvo.detected("cage_and_other_person.png")
     #x = fvo.verify_against_registration(face1)
     #print(x)
-
