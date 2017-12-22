@@ -6,6 +6,11 @@
     <div class="content">
         <div class="container-fluid">
 
+            <div class="text-center">
+                <a class="btn btn-info btn-fill" href="{% url 'create_journal' %}">New Journal Entry</a>
+            </div>
+            <br>
+
             {% for entry in entries %}
 
             <div class="row">
@@ -35,10 +40,6 @@
             </div>
 
             {% endfor %}
-
-            <div class="text-center">
-                <a class="btn btn-info btn-fill" href="{% url 'create_journal' %}">New Journal Entry</a>
-            </div>
 
         </div>
     </div>
