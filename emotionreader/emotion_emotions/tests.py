@@ -208,23 +208,30 @@ class EmotionViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-# get queryset 
+# get queryset
 #     filter with a timestamp
 
+    def test_get_context_data_returns_dict_with_expected_data(self):
+        """Test that the function fills a dict with the expected data and returns that."""
+        self.client.login(username='dan', password='password')
+        date = datetime.now()
+        response = self.client.get(reverse_lazy('emotion_history'),
+                                   kwargs={"year": date.year,
+                                           "month": date.month,
+                                           "day": date.day})
+        import pdb; pdb.set_trace()
 
-#     def test_get_context_data_returns_dict_with_expected_data(self):
-#         """Test that the function fills a dict with the expected data and returns that."""
-#         response = self.client.
-#         test_dict = {
-#             'response.dates': 'dates'
-#             'response.anger': 'anger'
-#             'response.contempt': 'contempt'
-#             'response.disgust': 'disgust'
-#             'response.fear': 'fear'
-#             'response.happiness': 'happiness'
-#             'response.neutral': 'neutral'
-#             'response.sadness': 'sadness'
-#             'response.surprise': 'surprise'
-#         }
+        # test_dict = {
+        #     'response.dates': 'dates',
+        #     'response.anger': 'anger',
+        #     'response.contempt': 'contempt',
+        #     'response.disgust': 'disgust',
+        #     'response.fear': 'fear',
+        #     'response.happiness': 'happiness',
+        #     'response.neutral': 'neutral',
+        #     'response.sadness': 'sadness',
+        #     'response.surprise': 'surprise',
+        # }
 
-#         self.assertEqual(response.context
+        # self.assertEqual(expected.content
+        self.assertEqual('blerg', 1)
