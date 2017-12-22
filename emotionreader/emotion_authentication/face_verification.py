@@ -41,24 +41,21 @@ class FaceVerification(object):
         return face_image_file.exists()
 
 
-    def detected(self, image, face_id=True, landmarks=False, attributes='', img_stream=False):
+    def detected(self, image=None, face_id=True, landmarks=False, attributes='', img_stream=False):
         """Returns the ID of a detected face."""
+
+        if not image:
+            return False
 
         url = 'detect'
         if not img_stream:
 
             face_to_detect = self.format_face_file(image)
 
-            print("FACED DETECTED", face_to_detect)
-
             if self.check_valid_face_file(face_to_detect) == False:
                 print("Invalid Face")
                 return False
             headers, data, json = CF.util.parse_image(face_to_detect)
-
-            print("HEADERS:",headers)
-            print("DATA:", data)
-            print("JSON", json)
 
         else:
             headers = {'Content-Type': 'application/octet-stream'}
@@ -74,10 +71,9 @@ class FaceVerification(object):
 
         detection = CF.util.request(
             'POST', url, headers=headers, params=params, json=json, data=data)
-        print("DETECTION:",detection)
 
         #NOTE - this is how you get valid faceIDs --> detection[0]['faceId']
-
+        print("DETECTION" ,len(detection))
         return detection
 
     '''Note: Not used currently, will be at later time.'''    
