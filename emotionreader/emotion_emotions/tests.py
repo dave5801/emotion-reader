@@ -2,6 +2,7 @@
 from django.test import RequestFactory, TestCase
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy
+from django.utils import timezone
 from emotion_emotions.models import Emotion
 from emotion_profile.tests import UserFactory
 from base64 import b64decode
@@ -92,6 +93,9 @@ class EmotionViewTests(TestCase):
         user.last_name = 'Theman'
         user.save()
         self.dan = user
+
+        emotion = EmotionFactory(user=user)
+        emotion.save()
 
         self.request = RequestFactory()
 
@@ -207,6 +211,40 @@ class EmotionViewTests(TestCase):
         response = self.client.get(reverse_lazy('emotion_analysis'))
         self.assertEqual(response.status_code, 200)
 
+    def test_emotion_history_route_has_302_response_not_logged_in(self):
+        """Test that emotino history route redirects when not logged in."""
+        now = timezone.now()
+        response = self.client.get(reverse_lazy('emotion_history',
+                                                kwargs={
+                                                    'year': now.year,
+                                                    'month': now.month,
+                                                    'day': now.day
+                                                }))
+        self.assertEqual(response.status_code, 302)
+
+    def test_emotion_history_route_has_200_response_logged_in(self):
+        """Test that emotino history route works when logged in."""
+        self.client.login(username='dan', password='password')
+        now = timezone.now()
+        response = self.client.get(reverse_lazy('emotion_history',
+                                                kwargs={
+                                                    'year': now.year,
+                                                    'month': now.month,
+                                                    'day': now.day
+                                                }))
+        self.assertEqual(response.status_code, 200)
+
+    def test_emotion_history_route_has_date_on_page(self):
+        """Test that emotino history route works when logged in."""
+        self.client.login(username='dan', password='password')
+        now = timezone.now()
+        response = self.client.get(reverse_lazy('emotion_history',
+                                                kwargs={
+                                                    'year': now.year,
+                                                    'month': now.month,
+                                                    'day': now.day
+                                                }))
+        self.assertIn(b'Records for', response.content)
 
 # get queryset 
 #     filter with a timestamp

@@ -134,7 +134,6 @@ class FaceVerification(object):
 
         registration_verification = CF.util.request('POST', url, json=json)
 
-        print(registration_verification)
 
         return registration_verification['isIdentical']
 
