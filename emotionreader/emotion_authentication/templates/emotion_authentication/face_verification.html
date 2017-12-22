@@ -2,17 +2,21 @@
 
 {% block body %}
 
-    <h1>Your Face must be Verified</h1>
+    <div class="title-container text-center" style="top: 50px;">
+        <h1>Face Verification Login</h1>
+        <h4 class="description text-center">Login with a photo of your face</h4>
+        <br>
+        <video autoplay></video>
+        <canvas style="display:none;" height=300 width=300></canvas>
+        <br>
+        <br>
+        <button type="button" class="btn btn-round btn-neutral btn-fill cap-button" id="start-camera">Start Camera</button>
+        <button type="button" class="btn btn-round btn-neutral btn-fill cap-button" id="capture"><i class="fa fa-camera-retro"></i> Capture</button>
 
-    <video autoplay></video>
-    <canvas style="display:none;" height=300 width=300></canvas>
-
-    <button type="button" class="btn btn-primary cap-button" id="start-camera">Start Camera</button>
-    <button type="button" class="btn btn-primary cap-button" id="capture">Capture</button>
-
-    <h2>{{ face_verification_msg }}</h2>
-    <p id="saved"></p>
-    {% csrf_token %}
+        <h2>{{ face_verification_msg }}</h2>
+        <p id="saved"></p>
+        {% csrf_token %}
+    </div>
 
 {% endblock %}
 
@@ -21,6 +25,7 @@
 {% load static %}
 
 <script src="{% static 'emotionreader/imagecapture.js' %}"></script>
+
 <script type="text/javascript">
     app.setupImageCap(
         () => {location.pathname = '/profile/'},
