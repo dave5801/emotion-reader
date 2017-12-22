@@ -33,7 +33,7 @@
                         <div class="card-footer ">
                             <hr>
                             <div class="stats">
-                                <i class="fa fa-camera-retro"></i> Capture a photo of yourself and have your expressions analyzed
+                                <i class="fa fa-camera-retro"></i> Capture a photo of one time or record for pictures on interval
                                 <p id="capture-info">Last image captured: <span id="last-shot"></span> <span id="saved"></span></p>
                             </div>
                         </div>
@@ -49,5 +49,7 @@
 {% block custom_scripts %}
 {% load static %}
 <script src="{% static 'emotionreader/imagecapture.js' %}"></script>
-<script type="text/javascript">app.setupImageCap()</script>
+<script type="text/javascript">
+
+    app.setupImageCap()</script>
 {% endblock custom_scripts %}
