@@ -116,8 +116,8 @@ class FaceVerificationViewTests(TestCase):
     """Tests if authentication pages work properly."""
 
     def setUp(self):
-        user = UserFactory.create()
-        user.set_password(factory.Faker('password'))
+        user = UserFactory.create(username='bob')
+        user.set_password('password')
         user.save()
         self.user = user
         patcher = patch('cognitive_face.util.request', return_value={0: {'faceId': 'xxxxx'}, 'isIdentical': True})
@@ -143,6 +143,35 @@ class FaceVerificationViewTests(TestCase):
         response = self.client.post(reverse_lazy('face_verification'), data)
         self.assertEqual(response.status_code, 302)
 
+    def test_face_registration_post_has_302_response_not_logged_in(self):
+        """Test that face reg route has 302 response when not logged in."""
+        data = {'image': 'data: base64,FAKE'}
+        response = self.client.post(reverse_lazy('face_register_view'), data)
+        self.assertEqual(response.status_code, 302)
 
-        #test if registration view routes to verification view
+    def test_face_registration_post_has_200_response_logged_in(self):
+        """Test that the face reg route has a 200 response."""
+        self.client.login(username='bob', password='password')
 
+        patcher = patch('cognitive_face.util.request', return_value=[{'faceId': 'xxxxx'}])
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+        data = {'image': 'data: base64,FAKE'}
+        response = self.client.post(reverse_lazy('face_register_view'), data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_face_registration_post_sets_auth_face_id(self):
+        """Test that the face reg route sets the face id."""
+        self.client.login(username='bob', password='password')
+
+        patcher = patch('cognitive_face.util.request', return_value=[{'faceId': 'xxxxx'}])
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+        data = {'image': 'data: base64,FAKE'}
+        self.client.post(reverse_lazy('face_register_view'), data)
+
+        verifier = FaceVerificationManager.objects.get(user=self.user)
+        self.assertEqual(verifier.auth_face_id, 'xxxxx')
+        self.assertEqual(verifier.auth_last_recorded.second, timezone.now().second)
