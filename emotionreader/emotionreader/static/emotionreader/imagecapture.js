@@ -48,15 +48,17 @@ var app = app || {};
     }
 
     function singleShot() {
-        let date = new Date(Date.now())
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-        day = day < 10 ? '0' + day : day;
-        month = month < 10 ? '0' + month : month;
-        year = String(year);
+        if (!post_success_callback) {
+            let date = new Date(Date.now())
+            let day = date.getDate();
+            let month = date.getMonth() + 1;
+            let year = date.getFullYear();
+            day = day < 10 ? '0' + day : day;
+            month = month < 10 ? '0' + month : month;
+            year = String(year);
 
-        post_success_callback = ()=>{location.pathname = `/emotions/history/${year}/${month}/${day}`}
+            post_success_callback = ()=>{location.pathname = `/emotions/history/${year}/${month}/${day}`}
+        }
         snapshot();
         stopCamera();
     }

@@ -1,6 +1,7 @@
 {% extends "emotionreader/dashboard.html" %}
 
 {% block body %}
+{% load static %}
 <link rel="stylesheet" href="https://cdn.dhtmlx.com/edge/dhtmlx.css" 
     type="text/css"> 
 <script src="https://cdn.dhtmlx.com/edge/dhtmlx.js" 
@@ -12,7 +13,7 @@
                         <div class="col-md-8">
                             <div class="card card-user">
                                 <div class="card-image">
-                                    <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" alt="...">
+                                    <img src="{% static 'emotionreader/assets/img/mountain-background.jpg' %}" alt="...">
                                 </div>
                                 <div class="card-body">
                                     <div class="author" style="height: 500px;">
