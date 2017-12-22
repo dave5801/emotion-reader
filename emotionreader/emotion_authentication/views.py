@@ -4,9 +4,9 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedire
 from emotion_authentication.models import FaceVerificationManager
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.contrib.auth import  login
+from django.contrib.auth import login
 from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import redirect
+from django.shortcuts import redirect 
 from django.utils import timezone
 
 # Create your views here.
