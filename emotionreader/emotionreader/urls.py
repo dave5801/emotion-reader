@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^emotions/', include('emotion_emotions.urls'))
 ]
 
-if settings.DEBUG:
+if settings.DEBUG:  # pragma: nocover
     urlpatterns += static(
         settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
     )

@@ -105,7 +105,7 @@ class EmotionAnalysis(LoginRequiredMixin, TemplateView):
         sadness = []
         surprise = []
 
-        for emotion in emotions:
+        for emotion in emotions:  #pragma: nocover
             dates.append(int(time.mktime(emotion.date_recorded.timetuple())) * 1000)
             anger.append(emotion.anger * 100)
             contempt.append(emotion.contempt * 100)
@@ -214,3 +214,6 @@ class RecordEmotions(LoginRequiredMixin, TemplateView):
         emotion.save()
 
         return HttpResponse('Emotions Recorded')
+
+
+76-85

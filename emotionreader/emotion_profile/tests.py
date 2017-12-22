@@ -1,6 +1,8 @@
+"""Test file for emotion profile."""
 from django.test import TestCase
 from emotion_profile.models import User, EmotionProfile
 from django.core.urlresolvers import reverse_lazy
+from django.core import mail
 
 import factory
 
@@ -26,7 +28,7 @@ class ProfileTests(TestCase):
         """Add one minimal user to the database."""
         super(ProfileTests, cls).setUpClass()
         user = UserFactory(username='dan', email='dan@dan.net')
-        user.set_password('password')
+        user.set_password('qwerty12345')
         user.first_name = 'Dan'
         user.last_name = 'Theman'
         user.save()
@@ -34,7 +36,7 @@ class ProfileTests(TestCase):
 
         for _ in range(10):
             user = UserFactory.create()
-            user.set_password(factory.Faker('password'))
+            user.set_password(factory.Faker('qwerty12345'))
             user.save()
 
     def test_profile_route_has_302_response(self):
@@ -44,7 +46,7 @@ class ProfileTests(TestCase):
 
     def test_profile_route_login_200_response(self):
         """Test that profile route with login works."""
-        self.client.login(username='dan', password='password')
+        self.client.login(username='dan', password='qwerty12345')
         response = self.client.get(reverse_lazy('profile'))
         self.assertEqual(response.status_code, 200)
 
@@ -57,7 +59,7 @@ class ProfileTests(TestCase):
         """Test that a profile is created automatically when a user is."""
         self.assertEquals(EmotionProfile.objects.count(), 11)
         user = UserFactory()
-        user.set_password(factory.Faker('password'))
+        user.set_password(factory.Faker('qwerty12345'))
         user.save()
         self.assertEquals(EmotionProfile.objects.count(), 12)
 
@@ -73,20 +75,22 @@ class ProfileTests(TestCase):
     def test_profile_route_has_200_response(self):
         """Test that Profile view route has a 200 response code."""
         response = self.client.get(reverse_lazy('profile'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_update_profile_route_has_200_response(self):
         """Test that update profile route has a 200 response code."""
         response = self.client.get(reverse_lazy('update_profile'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_profile_route_has_a_tag(self):
         """Test that profile route has an A tag on the page."""
+        self.client.login(username='dan', password='qwerty12345')
         response = self.client.get(reverse_lazy('profile'))
         self.assertIn(b'Update Profile', response.content)
 
     def test_update_profile_route_has_heading(self):
         """Test that update profile route has a heading on the page."""
+        self.client.login(username='dan', password='qwerty12345')
         response = self.client.get(reverse_lazy('update_profile'))
         self.assertIn(b'Update', response.content)
 
@@ -102,13 +106,13 @@ class ProfileTests(TestCase):
 
     def test_profile_route_accessible_when_logged_in(self):
         """Test that a user can only see their profile page if logged in."""
-        self.client.login(username='dan', password='password')
+        self.client.login(username='dan', password='qwerty12345')
         response = self.client.get(reverse_lazy('profile'))
         self.assertEqual(response.status_code, 200)
 
     def test_update_profile_route_accessible_when_logged_in(self):
         """Test that a user can only update a profile entry if logged."""
-        self.client.login(username='dan', password='password')
+        self.client.login(username='dan', password='qwerty12345')
         response = self.client.get(reverse_lazy('update_profile'))
         self.assertEqual(response.status_code, 200)
 
@@ -135,53 +139,54 @@ class ProfileTests(TestCase):
     def test_actvation_link_redirects_to_activate_completed_page(self):
         """Test if acitvation link works."""
         import re
-        self.client.post(reverse_lazy('registration_register'), {
-            'username': 'Dan',
-            'password1': 'password',
-            'password2': 'password',
-            'email': 'dan@dan.net'
+        mail_response = self.client.post(reverse_lazy('registration_register'), {
+            'username': 'Mike',
+            'password1': 'qwerty12345',
+            'password2': 'qwerty12345',
+            'email': 'Mike@Mike.net'
         })
+        # import pdb; pdb.set_trace()
         activation = re.findall('/accounts/activate/.+/', mail.outbox[0].body)
         response = self.client.get(activation[0], follow=True)
-        self.assertIn(b'Activation is Completed', response.content)
+        self.assertIn(b'Activation Complete', response.content)
 
     def test_register_allows_login_to_new_users(self):
         """Test if users created can log in."""
         import re
-        self.client.login(username='Dan', password='password')
+        self.client.login(username='Mike', password='password')
         response = self.client.get(reverse_lazy('home'))
         self.assertNotIn(b'Welcome,', response.content)
         self.client.post(reverse_lazy('registration_register'), {
-            'username': 'Dan',
-            'password1': 'password',
-            'password2': 'password',
-            'email': 'dan@dan.net'
+            'username': 'Mike',
+            'password1': 'qwerty12345',
+            'password2': 'qwerty12345',
+            'email': 'Mike@Mike.net'
         })
         activation = re.findall('/accounts/activate/.+/', mail.outbox[0].body)
         self.client.get(activation[0])
-        self.client.login(username='Dan', password='password')
+        self.client.login(username='Mike', password='password')
         response = self.client.get(reverse_lazy('home'))
-        self.assertIn(b'Welcome,', response.content)
+        self.assertIn(b'Emotion Tracker', response.content)
 
     def test_register_with_activation_valid_user_password_activates_user(self):
         """Test if valid user with password is activated, activates user."""
         import re
         self.client.post(reverse_lazy('registration_register'), {
-            'username': 'Dan',
-            'password1': 'password',
-            'password2': 'password',
-            'email': 'dan@dan.net'
+            'username': 'Mike',
+            'password1': 'qwerty12345',
+            'password2': 'qwerty12345',
+            'email': 'Mike@Mike.net'
         })
         activation = re.findall('/accounts/activate/.+/', mail.outbox[0].body)
         self.client.get(activation[0])
-        self.assertTrue(User.objects.get(username='Dan').is_active)
+        self.assertTrue(User.objects.get(username='Mike').is_active)
 
     def test_register_taken_username_responds_with_200(self):
         """Test register taken responds with 200."""
         response = self.client.post(reverse_lazy('registration_register'), {
-            'username': 'Dan',
-            'password1': 'password',
-            'password2': 'password',
+            'username': 'dan',
+            'password1': 'qwerty12345',
+            'password2': 'qwerty12345',
             'email': 'dan@dan.net'
         })
         self.assertEqual(200, response.status_code)
@@ -189,9 +194,20 @@ class ProfileTests(TestCase):
     def test_register_taken_user_name_displays_name_taken(self):
         """Test register taken responds with username taken."""
         response = self.client.post(reverse_lazy('registration_register'), {
-            'username': 'Dan',
-            'password1': 'password',
-            'password2': 'password',
+            'username': 'dan',
+            'password1': 'qwerty12345',
+            'password2': 'qwerty12345',
             'email': 'dan@dan.net'
         })
         self.assertIn(b'username already exists', response.content)
+
+    def test_form_valid(self):
+        """Test if form is correctly assigned to user."""
+        self.client.login(username='dan', password='qwerty12345')
+        response = self.client.post(reverse_lazy('update_profile'), {
+            'email': 'dan@dan.net',
+            'first_name': 'Dan',
+            'last_name': 'Theman'
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse_lazy('profile'))
