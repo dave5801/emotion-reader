@@ -48,6 +48,11 @@ class FaceDetectionTests(TestCase):
 
     def test_face_detected(self):
         """Test face is detected."""
+
+        patcher = patch('cognitive_face.util.request', return_value=[{'faceId': 'xxxxx'}])
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
         verify = FaceVerification(filepath_for_faces=full_path)
         x = verify.detected('cage1.png')
         self.assertEqual(len(x), 1)
@@ -114,8 +119,8 @@ class FaceVerificationViewTests(TestCase):
         user = UserFactory.create()
         user.set_password(factory.Faker('password'))
         user.save()
-
-        patcher = patch('cognitive_face.util.request', return_value={0: {'faceId': 'xxxxx'}})
+        self.user = user
+        patcher = patch('cognitive_face.util.request', return_value={0: {'faceId': 'xxxxx'}, 'isIdentical': True})
         patcher.start()
         self.addCleanup(patcher.stop)
         '''
@@ -126,6 +131,14 @@ class FaceVerificationViewTests(TestCase):
         '''
         #test if registration routes to face auth
     def test_route_to_face_auth(self):
+
+        with open(os.path.join(full_path, 'cage1.png'), 'rb') as f:
+            content = f.read()
+
+        self.user.faces.auth_face = SimpleUploadedFile(name="cage1",
+                                                     content=content,
+                                                     content_type="image/png")
+        self.user.faces.save()
         data = {'image': 'data: base64,FAKE'}
         response = self.client.post(reverse_lazy('face_verification'), data)
         self.assertEqual(response.status_code, 302)
