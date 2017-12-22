@@ -5,7 +5,7 @@ omit =
     */permissions.py
     */apps.py
     */__init__.py
-    */tests*
+    */test*
     */manage.py
     */wsgi.py
     */settings.py
