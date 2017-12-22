@@ -28,7 +28,7 @@
                             <div class="card ">
                                 <div class="card-header ">
                                     <h4 class="card-title">Emotion Percent Each Capture</h4>
-                                    <p class="card-category">Emotion percent scaled with min max scale</p>
+                                    <p class="card-category">Emotion percent scaled with log scale</p>
                                 </div>
                                 <div class="card-body ">
                                     <canvas id="radar" width="400" height="400"></canvas>
@@ -188,14 +188,14 @@
                         borderColor: color,
                         pointBackgroundColor: color,
                         data: [
-                            {{ min_max_anger }}[i],
-                            {{ min_max_contempt }}[i],
-                            {{ min_max_disgust }}[i],
-                            {{ min_max_fear }}[i],
-                            {{ min_max_happiness }}[i],
-                            {{ min_max_neutral }}[i],
-                            {{ min_max_sadness }}[i],
-                            {{ min_max_surprise }}[i]
+                            {{ log_anger }}[i],
+                            {{ log_contempt }}[i],
+                            {{ log_disgust }}[i],
+                            {{ log_fear }}[i],
+                            {{ log_happiness }}[i],
+                            {{ log_neutral }}[i],
+                            {{ log_sadness }}[i],
+                            {{ log_surprise }}[i]
                         ]
                     }
 
