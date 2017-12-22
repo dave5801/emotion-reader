@@ -1,6 +1,10 @@
 {% extends "emotionreader/dashboard.html" %}
 
 {% block body %}
+    {% load static %}
+
+    <link rel="stylesheet" href="http://cdn.dhtmlx.com/edge/dhtmlx.css" type="text/css"> 
+    <script src="http://cdn.dhtmlx.com/edge/dhtmlx.js" type="text/javascript"></script>
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -22,6 +26,10 @@
                                         <p class="description" style="font-size: 2em;">
                                             {{ request.user.username }}
                                         </p>
+
+                                        <div class="hide" id="calendar"></div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+
                                     </div>
                                 </div>
                                 <hr>
@@ -74,7 +82,7 @@
                                                 <tr>
                                                     <td>Surprise</td>
                                                     <td>{{ avg_surprise }}</td>
-                                                </tr>                                                                                                                                    
+                                                </tr>                                                  
                                             </tbody>
                                         </table>
                                     </div>
@@ -83,5 +91,8 @@
                     </div>
                 </div>
             </div>
-
+            
+    <link rel="stylesheet" href="{% static 'emotionreader/calendar.css' %}">
+    <script src="{% static 'emotionreader/calendar.js' %}" type="text/javascript"></script>
+    
 {% endblock %}
