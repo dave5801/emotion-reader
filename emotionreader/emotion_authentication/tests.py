@@ -20,10 +20,6 @@ TEST_REG_PHOTO = SimpleUploadedFile(name='cage1',
 TEST_NEW_PHOTO = SimpleUploadedFile(name='cage2',
  content=open(os.path.join(full_path,'cage2.png'), 'rb').read(), content_type='image/png')
 
-#FILEPATH = "nicholas_cage"
-#FULL_PATH = os.path.join(settings.BASE_DIR, 'emotion_authentication/' + FILEPATH)
-#verify = FaceVerification(filepath_for_faces=FULL_PATH)
-#TEST_FACE_LIST = verify.get_faces_from_dir()
 
 class FaceDetectionTests(TestCase):
     """Test Basic Face Detection."""
@@ -66,6 +62,11 @@ class FaceVerificationTests(TestCase):
         user = UserFactory.create()
         user.set_password(factory.Faker('password'))
         user.save()
+        self.user = user
+
+    def test_create_face_verification_object(self):
+        '''test if face verification object is created.'''
+        self.assertIsNotNone(self.user.faces)
 
         #test if fvo created
         #test if fvo valid
