@@ -1,4 +1,6 @@
 # Emotion Reader
+[![Build Status](https://travis-ci.org/dave5801/emotion-reader.svg?branch=master)](https://travis-ci.org/dave5801/emotion-reader)
+[![Coverage Status](https://coveralls.io/repos/github/dave5801/emotion-reader/badge.svg?branch=master)](https://coveralls.io/github/dave5801/emotion-reader?branch=master)
 
 ## What is Emotion Reader?
 Emotion Reader is an application that takes photos and analyzes your face and outputs an emotion.
