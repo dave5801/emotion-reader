@@ -60,11 +60,11 @@ You can test this application by first exporting an environmental variable point
 ```
 (ENV) emotion-reader $ export
 
-TEST_DB='test_imagersite'
+TEST_DB='test_emotion-reader'
 
 (ENV) emotion-reader $ python
 
-imagersite/manage.py test imagersite
+emotion-reader/manage.py test emotion-reader
 ```
 
 
