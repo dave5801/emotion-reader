@@ -35,13 +35,13 @@ class MainRoutingTests(TestCase):
         """Test that journal route has a heading on the page."""
         self.client.login(username='mike', password='password')
         response = self.client.get(reverse_lazy('journal'))
-        self.assertIn(b'Emotion Journal', response.content)
+        self.assertIn(b'Emotion Analysis', response.content)
 
     def test_create_journal_route_has_heading(self):
         """Test that create journal route has a heading on the page."""
         self.client.login(username='mike', password='password')
         response = self.client.get(reverse_lazy('create_journal'))
-        self.assertIn(b'Create Journal', response.content)
+        self.assertIn(b'Create Journal Entry', response.content)
 
     def test_journal_route_accessible_only_if_logged_in(self):
         """Test that a user can only see their journal page if logged in here."""
@@ -64,3 +64,13 @@ class MainRoutingTests(TestCase):
         self.client.login(username='mike', password='password')
         response = self.client.get(reverse_lazy('create_journal'))
         self.assertEqual(response.status_code, 200)
+
+    def test_form_valid(self):
+        """Test if form is correctly assigned to user."""
+        self.client.login(username='mike', password='password')
+        form = {'title': 'Merry Christmas!',
+                'body': 'Happy New Year!'}
+        response = self.client.post(reverse_lazy('create_journal'),
+                                    form)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse_lazy('journal'))

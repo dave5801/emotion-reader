@@ -35,6 +35,6 @@ class CreateJournal(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('journal')
 
     def form_valid(self, form):
-        """Assign user as creater of journal."""
+        """Assign user as creator of journal."""
         form.instance.user = self.request.user
         return super(CreateJournal, self).form_valid(form)
