@@ -2,14 +2,85 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from emotion_emotions.models import Emotion
+from emotion_journal.models import Journal
 import numpy as np
+from datetime import datetime
 
 from base64 import b64decode
 import os
 import requests
 import time
+
+
+class EmotionDateHistory(LoginRequiredMixin, ListView):
+    """View for a single day."""
+
+    model = Emotion
+    template_name = 'emotion_emotions/history.html'
+
+    def get_queryset(self):
+        """Limit to logged in user's records."""
+        all_emotions = Emotion.objects.filter(user=self.request.user)
+        return all_emotions.filter(date_recorded__year=self.kwargs['year'],
+                                   date_recorded__month=self.kwargs['month'],
+                                   date_recorded__day=self.kwargs['day'],)
+
+    def get_context_data(self, **kwargs):
+        """Get context data and add default cover."""
+        context = super(EmotionDateHistory, self).get_context_data(**kwargs)
+
+        dates = []
+        anger = []
+        contempt = []
+        disgust = []
+        fear = []
+        happiness = []
+        neutral = []
+        sadness = []
+        surprise = []
+
+        for emotion in context['object_list']:
+            dates.append(int(time.mktime(emotion.date_recorded.timetuple())) * 1000)
+            anger.append(emotion.anger * 100)
+            contempt.append(emotion.contempt * 100)
+            disgust.append(emotion.disgust * 100)
+            fear.append(emotion.fear * 100)
+            happiness.append(emotion.happiness * 100)
+            neutral.append(emotion.neutral * 100)
+            sadness.append(emotion.sadness * 100)
+            surprise.append(emotion.surprise * 100)
+
+        context['dates'] = dates
+        date = datetime.strptime('{}{}{}'.format(self.kwargs['day'], self.kwargs['month'], self.kwargs['year']), '%d%m%Y')
+        context['date'] = date.strftime('%A, %B %d, %Y')
+
+        context['anger'] = anger
+        context['contempt'] = contempt
+        context['disgust'] = disgust
+        context['fear'] = fear
+        context['happiness'] = happiness
+        context['neutral'] = neutral
+        context['sadness'] = sadness
+        context['surprise'] = surprise
+        context['avg_anger'] = sum(anger) / float(len(anger) or 1)
+        context['avg_contempt'] = sum(contempt) / float(len(contempt) or 1)
+        context['avg_disgust'] = sum(disgust) / float(len(disgust) or 1)
+        context['avg_fear'] = sum(fear) / float(len(fear) or 1)
+        context['avg_happiness'] = sum(happiness) / float(len(happiness) or 1)
+        context['avg_neutral'] = sum(neutral) / float(len(neutral) or 1)
+        context['avg_sadness'] = sum(sadness) / float(len(sadness) or 1)
+        context['avg_surprise'] = sum(surprise) / float(len(surprise) or 1)
+
+        full_journal = Journal.objects.filter(user=self.request.user)
+        entries = full_journal.filter(date__year=self.kwargs['year'],
+                                      date__month=self.kwargs['month'],
+                                      date__day=self.kwargs['day'],)
+
+        context['entries'] = entries
+
+        return context
 
 
 class EmotionAnalysis(LoginRequiredMixin, TemplateView):
@@ -74,14 +145,14 @@ class EmotionAnalysis(LoginRequiredMixin, TemplateView):
         context['neutral'] = neutral
         context['sadness'] = sadness
         context['surprise'] = surprise
-        context['avg_anger'] = sum(anger) / (float(len(anger)) or 1)
-        context['avg_contempt'] = sum(contempt) / (float(len(contempt)) or 1)
-        context['avg_disgust'] = sum(disgust) / (float(len(disgust)) or 1)
-        context['avg_fear'] = sum(fear) / (float(len(fear)) or 1)
-        context['avg_happiness'] = sum(happiness) / (float(len(happiness)) or 1)
-        context['avg_neutral'] = sum(neutral) / (float(len(neutral)) or 1)
-        context['avg_sadness'] = sum(sadness) / (float(len(sadness)) or 1)
-        context['avg_surprise'] = sum(surprise) / (float(len(surprise)) or 1)
+        context['avg_anger'] = sum(anger) / float(len(anger) or 1)
+        context['avg_contempt'] = sum(contempt) / float(len(contempt) or 1)
+        context['avg_disgust'] = sum(disgust) / float(len(disgust) or 1)
+        context['avg_fear'] = sum(fear) / float(len(fear) or 1)
+        context['avg_happiness'] = sum(happiness) / float(len(happiness) or 1)
+        context['avg_neutral'] = sum(neutral) / float(len(neutral) or 1)
+        context['avg_sadness'] = sum(sadness) / float(len(sadness) or 1)
+        context['avg_surprise'] = sum(surprise) / float(len(surprise) or 1)
 
         return context
 
@@ -112,6 +183,14 @@ class RecordEmotions(LoginRequiredMixin, TemplateView):
             image = b64decode(image)
         except (KeyError, IndexError):
             return HttpResponseBadRequest('Invalid data.')
+
+        if request.user.faces.auth_face:
+            verifier = request.user.faces
+            new_face = verifier.detected(image, img_stream=True)[0]['faceId']
+            correct_face = verifier.verify_against_registration(new_face)
+
+            if not correct_face:
+                return HttpResponseBadRequest('Face does not belong to user.')
 
         data = self.get_emotion_data(image)
 

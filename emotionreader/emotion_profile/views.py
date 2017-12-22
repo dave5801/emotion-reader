@@ -58,8 +58,6 @@ class ProfileView(LoginRequiredMixin, DetailView):
     def get(self, *args, **kwargs):
         """Redirect home if not logged in."""
         self.kwargs['username'] = self.request.user.get_username()
-        if self.kwargs['username'] == '':
-            return redirect('home')
 
         return super(ProfileView, self).get(*args, **kwargs)
 
@@ -85,16 +83,12 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
     def get(self, *args, **kwargs):
         """Redirect home if not logged in."""
         self.kwargs['username'] = self.request.user.get_username()
-        if self.kwargs['username'] == '':
-            return redirect('home')
 
         return super(UpdateProfile, self).get(*args, **kwargs)
 
     def post(self, *args, **kwargs):
         """Redirect home if not logged in."""
         self.kwargs['username'] = self.request.user.get_username()
-        if self.kwargs['username'] == '':
-            return redirect('home')
 
         return super(UpdateProfile, self).post(*args, **kwargs)
 
