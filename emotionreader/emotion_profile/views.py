@@ -54,14 +54,14 @@ class ProfileView(LoginRequiredMixin, DetailView):
         context['avg_sadness'] = float("{0:.2f}".format(sum(sadness) / float(len(sadness) or 1)))
         context['avg_surprise'] = float("{0:.2f}".format(sum(surprise) / float(len(surprise) or 1)))
 
-        last_moods = {'anger': anger[-1],
-                      'contempt': contempt[-1],
-                      'disgust': disgust[-1],
-                      'fear': fear[-1],
-                      'happiness': happiness[-1],
-                      'neutral': neutral[-1],
-                      'sadness': sadness[-1],
-                      'surprise': surprise[-1]
+        last_moods = {'anger': anger[-1] if anger[-1:] else 0,
+                      'contempt': contempt[-1] if contempt[-1:] else 0,
+                      'disgust': disgust[-1] if disgust[-1:] else 0,
+                      'fear': fear[-1] if fear[-1:] else 0,
+                      'happiness': happiness[-1] if happiness[-1:] else 0,
+                      'neutral': neutral[-1] if neutral[-1:] else 0,
+                      'sadness': sadness[-1] if sadness[-1:] else 0,
+                      'surprise': surprise[-1] if surprise[-1:] else 0
                       }
 
         context['mood'] = max(last_moods, key=last_moods.get)
