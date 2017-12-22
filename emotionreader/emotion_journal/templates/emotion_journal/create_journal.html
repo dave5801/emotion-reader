@@ -14,10 +14,20 @@
                             <form method="POST" novalidate>
                                 {% csrf_token %}
 
-                                {{ form.non_field_errors }}
-
-                                {{ form.source.errors }}
-                                {{ form.source }}
+                                {% if form.errors %}
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                            <div class="alert alert-danger">
+                                                <strong>{{ error|escape }}</strong>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% for error in form.non_field_errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>{{ error|escape }}</strong>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
 
                                 <div class="row">
                                     <div class="col-md-12">

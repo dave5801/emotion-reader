@@ -10,7 +10,7 @@
                                     <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" alt="...">
                                 </div>
                                 <div class="card-body">
-                                    <div class="author">
+                                    <div class="author" style="height: 417px;">
                                         <a href="#">
                                             <img src="{% if request.user.profile.cover %}
                                                 {{ request.user.profile.cover.url }}
@@ -31,54 +31,113 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                                <div class="card strpied-tabled-with-hover">
-                                    <div class="card-header ">
-                                        <h4 class="card-title">Emotion Percent</h4>
-                                        <p class="card-category">Average Percent of Each Emotion</p>
-                                    </div>
-                                    <div class="card-body table-full-width table-responsive" style="margin-left: 0px;">
-                                        <table class="table table-hover table-striped">
-                                            <thead>
-                                                <th>Emotion</th>
-                                                <th>Percent</th>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Anger</td>
-                                                    <td>{{ avg_anger }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Contempt</td>
-                                                    <td>{{ avg_contempt }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Disgust</td>
-                                                    <td>{{ avg_disgust }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Fear</td>
-                                                    <td>{{ avg_fear }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Happiness</td>
-                                                    <td>{{ avg_happiness }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Neutral</td>
-                                                    <td>{{ avg_neutral }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Sadness</td>
-                                                    <td>{{ avg_sadness }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Surprise</td>
-                                                    <td>{{ avg_surprise }}</td>
-                                                </tr>                                                                                                                                    
-                                            </tbody>
-                                        </table>
+                            <div class="card strpied-tabled-with-hover">
+                                <div class="card-header ">
+                                    <h4 class="card-title">Emotion Percent</h4>
+                                    <p class="card-category">Average Percent of Each Emotion</p>
+                                </div>
+                                <div class="card-body table-full-width table-responsive" style="margin-left: 0px;">
+                                    <table class="table table-hover table-striped">
+                                        <thead>
+                                            <th>Emotion</th>
+                                            <th>Percent</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Anger</td>
+                                                <td>{{ avg_anger }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Contempt</td>
+                                                <td>{{ avg_contempt }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Disgust</td>
+                                                <td>{{ avg_disgust }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fear</td>
+                                                <td>{{ avg_fear }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Happiness</td>
+                                                <td>{{ avg_happiness }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Neutral</td>
+                                                <td>{{ avg_neutral }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Sadness</td>
+                                                <td>{{ avg_sadness }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Surprise</td>
+                                                <td>{{ avg_surprise }}</td>
+                                            </tr>                                                                                                                                    
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card strpied-tabled-with-hover">
+                                <div class="card-header ">
+                                    <h4 class="card-title">Spotify</h4>
+                                    <p class="card-category">Music suggestions based on your emotions</p>
+                                </div>
+                                <div class="card-body table-full-width table-responsive" style="margin-left: 0px;">
+                                    <div class="spotify-embeds" style="width: 100%;">
+
+                                        {% if mood == 'neutral' or mood == 'happiness' %}
+                                            <p class="mood_chill spotify-embed" style="width: 100%;">
+                                                <iframe src="https://open.spotify.com/embed?uri=spotify:user:06yzsn3ciuy5ws5befu7akts2:playlist:0GIrOurJNt6tU3CN3d1OVB&theme=white"
+                                                        width="100%"
+                                                        height="380"
+                                                        frameborder="0"
+                                                        allowtransparency="true">
+                                                </iframe>
+                                            </p>
+                                        {% endif %}
+
+                                        {% if mood == 'sadness' or mood == 'disgust' %}
+                                            <p class="mood_cheerful spotify-embed" style="width: 100%;">
+                                                <iframe src="https://open.spotify.com/embed?uri=spotify:user:06yzsn3ciuy5ws5befu7akts2:playlist:01tIk9a1tOzThUBAGhSwah&theme=white"
+                                                        width="100%"
+                                                        height="380"
+                                                        frameborder="0" 
+                                                        allowtransparency="true">
+                                                </iframe>
+                                            </p>
+                                        {% endif %}
+
+                                        {% if mood == 'fear' or mood == 'surprise' %}
+                                            <p class="mood_courageous spotify-embed" style="width: 100%;">
+                                                <iframe src="https://open.spotify.com/embed?uri=spotify:user:06yzsn3ciuy5ws5befu7akts2:playlist:1oopw4Onk28AdWtI3BZmh9&theme=white"
+                                                        width="100%"
+                                                        height="380"
+                                                        frameborder="0" 
+                                                        allowtransparency="true">
+                                                </iframe>
+                                            </p>
+                                        {% endif %}
+
+                                        {% if mood == 'anger' or mood == 'contempt' %}
+                                            <p class="mood_love spotify-embed" style="width: 100%;">
+                                                <iframe src="https://open.spotify.com/embed?uri=spotify:user:06yzsn3ciuy5ws5befu7akts2:playlist:0FlkdrR5Sg9lTIl8Yq4eqT&theme=white"
+                                                        width="100%"
+                                                        height="380"
+                                                        frameborder="0" 
+                                                        allowtransparency="true">
+                                                </iframe>
+                                            </p>
+                                        {% endif %}
+
                                     </div>
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </div>

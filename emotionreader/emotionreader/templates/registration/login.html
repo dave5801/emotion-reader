@@ -2,23 +2,55 @@
 
 {% block body %}
 
-    <div class="page-header clear-filter" filter-color="purple">
-        <div class="page-header-image" data-parallax="true">
-            <div class="filter"></div>
-            <div class="title-container text-center">
-                <h1>Login</h1>
-                <h4 class="description text-center">Login with username and password.</h4>
-                <br />
-
-
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="submit" class="btn btn-round btn-neutral btn-fill"></input>
-                </form>
-
+    <div class="title-container text-center" style="top: 175px;">
+        <h1>Login</h1>
+        <h4 class="description text-center">Login with username and password.</h4>
+        <br />
+        <form method="post">
+            {% csrf_token %}
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <div class="row">
+                <div class="col-md-3" style="margin: auto;">
+                    <div class="form-group">
+                        <label style="float: left;">{{ form.username.label_tag }}</label>
+                        <input class="form-control" type="text"
+                           name="{{ form.username.name }}"
+                           id="{{ form.username.id_for_label }}"
+                           {% if form.username.value != None %}value="{{ form.username.value|stringformat:'s' }}"{% endif %}
+                           maxlength="{{ form.username.field.max_length }}"
+                           {% if form.username.field.required %}required{% endif %}>
+                    </div>
+                </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="col-md-3" style="margin: auto;">
+                    <div class="form-group">
+                        <label style="float: left;">{{ form.password.label_tag }}</label>
+                        <input class="form-control" type="password"
+                           name="{{ form.password.name }}"
+                           id="{{ form.password.id_for_label }}"
+                           {% if form.password.value != None %}value="{{ form.password.value|stringformat:'s' }}"{% endif %}
+                           maxlength="{{ form.password.field.max_length }}"
+                           {% if form.password.field.required %}required{% endif %}>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-round btn-neutral btn-fill"></input>
+
+        </form>
     </div>
 
 {% endblock %}
