@@ -10,6 +10,10 @@ from emotion_profile.tests import UserFactory
 import factory
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client
+from django.utils import timezone
+from emotion_profile.models import User
+from django.core.urlresolvers import reverse_lazy
+from unittest.mock import patch
 
 filepath = "nicholas_cage"
 full_path = os.path.join(settings.BASE_DIR, 'emotion_authentication/' + filepath)
@@ -64,38 +68,68 @@ class FaceVerificationTests(TestCase):
         user.set_password(factory.Faker('password'))
         user.save()
         self.user = user
+        self.request = RequestFactory()
+        self.request.user = self.user
 
     def test_create_face_verification_object(self):
         '''test if face verification object is created.'''
         self.assertIsNotNone(self.user.faces)
 
-    def test_face_verification_valid(self):
-        """test if fvo valid."""
-        self.assertIsNotNone(self.user.faces.auth_face)
-        self.assertIsNotNone(self.user.faces.auth_face_id)
-        self.assertIsNotNone(self.user.faces.auth_last_recorded)
+    def test_new_user_face_verification_return_no_reg_photo(self):
+        """test if fvo invalid."""
+        #self.assertIsNone(self.user.faces.auth_face)
+        self.assertIsNone(self.user.faces.auth_face_id)
+        self.assertIsNone(self.user.faces.auth_last_recorded)
 
-       
-        #test if fvo not valid with bad picture
-        #test new user, registration photo does not exist
-        #test current user, registration photo exists
-        #test if current user is verified
+        ''''''
+    def test_new_user_set_face_image_for_auth_return_valid(self):
+
+        filepath = "nicholas_cage"
+        full_path = os.path.join(settings.BASE_DIR, 'emotion_authentication/' + filepath)
+
+        verify = FaceVerification(filepath_for_faces=full_path)
+        #x = verify.detected('cage1.png')
+        request = self.request.get('')
+
+        test_face_verifier = FaceVerificationManager.objects.get(user=self.user)
+        with open(os.path.join(full_path, 'cage1.png'), 'rb') as f:
+            content = f.read()
+        test_face_verifier.auth_face = SimpleUploadedFile(name="cage1",
+                                                     content=content,
+                                                     content_type="image/png"
+                                                     )
+        test_face_verifier.auth_face_id = 'xxxxxxxxxxx'
+        test_face_verifier.auth_last_recorded = timezone.now()
+        test_face_verifier.save()
+        user = User.objects.get(username=self.user.username)
+
+        self.assertIsNotNone(user.faces.auth_face_id)
+        self.assertIsNotNone(user.faces.auth_last_recorded)
+
 
 class FaceVerificationViewTests(TestCase):
     """Tests if authentication pages work properly."""
 
     def setUp(self):
-        client = Client()
         user = UserFactory.create()
         user.set_password(factory.Faker('password'))
         user.save()
 
-        #test if login routes face verification view
-    def test_profile_route_accessible_when_logged_in(self):
-        """Test that a user can only see their profile page if logged in."""
-        self.client.login(username='dan', password='password')
-        response = self.client.get(reverse_lazy('face_verification'))
-        self.assertEqual(response.status_code, 200)
-        
+        patcher = patch('cognitive_face.util.request', return_value={0: {'faceId': 'xxxxx'}})
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        '''
+        def test_record_emotions_route_post_has_302_not_logged_in(self):
+        """Test that record emotions redirects when not logged in."""
+        response = self.client.post(reverse_lazy('record_emotions'))
+        self.assertEqual(response.status_code, 302)
+        '''
+        #test if registration routes to face auth
+    def test_route_to_face_auth(self):
+        data = {'image': 'data: base64,FAKE'}
+        response = self.client.post(reverse_lazy('face_verification'), data)
+        self.assertEqual(response.status_code, 302)
+
+
         #test if registration view routes to verification view
 
