@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse_lazy
 from emotion_profile.models import EmotionProfile, EmotionProfileForm
 from django.shortcuts import redirect
 import time
+import operator
 
 
 class ProfileView(LoginRequiredMixin, DetailView):
@@ -52,6 +53,18 @@ class ProfileView(LoginRequiredMixin, DetailView):
         context['avg_neutral'] = float("{0:.2f}".format(sum(neutral) / float(len(neutral) or 1)))
         context['avg_sadness'] = float("{0:.2f}".format(sum(sadness) / float(len(sadness) or 1)))
         context['avg_surprise'] = float("{0:.2f}".format(sum(surprise) / float(len(surprise) or 1)))
+
+        last_moods = {'anger': anger[-1],
+                      'contempt': contempt[-1],
+                      'disgust': disgust[-1],
+                      'fear': fear[-1],
+                      'happiness': happiness[-1],
+                      'neutral': neutral[-1],
+                      'sadness': sadness[-1],
+                      'surprise': surprise[-1]
+                      }
+
+        context['mood'] = max(last_moods, key=last_moods.get)
 
         return context
 
