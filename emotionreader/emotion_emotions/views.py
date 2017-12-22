@@ -3,12 +3,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.generic import TemplateView, ListView
+from django.utils import timezone
 from emotion_emotions.models import Emotion
 from emotion_journal.models import Journal
 import numpy as np
 from datetime import datetime
 
 from base64 import b64decode
+import math
 import os
 import requests
 import time
@@ -93,7 +95,7 @@ class EmotionAnalysis(LoginRequiredMixin, TemplateView):
         user = self.request.user
         context = super(EmotionAnalysis, self).get_context_data()
 
-        emotions = user.emotions.all()
+        emotions = user.emotions.all().order_by('date_recorded')
 
         dates = []
         anger = []
@@ -105,7 +107,7 @@ class EmotionAnalysis(LoginRequiredMixin, TemplateView):
         sadness = []
         surprise = []
 
-        for emotion in emotions:
+        for emotion in emotions:  #pragma: nocover
             dates.append(int(time.mktime(emotion.date_recorded.timetuple())) * 1000)
             anger.append(emotion.anger * 100)
             contempt.append(emotion.contempt * 100)
@@ -116,26 +118,33 @@ class EmotionAnalysis(LoginRequiredMixin, TemplateView):
             sadness.append(emotion.sadness * 100)
             surprise.append(emotion.surprise * 100)
 
-        min_max_anger = [((x - min(anger)) / (max(anger) - min(anger))) for x in anger]
-        min_max_contempt = [((x - min(contempt)) / (max(contempt) - min(contempt))) for x in contempt]
-        min_max_disgust = [((x - min(disgust)) / (max(disgust) - min(disgust))) for x in disgust]
-        min_max_fear = [((x - min(fear)) / (max(fear) - min(fear))) for x in fear]
-        min_max_happiness = [((x - min(happiness)) / (max(happiness) - min(happiness))) for x in happiness]
-        min_max_neutral = [((x - min(neutral)) / (max(neutral) - min(neutral))) for x in neutral]
-        min_max_sadness = [((x - min(sadness)) / (max(sadness) - min(sadness))) for x in sadness]
-        min_max_surprise = [((x - min(surprise)) / (max(surprise) - min(surprise))) for x in surprise]
+        log_anger = [math.log(x, 100) * 100 for x in anger]
+        log_contempt = [math.log(x, 100) * 100 for x in contempt]
+        log_disgust = [math.log(x, 100) * 100 for x in disgust]
+        log_fear = [math.log(x, 100) * 100 for x in fear]
+        log_happiness = [math.log(x, 100) * 100 for x in happiness]
+        log_neutral = [math.log(x, 100) * 100 for x in neutral]
+        log_sadness = [math.log(x, 100) * 100 for x in sadness]
+        log_surprise = [math.log(x, 100) * 100 for x in surprise]
 
-        context['days_ago'] = "%.1f" % (dates[0] * 1.15741e-12) if dates else 0.0
+        if dates:
+            date = emotions.first().date_recorded
+            delta = timezone.now() - date
+            days_ago = delta.days + (delta.seconds / 86400)
+        else:
+            days_ago = 0.0
+
+        context['days_ago'] = "%.1f" % days_ago
         context['dates'] = dates
 
-        context['min_max_anger'] = min_max_anger
-        context['min_max_contempt'] = min_max_contempt
-        context['min_max_disgust'] = min_max_disgust
-        context['min_max_fear'] = min_max_fear
-        context['min_max_happiness'] = min_max_happiness
-        context['min_max_neutral'] = min_max_neutral
-        context['min_max_sadness'] = min_max_sadness
-        context['min_max_surprise'] = min_max_surprise
+        context['log_anger'] = log_anger
+        context['log_contempt'] = log_contempt
+        context['log_disgust'] = log_disgust
+        context['log_fear'] = log_fear
+        context['log_happiness'] = log_happiness
+        context['log_neutral'] = log_neutral
+        context['log_sadness'] = log_sadness
+        context['log_surprise'] = log_surprise
 
         context['anger'] = anger
         context['contempt'] = contempt
@@ -214,3 +223,6 @@ class RecordEmotions(LoginRequiredMixin, TemplateView):
         emotion.save()
 
         return HttpResponse('Emotions Recorded')
+
+
+76-85
