@@ -33,7 +33,7 @@ class ProfileView(LoginRequiredMixin, DetailView):
         sadness = []
         surprise = []
 
-        for emotion in emotions:
+        for emotion in emotions:  # pragma: nocover
             dates.append(int(time.mktime(emotion.date_recorded.timetuple())) * 1000)
             anger.append(emotion.anger * 100)
             contempt.append(emotion.contempt * 100)

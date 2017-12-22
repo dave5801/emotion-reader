@@ -86,7 +86,6 @@ class ProfileTests(TestCase):
         """Test that profile route has an A tag on the page."""
         self.client.login(username='dan', password='qwerty12345')
         response = self.client.get(reverse_lazy('profile'))
-        # import pdb; pdb.set_trace()
         self.assertIn(b'Update Profile', response.content)
 
     def test_update_profile_route_has_heading(self):
@@ -201,3 +200,14 @@ class ProfileTests(TestCase):
             'email': 'dan@dan.net'
         })
         self.assertIn(b'username already exists', response.content)
+
+    def test_form_valid(self):
+        """Test if form is correctly assigned to user."""
+        self.client.login(username='dan', password='qwerty12345')
+        response = self.client.post(reverse_lazy('update_profile'), {
+            'email': 'dan@dan.net',
+            'first_name': 'Dan',
+            'last_name': 'Theman'
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse_lazy('profile'))
