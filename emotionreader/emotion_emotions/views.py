@@ -32,7 +32,7 @@ class EmotionDateHistory(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         """Get context data and add default cover."""
         context = super(EmotionDateHistory, self).get_context_data(**kwargs)
-        import pdb; pdb.set_trace()
+
         dates = []
         anger = []
         contempt = []

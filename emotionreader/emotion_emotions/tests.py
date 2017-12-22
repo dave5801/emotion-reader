@@ -207,31 +207,30 @@ class EmotionViewTests(TestCase):
         response = self.client.get(reverse_lazy('emotion_analysis'))
         self.assertEqual(response.status_code, 200)
 
-
-# get queryset
-#     filter with a timestamp
-
     def test_get_context_data_returns_dict_with_expected_data(self):
         """Test that the function fills a dict with the expected data and returns that."""
+        from emotion_emotions.views import EmotionDateHistory
+        emotion = EmotionFactory(user=self.dan)
+        emotion.save()
         self.client.login(username='dan', password='password')
         date = datetime.now()
-        response = self.client.get(reverse_lazy('emotion_history'),
+        response = self.client.get(reverse_lazy('emotion_history',
                                    kwargs={"year": date.year,
                                            "month": date.month,
-                                           "day": date.day})
-        import pdb; pdb.set_trace()
-
-        # test_dict = {
-        #     'response.dates': 'dates',
-        #     'response.anger': 'anger',
-        #     'response.contempt': 'contempt',
-        #     'response.disgust': 'disgust',
-        #     'response.fear': 'fear',
-        #     'response.happiness': 'happiness',
-        #     'response.neutral': 'neutral',
-        #     'response.sadness': 'sadness',
-        #     'response.surprise': 'surprise',
-        # }
-
-        # self.assertEqual(expected.content
-        self.assertEqual('blerg', 1)
+                                           "day": date.day}))
+        dummy_request = self.request.get('')
+        dummy_request.user = self.dan
+        view = EmotionDateHistory(request=dummy_request,
+                                  kwargs={"year": date.year,
+                                          "month": date.month,
+                                          "day": date.day}, object_list=self.dan.emotions.all())
+        data = view.get_context_data()
+        self.assertIn('dates', data)
+        self.assertIn('anger', data)
+        self.assertIn('contempt', data)
+        self.assertIn('disgust', data)
+        self.assertIn('fear', data)
+        self.assertIn('happiness', data)
+        self.assertIn('neutral', data)
+        self.assertIn('sadness', data)
+        self.assertIn('surprise', data)
