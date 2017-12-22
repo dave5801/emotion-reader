@@ -116,7 +116,7 @@ class FaceVerification(object):
             else:
                 registration_photo_id = self.auth_face_id
         else:
-            raise ValueError('No registration photo detected')
+            return False
 
         url = 'verify'
         json = {}
