@@ -76,23 +76,23 @@ class FaceVerification(object):
         return detection
 
     '''Note: Not used currently, will be at later time.'''
-    def group_verify(self, face_id, list_of_face_ids):
-        """Any face image found in 'messy groud' is not verified."""
-        url = 'group'
-        json = {
-            'faceIds': list_of_face_ids,
-        }
+    # def group_verify(self, face_id, list_of_face_ids):
+    #     """Any face image found in 'messy group' is not verified."""
+    #     url = 'group'
+    #     json = {
+    #         'faceIds': list_of_face_ids,
+    #     }
 
-        grouping = CF.util.request('POST', url, json=json)
-        primary_group = grouping['groups'][0]
-        messy_group = grouping['messyGroup']
+    #     grouping = CF.util.request('POST', url, json=json)
+    #     primary_group = grouping['groups'][0]
+    #     messy_group = grouping['messyGroup']
 
-        if face_id in primary_group:
-            return True
-        elif face_id in messy_group:
-            return False
-        else:
-            return False
+    #     if face_id in primary_group:
+    #         return True
+    #     elif face_id in messy_group:
+    #         return False
+    #     else:
+    #         return False
 
     def verify_against_registration(self, face_id=None, person_group_id=None, person_id=None):
         """Check new photo against photo used at registration."""

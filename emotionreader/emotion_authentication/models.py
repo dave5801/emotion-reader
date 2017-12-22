@@ -1,7 +1,7 @@
 from django.db import models
 from django.dispatch import receiver
-from emotion_profile.models import User
 from emotion_authentication.face_verification import FaceVerification
+from emotion_profile.models import User
 
 
 # Create your models here.

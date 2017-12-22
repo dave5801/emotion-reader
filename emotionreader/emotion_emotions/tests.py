@@ -245,24 +245,3 @@ class EmotionViewTests(TestCase):
                                                     'day': now.day
                                                 }))
         self.assertIn(b'Records for', response.content)
-
-# get queryset 
-#     filter with a timestamp
-
-
-#     def test_get_context_data_returns_dict_with_expected_data(self):
-#         """Test that the function fills a dict with the expected data and returns that."""
-#         response = self.client.
-#         test_dict = {
-#             'response.dates': 'dates'
-#             'response.anger': 'anger'
-#             'response.contempt': 'contempt'
-#             'response.disgust': 'disgust'
-#             'response.fear': 'fear'
-#             'response.happiness': 'happiness'
-#             'response.neutral': 'neutral'
-#             'response.sadness': 'sadness'
-#             'response.surprise': 'surprise'
-#         }
-
-#         self.assertEqual(response.context
